@@ -1,4 +1,3 @@
-import createError from 'http-errors';
 import { UserRegisterRequestBody } from '../../@types/user';
 import { RequestHandler } from 'express';
 
