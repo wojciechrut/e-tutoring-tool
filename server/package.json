@@ -5,11 +5,12 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc -w",
-    "dev": "nodemon ./dist/index.js",
+    "dev": "nodemon ./dist/index.js --signal SIGKILL",
     "start": "node ./dist/index.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/http-errors": "^1.8.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -22,6 +23,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/jsonwebtoken": "^8.5.9",
+    "kill-port": "^2.0.1",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.4"
   }

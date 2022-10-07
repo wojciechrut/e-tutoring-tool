@@ -7,8 +7,9 @@ const userSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     avatar: {
         type: String,
-        default: 'avatars/default.jpg',
+        default: '/static/avatars/default.jpg',
     },
+    friends: [{ type: mongoose_1.Types.ObjectId, default: [] }],
 }, { timestamps: true, versionKey: false });
 const Model = (0, mongoose_1.model)('User', userSchema);
 exports.default = Model;

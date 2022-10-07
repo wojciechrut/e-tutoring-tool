@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose';
+import { Schema, model, ObjectId, Types } from 'mongoose';
 
 export interface User {
   _id: ObjectId;
@@ -16,8 +16,9 @@ const userSchema = new Schema<User>(
     password: { type: String, required: true },
     avatar: {
       type: String,
-      default: 'avatars/default.jpg',
+      default: '/static/avatars/default.jpg',
     },
+    friends: [{ type: Types.ObjectId, default: [] }],
   },
   { timestamps: true, versionKey: false }
 );

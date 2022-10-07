@@ -1,6 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 
-const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint.';
+const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
+const UNKNOWN_ERROR = 'Unknown error';
 
 export const errorLogger: ErrorRequestHandler = (
   error,
@@ -8,7 +9,7 @@ export const errorLogger: ErrorRequestHandler = (
   _response,
   next
 ) => {
-  console.log(`error ${error.message}`);
+  console.log(`error ${error}`);
   next(error);
 };
 
@@ -19,7 +20,8 @@ export const errorResponder: ErrorRequestHandler = (
   _next
 ) => {
   const status = error.status || 400;
-  response.status(status).send(error.message);
+
+  response.status(status).send(error);
 };
 
 export const errorWrongEndpoint: ErrorRequestHandler = (
