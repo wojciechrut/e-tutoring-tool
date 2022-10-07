@@ -15,7 +15,7 @@
       "splitTerminals": [
         {
           "name": "ts-watch",
-          "commands": ["cd server", "npm run watch"]
+          "commands": ["cd server", "yarn watch"]
         }
       ]
     },
@@ -23,11 +23,11 @@
       "splitTerminals": [
         {
           "name": "server dev",
-          "commands": ["cd server", "npm run dev"]
+          "commands": ["cd server", "yarn dev"]
         },
         {
           "name": "server",
-          "commands": ["cd server", "npm install"]
+          "commands": ["cd server", "yarn install"]
         }
       ]
     },
@@ -36,11 +36,11 @@
       "splitTerminals": [
         {
           "name": "client dev",
-          "commands": ["cd client", "npm run dev"]
+          "commands": ["cd client", "yarn dev"]
         },
         {
           "name": "client",
-          "commands": ["cd client", "npm install"]
+          "commands": ["cd client", "yarn install"]
         }
       ]
     }
