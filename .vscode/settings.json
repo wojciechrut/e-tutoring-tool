@@ -1,0 +1,48 @@
+{
+  "files.eol": "\n",
+  "restoreTerminals.artificialDelayMilliseconds": 500,
+  "restoreTerminals.keepExistingTerminalsOpen": false,
+  "restoreTerminals.runOnStartup": false,
+  "restoreTerminals.terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "root"
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "ts-watch",
+          "commands": ["cd server", "npm run watch"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "server dev",
+          "commands": ["cd server", "npm run dev"]
+        },
+        {
+          "name": "server",
+          "commands": ["cd server", "npm install"]
+        }
+      ]
+    },
+
+    {
+      "splitTerminals": [
+        {
+          "name": "client dev",
+          "commands": ["cd client", "npm run dev"]
+        },
+        {
+          "name": "client",
+          "commands": ["cd client", "npm install"]
+        }
+      ]
+    }
+  ]
+}
