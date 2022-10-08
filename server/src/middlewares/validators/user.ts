@@ -6,7 +6,7 @@ const register: RequestHandler<{}, {}, UserRegisterRequestBody> = (
   response,
   next
 ) => {
-  throw { asf: 'asdf' };
+  console.log('register val todo');
 };
 
 export default { register };

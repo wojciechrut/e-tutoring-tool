@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const register = (request, response, next) => {
-    throw { asf: 'asdf' };
+    console.log('register val todo');
 };
 exports.default = { register };
