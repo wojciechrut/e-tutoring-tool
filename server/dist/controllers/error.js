@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorWrongEndpoint = exports.errorResponder = exports.errorLogger = void 0;
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
 const errorLogger = (error, _request, _response, next) => {
-    console.log(`error ${error}`);
+    console.log(`error ${error.message ? error.message : error}`);
     next(error);
 };
 exports.errorLogger = errorLogger;

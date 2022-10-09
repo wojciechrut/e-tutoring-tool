@@ -8,7 +8,7 @@ export const errorLogger: ErrorRequestHandler = (
   _response,
   next
 ) => {
-  console.log(`error ${error}`);
+  console.log(`error ${error.message ? error.message : error}`);
   next(error);
 };
 

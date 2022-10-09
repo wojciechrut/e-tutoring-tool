@@ -28,16 +28,21 @@ const validateRegex = (action, body) => {
 };
 const bodyValidator = (action) => {
     const validator = (request, _response, next) => {
-        const { body } = request;
-        const requiredErrors = validateRequired(action, body);
-        if (requiredErrors) {
-            throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, requiredErrors);
+        try {
+            const { body } = request;
+            const requiredErrors = validateRequired(action, body);
+            if (requiredErrors) {
+                next((0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, requiredErrors));
+            }
+            const regexErrors = validateRegex(action, body);
+            if (regexErrors) {
+                next((0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, regexErrors));
+            }
+            next();
         }
-        const regexErrors = validateRegex(action, body);
-        if (regexErrors) {
-            throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, regexErrors);
+        catch (error) {
+            next(error);
         }
-        next();
     };
     return validator;
 };

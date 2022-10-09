@@ -33,19 +33,22 @@ const validateRegex = (action: Action, body: { [key: string]: any }) => {
 
 export const bodyValidator = (action: Action) => {
   const validator: RequestHandler = (request, _response, next) => {
-    const { body } = request;
+    try {
+      const { body } = request;
 
-    const requiredErrors = validateRequired(action, body);
-    if (requiredErrors) {
-      throw createError(ErrorStatus.BAD_REQUEST, requiredErrors);
+      const requiredErrors = validateRequired(action, body);
+      if (requiredErrors) {
+        next(createError(ErrorStatus.BAD_REQUEST, requiredErrors));
+      }
+
+      const regexErrors = validateRegex(action, body);
+      if (regexErrors) {
+        next(createError(ErrorStatus.BAD_REQUEST, regexErrors));
+      }
+      next();
+    } catch (error) {
+      next(error);
     }
-
-    const regexErrors = validateRegex(action, body);
-    if (regexErrors) {
-      throw createError(ErrorStatus.BAD_REQUEST, regexErrors);
-    }
-
-    next();
   };
 
   return validator;
