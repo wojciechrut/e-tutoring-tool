@@ -1,11 +1,11 @@
 import Model, { User } from '../models/user';
 
-enum Selectors {
+enum Selector {
   STANDARD = '-password -_id',
 }
 
 const findOne = async (query: Partial<User>) => {
-  return Model.findOne(query).select(Selectors.STANDARD);
+  return Model.findOne(query).select(Selector.STANDARD);
 };
 
 const create = async (query: Pick<User, 'email' | 'nickname' | 'password'>) => {

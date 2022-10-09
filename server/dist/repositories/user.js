@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
-var Selectors;
-(function (Selectors) {
-    Selectors["STANDARD"] = "-password -_id";
-})(Selectors || (Selectors = {}));
+var Selector;
+(function (Selector) {
+    Selector["STANDARD"] = "-password -_id";
+})(Selector || (Selector = {}));
 const findOne = async (query) => {
-    return user_1.default.findOne(query).select(Selectors.STANDARD);
+    return user_1.default.findOne(query).select(Selector.STANDARD);
 };
 const create = async (query) => {
     user_1.default.create(query);

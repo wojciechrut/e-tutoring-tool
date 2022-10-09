@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorWrongEndpoint = exports.errorResponder = exports.errorLogger = void 0;
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
-const UNKNOWN_ERROR = 'Unknown error';
 const errorLogger = (error, _request, _response, next) => {
     console.log(`error ${error}`);
     next(error);

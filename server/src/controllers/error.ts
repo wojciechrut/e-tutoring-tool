@@ -1,7 +1,6 @@
 import { ErrorRequestHandler } from 'express';
 
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
-const UNKNOWN_ERROR = 'Unknown error';
 
 export const errorLogger: ErrorRequestHandler = (
   error,
