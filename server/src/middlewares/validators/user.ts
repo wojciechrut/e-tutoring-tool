@@ -6,7 +6,7 @@ const register: RequestHandler<{}, {}, UserRegisterRequestBody> = (
   response,
   next
 ) => {
-  console.log('register val todo');
+  response.send('eksdee');
 };
 
 export default { register };

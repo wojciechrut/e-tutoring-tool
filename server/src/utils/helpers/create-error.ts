@@ -1,8 +1,8 @@
 import { ErrorStatus, HttpError } from '../../@types';
 
-export const createError = (status: ErrorStatus, errors: string[]) => {
+export const createError = (status: ErrorStatus, messages: string[]) => {
   return {
     status,
-    errors,
+    messages,
   } as HttpError;
 };

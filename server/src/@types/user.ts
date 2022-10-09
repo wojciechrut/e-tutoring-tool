@@ -1,4 +1,4 @@
-import { PickRequiredOptional } from './pickRequiredOptional';
+import { PickRequiredOptional } from './util';
 import { User } from '../models/user';
 export { User } from '../models/user';
 

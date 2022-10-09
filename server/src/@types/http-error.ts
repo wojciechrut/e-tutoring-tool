@@ -8,5 +8,5 @@ export enum ErrorStatus {
 
 export type HttpError = {
   status: ErrorStatus;
-  errors: string[];
+  messages: string[];
 };
