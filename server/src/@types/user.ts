@@ -10,3 +10,5 @@ export type UserRegisterRequestBody = PickRequiredOptional<
 export type UserResponseBody = Omit<User, 'password' | '_id'> & {
   token: string;
 };
+
+export type UserCredentials = Pick<User, 'email' | 'password'>;

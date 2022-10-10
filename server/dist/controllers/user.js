@@ -29,6 +29,7 @@ const register = async (request, response, next) => {
         response.send(Object.assign({ token }, userData));
     }
     catch (error) {
+        console.log(1, error);
         next(error);
     }
 };
@@ -43,4 +44,18 @@ const getAll = async (_request, response, next) => {
         next(error);
     }
 };
-exports.default = { register, getAll };
+const login = async (request, response, next) => {
+    try {
+        const user = await user_1.default.findByCredentials(request.body);
+        if (!user) {
+            throw (0, create_error_1.createError)(401, 'Wrong credentials.');
+        }
+        const _a = user.toObject(), { _id } = _a, userData = __rest(_a, ["_id"]);
+        const token = jtw_1.default.generate((0, mongo_1.id)(_id));
+        response.send(Object.assign({ token }, userData));
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.default = { register, getAll, login };

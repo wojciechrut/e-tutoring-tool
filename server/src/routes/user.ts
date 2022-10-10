@@ -6,6 +6,8 @@ import { Action } from '../middlewares/validators/body/actions';
 
 const userRoutes = express.Router();
 
+userRoutes.route('/').get(UserController.getAll);
+
 userRoutes
   .route('/')
   .post(
@@ -14,6 +16,8 @@ userRoutes
     UserController.register
   );
 
-userRoutes.route('/').get(UserController.getAll);
+userRoutes
+  .route('/login')
+  .post(bodyValidator(Action.LOGIN_USER), UserController.login);
 
 export default userRoutes;

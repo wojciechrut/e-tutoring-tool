@@ -1,5 +1,9 @@
 import { createError } from './../utils/helpers/create-error';
-import { UserRegisterRequestBody, UserResponseBody } from './../@types/user';
+import {
+  UserRegisterRequestBody,
+  UserResponseBody,
+  UserCredentials,
+} from './../@types/user';
 import UserRepository from './../repositories/user';
 import { RequestHandler } from 'express';
 import JWT from './../utils/helpers/jtw';
@@ -21,6 +25,7 @@ const register: RequestHandler<
 
     response.send({ token, ...userData });
   } catch (error) {
+    console.log(1, error);
     next(error);
   }
 };
@@ -36,4 +41,24 @@ const getAll: RequestHandler = async (_request, response, next) => {
   }
 };
 
-export default { register, getAll };
+const login: RequestHandler<{}, UserResponseBody, UserCredentials> = async (
+  request,
+  response,
+  next
+) => {
+  try {
+    const user = await UserRepository.findByCredentials(request.body);
+    if (!user) {
+      throw createError(401, 'Wrong credentials.');
+    }
+
+    const { _id, ...userData } = user.toObject();
+    const token = JWT.generate(id(_id));
+
+    response.send({ token, ...userData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { register, getAll, login };
