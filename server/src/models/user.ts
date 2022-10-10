@@ -1,4 +1,5 @@
 import { Schema, model, Types } from 'mongoose';
+import { commonSchemaOptions } from './config/common-config';
 
 export interface User {
   _id: Types.ObjectId;
@@ -20,7 +21,7 @@ const userSchema = new Schema<User>(
     },
     friends: [{ type: Types.ObjectId, default: [] }],
   },
-  { timestamps: true, versionKey: false }
+  commonSchemaOptions
 );
 
 const Model = model('User', userSchema);
