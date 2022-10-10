@@ -10,6 +10,12 @@ const generate = (id) => {
     });
 };
 const decode = (token) => {
-    return jsonwebtoken_1.default.verify(token, process.env['JWT_SECRET']);
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env['JWT_SECRET']);
+        return !decoded ? null : typeof decoded === 'string' ? decoded : decoded.id;
+    }
+    catch (_a) {
+        return null;
+    }
 };
 exports.default = { generate, decode };

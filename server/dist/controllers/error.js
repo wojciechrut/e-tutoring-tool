@@ -4,7 +4,7 @@ exports.errorWrongEndpoint = exports.errorResponder = exports.errorLogger = void
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
 const UNKNOWN_ERROR = 'Unknown error.';
 const errorLogger = (error, _request, _response, next) => {
-    console.log(`error ${error.message ? error.message : JSON.stringify(error, null, 2)}`);
+    console.log(`error ${error.message} \n ${error}`);
     next(error);
 };
 exports.errorLogger = errorLogger;

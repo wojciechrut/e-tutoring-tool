@@ -9,9 +9,7 @@ export const errorLogger: ErrorRequestHandler = (
   _response,
   next
 ) => {
-  console.log(
-    `error ${error.message ? error.message : JSON.stringify(error, null, 2)}`
-  );
+  console.log(`error ${error.message} \n ${error}`);
   next(error);
 };
 

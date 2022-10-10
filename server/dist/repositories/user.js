@@ -22,7 +22,7 @@ const findOne = async (query) => {
 };
 const findByCredentials = async (query) => {
     const { email, password } = query;
-    const user = await user_1.default.findOne({ email }).select(Selector.WITH_PASSWORD);
+    const user = await user_1.default.findOne({ email });
     if (user && (await (0, password_1.comparePassword)(password, user.password))) {
         return user;
     }

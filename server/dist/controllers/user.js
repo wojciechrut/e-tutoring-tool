@@ -17,7 +17,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const create_error_1 = require("./../utils/helpers/create-error");
 const user_1 = __importDefault(require("./../repositories/user"));
 const jtw_1 = __importDefault(require("./../utils/helpers/jtw"));
-const mongo_1 = require("../utils/helpers/mongo");
 const register = async (request, response, next) => {
     try {
         const user = await user_1.default.create(request.body);
@@ -25,11 +24,10 @@ const register = async (request, response, next) => {
             throw (0, create_error_1.createError)(500);
         }
         const _a = user.toObject(), { _id } = _a, userData = __rest(_a, ["_id"]);
-        const token = jtw_1.default.generate((0, mongo_1.id)(_id));
+        const token = jtw_1.default.generate(_id);
         response.send(Object.assign({ token }, userData));
     }
     catch (error) {
-        console.log(1, error);
         next(error);
     }
 };
@@ -51,11 +49,22 @@ const login = async (request, response, next) => {
             throw (0, create_error_1.createError)(401, 'Wrong credentials.');
         }
         const _a = user.toObject(), { _id } = _a, userData = __rest(_a, ["_id"]);
-        const token = jtw_1.default.generate((0, mongo_1.id)(_id));
+        const token = jtw_1.default.generate(_id);
         response.send(Object.assign({ token }, userData));
     }
     catch (error) {
         next(error);
     }
 };
-exports.default = { register, getAll, login };
+const me = async (request, response, next) => {
+    try {
+        if (!request.body.email) {
+            throw (0, create_error_1.createError)(500, 'Error parsing user data.');
+        }
+        response.send(request.body);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.default = { register, getAll, login, me };

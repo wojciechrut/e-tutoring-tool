@@ -7,7 +7,7 @@ import {
 import UserRepository from './../repositories/user';
 import { RequestHandler } from 'express';
 import JWT from './../utils/helpers/jtw';
-import { id } from '../utils/helpers/mongo';
+import { _id } from '../utils/helpers/mongo';
 
 const register: RequestHandler<
   {},
@@ -21,11 +21,10 @@ const register: RequestHandler<
     }
 
     const { _id, ...userData } = user.toObject();
-    const token = JWT.generate(id(_id));
+    const token = JWT.generate(_id);
 
     response.send({ token, ...userData });
   } catch (error) {
-    console.log(1, error);
     next(error);
   }
 };
@@ -53,7 +52,7 @@ const login: RequestHandler<{}, UserResponseBody, UserCredentials> = async (
     }
 
     const { _id, ...userData } = user.toObject();
-    const token = JWT.generate(id(_id));
+    const token = JWT.generate(_id);
 
     response.send({ token, ...userData });
   } catch (error) {
@@ -61,4 +60,20 @@ const login: RequestHandler<{}, UserResponseBody, UserCredentials> = async (
   }
 };
 
-export default { register, getAll, login };
+const me: RequestHandler<{}, {}, UserResponseBody> = async (
+  request,
+  response,
+  next
+) => {
+  try {
+    if (!request.body.email) {
+      throw createError(500, 'Error parsing user data.');
+    }
+
+    response.send(request.body);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { register, getAll, login, me };

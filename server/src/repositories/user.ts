@@ -15,14 +15,12 @@ const exists = async (query: Partial<User>) => {
 const findAll = async () => {
   return Model.find();
 };
-
 const findOne = async (query: Partial<User>) => {
   return Model.findOne(query).select(Selector.STANDARD);
 };
-
 const findByCredentials = async (query: UserCredentials) => {
   const { email, password } = query;
-  const user = await Model.findOne({ email }).select(Selector.WITH_PASSWORD);
+  const user = await Model.findOne({ email });
   if (user && (await comparePassword(password, user.password))) {
     return user;
   }
