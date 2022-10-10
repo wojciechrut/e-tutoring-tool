@@ -14,3 +14,5 @@ export type UserResponseBody = Omit<User, 'password' | '_id'> & {
 export type UserCredentials = Pick<User, 'email' | 'password'>;
 
 export type UserAuthorizationRequestBody = { token: string };
+
+export type UserAuthorizationParameters = { withFriends?: boolean };

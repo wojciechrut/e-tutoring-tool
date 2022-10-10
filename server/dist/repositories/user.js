@@ -17,8 +17,11 @@ const exists = async (query) => {
 const findAll = async () => {
     return user_1.default.find();
 };
-const findOne = async (query) => {
-    return user_1.default.findOne(query).select(Selector.STANDARD);
+const findOne = async (query, withFriends = false) => {
+    const result = await user_1.default.findOne(query).select(Selector.STANDARD);
+    return withFriends && result
+        ? result.populate('friends', Selector.STANDARD)
+        : result;
 };
 const findByCredentials = async (query) => {
     const { email, password } = query;

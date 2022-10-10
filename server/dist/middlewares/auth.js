@@ -11,11 +11,12 @@ const mongo_1 = require("../utils/helpers/mongo");
 const auth = async (request, _response, next) => {
     try {
         const { token } = request.body;
+        const { withFriends } = request.params;
         if (!token) {
             throw (0, create_error_1.createError)(_types_1.ErrorStatus.UNAUTHORIZED, 'Missing authorization token');
         }
         const decodedId = jtw_1.default.decode(token);
-        const user = await user_1.default.findOne({ _id: (0, mongo_1._id)(decodedId) });
+        const user = await user_1.default.findOne({ _id: (0, mongo_1._id)(decodedId) }, withFriends);
         if (!user) {
             throw (0, create_error_1.createError)(_types_1.ErrorStatus.UNAUTHORIZED, 'Invalid token.');
         }

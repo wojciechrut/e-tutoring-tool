@@ -15,9 +15,14 @@ const exists = async (query: Partial<User>) => {
 const findAll = async () => {
   return Model.find();
 };
-const findOne = async (query: Partial<User>) => {
-  return Model.findOne(query).select(Selector.STANDARD);
+
+const findOne = async (query: Partial<User>, withFriends = false) => {
+  const result = await Model.findOne(query).select(Selector.STANDARD);
+  return withFriends && result
+    ? result.populate('friends', Selector.STANDARD)
+    : result;
 };
+
 const findByCredentials = async (query: UserCredentials) => {
   const { email, password } = query;
   const user = await Model.findOne({ email });
