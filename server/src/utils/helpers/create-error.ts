@@ -1,4 +1,4 @@
-import { ErrorStatus, HttpError } from '../../@types';
+import { ErrorStatus, HttpError } from '../../../../@types';
 
 const DEFAULT_MESSAGE = 'Something went wrong.';
 

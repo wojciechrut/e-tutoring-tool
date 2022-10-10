@@ -1,4 +1,4 @@
-import { UserRegisterRequestBody, UserCredentials } from './../@types/user';
+import { UserRegisterRequestBody, UserCredentials } from '../../../@types/user';
 import Model, { User } from '../models/user';
 import { comparePassword, hashPassword } from '../utils/helpers/password';
 

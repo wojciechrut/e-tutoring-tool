@@ -17,7 +17,7 @@
     "baseUrl": "./",
     "paths": {
       "*": ["core/*"],
-      "@backend": ["../server/src/@types"]
+      "@types": ["./../@types"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

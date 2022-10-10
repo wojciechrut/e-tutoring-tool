@@ -1,8 +1,8 @@
 import { createError } from './../../utils/helpers/create-error';
-import { UserRegisterRequestBody } from '../../@types/user';
+import { UserRegisterRequestBody } from '../../../../@types/user';
 import UserRepository from '../../repositories/user';
 import { RequestHandler } from 'express';
-import { ErrorStatus } from '../../@types';
+import { ErrorStatus } from '../../../../@types';
 
 const register: RequestHandler<{}, {}, UserRegisterRequestBody> = async (
   request,
