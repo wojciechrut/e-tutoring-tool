@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports._id = exports.id = void 0;
 const mongoose_1 = require("mongoose");
 const id = (_id) => {
-    return exports.id.toString();
+    return _id.toString();
 };
 exports.id = id;
 const _id = (id) => {

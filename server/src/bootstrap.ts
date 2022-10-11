@@ -38,6 +38,8 @@ const startServer = () => {
 };
 
 const bootstrapApp = async () => {
+  console.log('\n================ Bootstraping app ================\n');
+
   await connectDatabase();
   startServer();
 };

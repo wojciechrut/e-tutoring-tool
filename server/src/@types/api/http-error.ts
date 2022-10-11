@@ -4,6 +4,7 @@ export enum ErrorStatus {
   PAYMENT_REQUIRED = 402,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
+  SERVER = 500,
 }
 
 export type HttpError = {

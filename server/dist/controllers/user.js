@@ -25,7 +25,7 @@ const register = async (request, response, next) => {
         }
         const _a = user.toObject(), { _id } = _a, userData = __rest(_a, ["_id"]);
         const token = jtw_1.default.generate(_id);
-        response.send(Object.assign({ token }, userData));
+        response.send(Object.assign({ token, _id }, userData));
     }
     catch (error) {
         next(error);
@@ -50,7 +50,7 @@ const login = async (request, response, next) => {
         }
         const _a = user.toObject(), { _id } = _a, userData = __rest(_a, ["_id"]);
         const token = jtw_1.default.generate(_id);
-        response.send(Object.assign({ token }, userData));
+        response.send(Object.assign({ token, _id }, userData));
     }
     catch (error) {
         next(error);

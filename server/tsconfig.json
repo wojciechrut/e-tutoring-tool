@@ -23,7 +23,6 @@
     "outDir": "dist",
     "baseUrl": "src/"
   },
-  "plugins": [{ "transform": "typescript-transform-paths" }],
   "exclude": ["node_modules", "../client/*"],
-  "include": ["src/**/*.ts", "src/repositories", "./../@types"]
+  "include": ["src/**/*.ts", "./../@types"]
 }

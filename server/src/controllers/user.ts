@@ -1,9 +1,10 @@
+import { MultipleUsersResponseBody, MeResposneBody } from '../@types/api/user';
 import { createError } from './../utils/helpers/create-error';
 import {
   UserRegisterRequestBody,
   UserResponseBody,
   UserCredentials,
-} from './../@types/user';
+} from '../@types/api/user';
 import UserRepository from './../repositories/user';
 import { RequestHandler } from 'express';
 import JWT from './../utils/helpers/jtw';
@@ -11,7 +12,7 @@ import { _id } from '../utils/helpers/mongo';
 
 const register: RequestHandler<
   {},
-  UserResponseBody,
+  MeResposneBody,
   UserRegisterRequestBody
 > = async (request, response, next) => {
   try {
@@ -23,13 +24,17 @@ const register: RequestHandler<
     const { _id, ...userData } = user.toObject();
     const token = JWT.generate(_id);
 
-    response.send({ token, ...userData });
+    response.send({ token, _id, ...userData });
   } catch (error) {
     next(error);
   }
 };
 
-const getAll: RequestHandler = async (_request, response, next) => {
+const getAll: RequestHandler<{}, MultipleUsersResponseBody> = async (
+  _request,
+  response,
+  next
+) => {
   try {
     const allUsers = await UserRepository.findAll();
     if (!allUsers) throw createError(500);
@@ -40,7 +45,11 @@ const getAll: RequestHandler = async (_request, response, next) => {
   }
 };
 
-const login: RequestHandler<{}, UserResponseBody, UserCredentials> = async (
+// const get: RequestHandler = async (request, response, next) => {
+
+// }
+
+const login: RequestHandler<{}, MeResposneBody, UserCredentials> = async (
   request,
   response,
   next
@@ -54,7 +63,7 @@ const login: RequestHandler<{}, UserResponseBody, UserCredentials> = async (
     const { _id, ...userData } = user.toObject();
     const token = JWT.generate(_id);
 
-    response.send({ token, ...userData });
+    response.send({ token, _id, ...userData });
   } catch (error) {
     next(error);
   }

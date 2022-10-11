@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, RequestHandler } from 'express';
 
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
 const UNKNOWN_ERROR = 'Unknown error.';
@@ -24,8 +24,7 @@ export const errorResponder: ErrorRequestHandler = (
   response.status(status).send(error ? error : UNKNOWN_ERROR);
 };
 
-export const errorWrongEndpoint: ErrorRequestHandler = (
-  _error,
+export const errorWrongEndpoint: RequestHandler = (
   _request,
   response,
   _next

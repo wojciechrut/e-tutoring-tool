@@ -1,5 +1,5 @@
 import { PickRequiredOptional } from './util';
-import { User } from '../models/user';
+import { User } from '../../models/user';
 
 export type UserRegisterRequestBody = PickRequiredOptional<
   User,
@@ -7,9 +7,13 @@ export type UserRegisterRequestBody = PickRequiredOptional<
   'avatar'
 >;
 
-export type UserResponseBody = Omit<User, 'password' | '_id'> & {
+export type UserResponseBody = Omit<User, 'password'>;
+
+export type MeResposneBody = UserResponseBody & {
   token: string;
 };
+
+export type MultipleUsersResponseBody = Array<UserResponseBody>;
 
 export type UserCredentials = Pick<User, 'email' | 'password'>;
 

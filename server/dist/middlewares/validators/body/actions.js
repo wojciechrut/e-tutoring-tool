@@ -5,7 +5,6 @@ var Action;
 (function (Action) {
     Action["REGISTER_USER"] = "register-user";
     Action["LOGIN_USER"] = "login-user";
-    Action["SEND_INVITE"] = "send-invite";
 })(Action = exports.Action || (exports.Action = {}));
 exports.actionConstraints = {
     'register-user': {
@@ -14,10 +13,6 @@ exports.actionConstraints = {
     },
     'login-user': {
         required: ['email', 'password'],
-        regexValidated: [],
-    },
-    'send-invite': {
-        required: ['email'],
         regexValidated: [],
     },
 };

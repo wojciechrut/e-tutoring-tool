@@ -8,4 +8,5 @@ var ErrorStatus;
     ErrorStatus[ErrorStatus["PAYMENT_REQUIRED"] = 402] = "PAYMENT_REQUIRED";
     ErrorStatus[ErrorStatus["FORBIDDEN"] = 403] = "FORBIDDEN";
     ErrorStatus[ErrorStatus["NOT_FOUND"] = 404] = "NOT_FOUND";
+    ErrorStatus[ErrorStatus["SERVER"] = 500] = "SERVER";
 })(ErrorStatus = exports.ErrorStatus || (exports.ErrorStatus = {}));

@@ -13,7 +13,7 @@ const errorResponder = (error, _request, response, _next) => {
     response.status(status).send(error ? error : UNKNOWN_ERROR);
 };
 exports.errorResponder = errorResponder;
-const errorWrongEndpoint = (_error, _request, response, _next) => {
+const errorWrongEndpoint = (_request, response, _next) => {
     response.status(404).send(WRONG_ENDPOINT_MESSAGE);
 };
 exports.errorWrongEndpoint = errorWrongEndpoint;

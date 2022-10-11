@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
-const body_1 = require("../middlewares/validators/body");
+const invite_1 = __importDefault(require("../controllers/invite"));
+const invite_2 = __importDefault(require("../middlewares/validators/invite"));
 const inviteRoutes = express_1.default.Router();
-inviteRoutes.route('/').post(auth_1.default, (0, body_1.bodyValidator)(body_1.Action.SEND_INVITE));
+inviteRoutes.route('/').get(invite_1.default.getAll);
+inviteRoutes.route('/').post(auth_1.default, invite_2.default.send, invite_1.default.send);
 exports.default = inviteRoutes;

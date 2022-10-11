@@ -1,11 +1,10 @@
-import { UserRegisterRequestBody, UserCredentials } from '../../../@types/user';
+import { UserRegisterRequestBody, UserCredentials } from '../@types/api/user';
 import Model, { User } from '../models/user';
 import { comparePassword, hashPassword } from '../utils/helpers/password';
 
 enum Selector {
-  STANDARD = '-password -_id',
-  WITH_ID = '-password',
-  WITH_PASSWORD = '-_id',
+  STANDARD = '-password',
+  WITH_PASSWORD = '',
 }
 
 const exists = async (query: Partial<User>) => {
@@ -37,7 +36,7 @@ const create = async (query: UserRegisterRequestBody) => {
   const hashedPassword = await hashPassword(password);
 
   await Model.create({ ...query, password: hashedPassword });
-  return Model.findOne({ email }).select(Selector.WITH_ID);
+  return Model.findOne({ email }).select(Selector.STANDARD);
 };
 
 export default { findAll, findOne, findByCredentials, create, exists };

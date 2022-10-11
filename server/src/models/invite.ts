@@ -6,14 +6,14 @@ export interface Invite {
   _id: Types.ObjectId;
   sender: User;
   receiver: User;
-  accepted?: boolean;
+  active?: boolean;
 }
 
 const inviteSchema = new Schema<Invite>(
   {
     sender: { type: Types.ObjectId, required: true },
     receiver: { type: Types.ObjectId, required: true },
-    accepted: { type: Boolean, required: false },
+    active: { type: Boolean, default: true },
   },
   commonSchemaOptions
 );

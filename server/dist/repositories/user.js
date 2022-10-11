@@ -7,9 +7,8 @@ const user_1 = __importDefault(require("../models/user"));
 const password_1 = require("../utils/helpers/password");
 var Selector;
 (function (Selector) {
-    Selector["STANDARD"] = "-password -_id";
-    Selector["WITH_ID"] = "-password";
-    Selector["WITH_PASSWORD"] = "-_id";
+    Selector["STANDARD"] = "-password";
+    Selector["WITH_PASSWORD"] = "";
 })(Selector || (Selector = {}));
 const exists = async (query) => {
     return user_1.default.exists(query);
@@ -35,6 +34,6 @@ const create = async (query) => {
     const { email, password } = query;
     const hashedPassword = await (0, password_1.hashPassword)(password);
     await user_1.default.create(Object.assign(Object.assign({}, query), { password: hashedPassword }));
-    return user_1.default.findOne({ email }).select(Selector.WITH_ID);
+    return user_1.default.findOne({ email }).select(Selector.STANDARD);
 };
 exports.default = { findAll, findOne, findByCredentials, create, exists };
