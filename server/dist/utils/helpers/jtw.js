@@ -24,4 +24,10 @@ const extractFromHeader = (header) => {
     }
     return null;
 };
-exports.default = { generate, decode, extractFromHeader };
+const decodeFromHeader = (header) => {
+    const extractedId = extractFromHeader(header);
+    if (!extractedId)
+        return null;
+    return decode(extractedId);
+};
+exports.default = { generate, decode, extractFromHeader, decodeFromHeader };

@@ -19,7 +19,7 @@ const userSchema = new Schema<User>(
       type: String,
       default: '/static/avatars/default.jpg',
     },
-    friends: [{ type: Types.ObjectId, default: [] }],
+    friends: [{ type: Types.ObjectId, default: [], ref: 'User' }],
   },
   commonSchemaOptions
 );

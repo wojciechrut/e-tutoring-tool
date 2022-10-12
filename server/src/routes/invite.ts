@@ -7,5 +7,8 @@ const inviteRoutes = express.Router();
 
 inviteRoutes.route('/').get(InviteController.getAll);
 inviteRoutes.route('/').post(auth, InviteValidator.send, InviteController.send);
+inviteRoutes
+  .route('/:inviteId')
+  .post(auth, InviteValidator.setAccepted, InviteController.setAccepted);
 
 export default inviteRoutes;

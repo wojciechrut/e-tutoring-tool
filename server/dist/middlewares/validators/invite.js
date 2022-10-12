@@ -36,4 +36,26 @@ const send = async (request, _response, next) => {
         next(error);
     }
 };
-exports.default = { send };
+const setAccepted = async (request, _response, next) => {
+    try {
+        const { inviteId } = request.params;
+        const { accept } = request.query;
+        const { _id: userId } = request.body;
+        if (!accept) {
+            throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, 'Missing accept query parameter.');
+        }
+        const invite = await invite_1.default.findOne({
+            _id: inviteId,
+            receiver: (0, mongo_1.id)(userId),
+        });
+        if (!invite) {
+            throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, 'Invite does not exist or you are not receiver of it.');
+        }
+        request.body.senderId = (0, mongo_1.id)(invite.sender._id);
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.default = { send, setAccepted };

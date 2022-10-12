@@ -11,8 +11,8 @@ export interface Invite {
 
 const inviteSchema = new Schema<Invite>(
   {
-    sender: { type: Types.ObjectId, required: true },
-    receiver: { type: Types.ObjectId, required: true },
+    sender: { type: Types.ObjectId, required: true, ref: 'User' },
+    receiver: { type: Types.ObjectId, required: true, ref: 'User' },
     active: { type: Boolean, default: true },
   },
   commonSchemaOptions

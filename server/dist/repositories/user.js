@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Selector = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const password_1 = require("../utils/helpers/password");
 var Selector;
 (function (Selector) {
     Selector["STANDARD"] = "-password";
     Selector["WITH_PASSWORD"] = "";
-})(Selector || (Selector = {}));
+})(Selector = exports.Selector || (exports.Selector = {}));
 const exists = async (query) => {
     return user_1.default.exists(query);
 };

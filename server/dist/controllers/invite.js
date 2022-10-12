@@ -36,4 +36,12 @@ const getAll = async (_request, response, next) => {
         next(error);
     }
 };
-exports.default = { send, getAll };
+const setAccepted = async (request, response, next) => {
+    try {
+        response.send(request.body);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.default = { send, getAll, setAccepted };

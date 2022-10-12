@@ -2,7 +2,7 @@ import { UserRegisterRequestBody, UserCredentials } from '../@types/api/user';
 import Model, { User } from '../models/user';
 import { comparePassword, hashPassword } from '../utils/helpers/password';
 
-enum Selector {
+export enum Selector {
   STANDARD = '-password',
   WITH_PASSWORD = '',
 }

@@ -10,7 +10,7 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         default: '/static/avatars/default.jpg',
     },
-    friends: [{ type: mongoose_1.Types.ObjectId, default: [] }],
+    friends: [{ type: mongoose_1.Types.ObjectId, default: [], ref: 'User' }],
 }, common_config_1.commonSchemaOptions);
 const Model = (0, mongoose_1.model)('User', userSchema);
 exports.default = Model;

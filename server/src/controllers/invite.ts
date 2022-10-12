@@ -2,20 +2,20 @@ import { createError } from './../utils/helpers/create-error';
 import { id } from './../utils/helpers/mongo';
 import { UserResponseBody } from '../@types/api/user';
 import {
-  InviteSendParameters,
+  InviteSendQuery,
+  InviteSetAcceptedParams,
+  InviteSetAcceptedQuery,
   MultipleInvitesResponseBody,
 } from '../@types/api/invite';
 import { RequestHandler } from 'express';
 import InviteRepository from '../repositories/invite';
-import { _id } from '../utils/helpers/mongo';
 import { ErrorStatus } from '../@types';
 
-const send: RequestHandler<
-  {},
-  {},
-  UserResponseBody,
-  InviteSendParameters
-> = async (request, response, next) => {
+const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
+  request,
+  response,
+  next
+) => {
   try {
     const { userId: receiverId } = request.query;
     const { _id: senderId } = request.body;
@@ -53,4 +53,17 @@ const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
   }
 };
 
-export default { send, getAll };
+const setAccepted: RequestHandler<
+  InviteSetAcceptedParams,
+  {},
+  UserResponseBody & { senderId?: string },
+  InviteSetAcceptedQuery
+> = async (request, response, next) => {
+  try {
+    response.send(request.body);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { send, getAll, setAccepted };
