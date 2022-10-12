@@ -7,14 +7,11 @@ import { _id } from '../utils/helpers/mongo';
 
 const auth: RequestHandler = async (request, _response, next) => {
   try {
-    const { token } = request.body;
+    const token = JWT.extractFromHeader(request.header('Authorization'));
     const { withFriends } = request.query;
 
     if (!token) {
-      throw createError(
-        ErrorStatus.UNAUTHORIZED,
-        'Missing authorization token'
-      );
+      throw createError(ErrorStatus.UNAUTHORIZED, 'Authorization failed');
     }
 
     const decodedId = JWT.decode(token);

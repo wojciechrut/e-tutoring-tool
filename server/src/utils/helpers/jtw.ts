@@ -16,4 +16,12 @@ const decode = (token: string) => {
   }
 };
 
-export default { generate, decode };
+const extractFromHeader = (header?: string) => {
+  if (header && header.startsWith('Bearer')) {
+    return header.split(' ')[1];
+  }
+
+  return null;
+};
+
+export default { generate, decode, extractFromHeader };

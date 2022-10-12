@@ -10,10 +10,10 @@ const jtw_1 = __importDefault(require("./../utils/helpers/jtw"));
 const mongo_1 = require("../utils/helpers/mongo");
 const auth = async (request, _response, next) => {
     try {
-        const { token } = request.body;
+        const token = jtw_1.default.extractFromHeader(request.header('Authorization'));
         const { withFriends } = request.query;
         if (!token) {
-            throw (0, create_error_1.createError)(_types_1.ErrorStatus.UNAUTHORIZED, 'Missing authorization token');
+            throw (0, create_error_1.createError)(_types_1.ErrorStatus.UNAUTHORIZED, 'Authorization failed');
         }
         const decodedId = jtw_1.default.decode(token);
         const user = await user_1.default.findOne({ _id: (0, mongo_1._id)(decodedId) }, withFriends === 'true');

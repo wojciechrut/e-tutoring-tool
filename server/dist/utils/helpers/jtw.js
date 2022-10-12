@@ -18,4 +18,10 @@ const decode = (token) => {
         return null;
     }
 };
-exports.default = { generate, decode };
+const extractFromHeader = (header) => {
+    if (header && header.startsWith('Bearer')) {
+        return header.split(' ')[1];
+    }
+    return null;
+};
+exports.default = { generate, decode, extractFromHeader };
