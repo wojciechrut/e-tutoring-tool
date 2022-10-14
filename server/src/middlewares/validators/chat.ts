@@ -1,14 +1,15 @@
 import { createError } from './../../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ChatAccessQuery, ErrorStatus } from '../../@types';
+import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../../@types';
 import UserRepository from '../../repositories/user';
 import { _id } from '../../utils/helpers/mongo';
 
-const accessChat: RequestHandler<{}, {}, {}, ChatAccessQuery> = async (
-  request,
-  response,
-  next
-) => {
+const access: RequestHandler<
+  {},
+  {},
+  UserResponseBody,
+  ChatAccessQuery
+> = async (request, _response, next) => {
   try {
     const { userId, meetingId } = request.query;
 
@@ -19,13 +20,19 @@ const accessChat: RequestHandler<{}, {}, {}, ChatAccessQuery> = async (
       );
     }
 
+    if (userId && meetingId) {
+      throw createError(
+        ErrorStatus.BAD_REQUEST,
+        'Specify id of either user or meeting, not both.'
+      );
+    }
+
     if (meetingId) {
       console.log('chat by meeting id todo');
     }
 
     if (userId) {
-      const userExists = await UserRepository.exists({ _id: _id(userId) });
-      if (!userExists) {
+      if (!(await UserRepository.exists({ _id: _id(userId) }))) {
         throw createError(ErrorStatus.BAD_REQUEST, 'User does not exist');
       }
     }
@@ -36,4 +43,4 @@ const accessChat: RequestHandler<{}, {}, {}, ChatAccessQuery> = async (
   }
 };
 
-export default { accessChat };
+export default { access };

@@ -1,31 +1,40 @@
+import { ChatResponseBody } from './../@types/api/chat';
 import { createError } from './../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ChatAccessQuery, ErrorStatus } from '../@types';
-import UserRepository from '../repositories/user';
-import { _id } from '../utils/helpers/mongo';
+import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../@types';
+import { id, _id } from '../utils/helpers/mongo';
+import ChatRepository from '../repositories/chat';
 
-const accessChat: RequestHandler<{}, {}, {}, ChatAccessQuery> = async (
-  request,
-  response,
-  next
-) => {
+const access: RequestHandler<
+  {},
+  ChatResponseBody,
+  UserResponseBody,
+  ChatAccessQuery
+> = async (request, response, next) => {
   try {
     const { userId, meetingId } = request.query;
+    const { _id: requesterId } = request.body;
 
     if (meetingId) {
-      response.send('accessing by meeting todo');
+      //meeting chat z obiektu meeting
+      console.log('chat by meeting todo');
       return;
     }
 
     if (userId) {
-      const userExists = await UserRepository.exists({ _id: _id(userId) });
-      if (!userExists) {
-        throw createError(ErrorStatus.BAD_REQUEST, 'User does not exist');
+      const chat = await ChatRepository.access({
+        users: [userId, id(requesterId)],
+      });
+
+      if (!chat) {
+        throw createError(ErrorStatus.SERVER, 'Could not access this chat.');
       }
+
+      response.send(chat);
     }
   } catch (error) {
     next(error);
   }
 };
 
-export default { accessChat };
+export default { access };

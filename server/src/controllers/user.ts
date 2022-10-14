@@ -1,4 +1,3 @@
-import { id } from './../utils/helpers/mongo';
 import { MultipleUsersResponseBody, MeResposneBody } from '../@types/api/user';
 import { createError } from './../utils/helpers/create-error';
 import {
