@@ -4,12 +4,11 @@ import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../../@types';
 import UserRepository from '../../repositories/user';
 import { _id } from '../../utils/helpers/mongo';
 
-const access: RequestHandler<
-  {},
-  {},
-  UserResponseBody,
-  ChatAccessQuery
-> = async (request, _response, next) => {
+const get: RequestHandler<{}, {}, UserResponseBody, ChatAccessQuery> = async (
+  request,
+  _response,
+  next
+) => {
   try {
     const { userId, meetingId } = request.query;
 
@@ -43,4 +42,4 @@ const access: RequestHandler<
   }
 };
 
-export default { access };
+export default { get };

@@ -5,6 +5,6 @@ import Validator from '../middlewares/validators/chat';
 
 const chatRoutes = express.Router();
 
-chatRoutes.route('/').get(auth, Validator.access, Controller.access);
+chatRoutes.route('/').get(auth, Validator.get, Controller.get);
 
 export default chatRoutes;

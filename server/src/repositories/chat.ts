@@ -16,7 +16,7 @@ const populator = [
   { path: 'lastMessage' },
 ];
 
-const access = async (users: SingleChatQuery) => {
+const findOrCreate = async (users: SingleChatQuery) => {
   const existingChat = await findOne(users);
 
   if (existingChat) {
@@ -58,4 +58,4 @@ const findAll = async (query: ManyChatsQuery) => {
   return Model.find(query);
 };
 
-export default { access, create, exists, findOne, findAll };
+export default { findOrCreate, create, exists, findOne, findAll };

@@ -5,7 +5,7 @@ import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../@types';
 import { id, _id } from '../utils/helpers/mongo';
 import ChatRepository from '../repositories/chat';
 
-const access: RequestHandler<
+const get: RequestHandler<
   {},
   ChatResponseBody,
   UserResponseBody,
@@ -22,7 +22,7 @@ const access: RequestHandler<
     }
 
     if (userId) {
-      const chat = await ChatRepository.access({
+      const chat = await ChatRepository.findOrCreate({
         users: [userId, id(requesterId)],
       });
 
@@ -37,4 +37,4 @@ const access: RequestHandler<
   }
 };
 
-export default { access };
+export default { get };
