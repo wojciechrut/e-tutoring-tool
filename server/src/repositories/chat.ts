@@ -1,5 +1,5 @@
 import { Selector as UserSelector } from './user';
-import Model, { Chat } from '../models/chat';
+import Model from '../models/chat';
 import { Types } from 'mongoose';
 
 type SingleChatQuery = {
@@ -58,4 +58,18 @@ const findAll = async (query: ManyChatsQuery) => {
   return Model.find(query);
 };
 
-export default { findOrCreate, create, exists, findOne, findAll };
+const userHasAccess = async (user: string, chat: string) => {
+  return Model.exists({
+    users: user,
+    _id: chat,
+  });
+};
+
+export default {
+  findOrCreate,
+  create,
+  exists,
+  findOne,
+  findAll,
+  userHasAccess,
+};

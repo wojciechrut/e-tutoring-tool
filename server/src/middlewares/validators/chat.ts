@@ -1,10 +1,10 @@
 import { createError } from './../../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../../@types';
+import { ChatFetchQuery, ErrorStatus, UserResponseBody } from '../../@types';
 import UserRepository from '../../repositories/user';
 import { _id } from '../../utils/helpers/mongo';
 
-const get: RequestHandler<{}, {}, UserResponseBody, ChatAccessQuery> = async (
+const get: RequestHandler<{}, {}, UserResponseBody, ChatFetchQuery> = async (
   request,
   _response,
   next

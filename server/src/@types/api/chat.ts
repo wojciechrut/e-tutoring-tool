@@ -1,6 +1,8 @@
+import { UserResponseBody } from './user';
 import { Chat } from '../../models/chat';
+import { ModelId } from '../../models/types/_id';
 
-export type ChatAccessQuery =
+export type ChatFetchQuery =
   | {
       userId: string;
       meetingId: undefined;
@@ -9,6 +11,10 @@ export type ChatAccessQuery =
       userId: undefined;
       meetingId: string;
     };
+
+export type ChatAccessRequestBody = UserResponseBody & {
+  chat: ModelId;
+};
 
 export type ChatResponseBody = Chat;
 

@@ -1,8 +1,9 @@
 import { commonSchemaOptions } from './config/common-config';
-import { Types, Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { ModelId } from './types/_id';
 
 export interface File {
-  _id: Types.ObjectId;
+  _id: ModelId;
   type: 'image' | 'document';
   path: string;
 }

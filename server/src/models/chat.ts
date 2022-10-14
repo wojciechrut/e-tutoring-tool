@@ -2,9 +2,10 @@ import { User } from './user';
 import { commonSchemaOptions } from './config/common-config';
 import { Schema, Types, model } from 'mongoose';
 import { Message } from './message';
+import { ModelId } from './types/_id';
 
 export interface Chat {
-  _id: Types.ObjectId;
+  _id: ModelId;
   users: Array<User>;
   messages: Array<Message>;
   lastMessage: Message;

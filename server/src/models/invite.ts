@@ -1,9 +1,10 @@
 import { commonSchemaOptions } from './config/common-config';
 import { Schema, model, Types } from 'mongoose';
 import { User } from './user';
+import { ModelId } from './types/_id';
 
 export interface Invite {
-  _id: Types.ObjectId;
+  _id: ModelId;
   sender: User;
   receiver: User;
   active?: boolean;

@@ -3,20 +3,21 @@ import { Chat } from './chat';
 import { User } from './user';
 import { Types, Schema, model } from 'mongoose';
 import { File } from './file';
+import { ModelId } from './types/_id';
 
 export interface Message {
-  _id: Types.ObjectId;
+  _id: ModelId;
   sender: User;
   chat: Chat;
-  text: string;
-  files: File[];
+  text?: string;
+  files?: File[];
 }
 
 const messageSchema = new Schema<Message>(
   {
     sender: { type: Types.ObjectId, required: true, ref: 'User' },
     chat: { type: Types.ObjectId, required: true, ref: 'Chat' },
-    text: { type: String, required: true },
+    text: { type: String, default: '' },
     files: [{ type: Types.ObjectId, default: [], ref: 'File' }],
   },
   commonSchemaOptions

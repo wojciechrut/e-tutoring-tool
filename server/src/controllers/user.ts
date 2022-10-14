@@ -37,7 +37,9 @@ const getAll: RequestHandler<{}, MultipleUsersResponseBody> = async (
 ) => {
   try {
     const allUsers = await UserRepository.findAll();
-    if (!allUsers) throw createError(500);
+    if (!allUsers) {
+      throw createError(500);
+    }
 
     response.send(allUsers);
   } catch (error) {

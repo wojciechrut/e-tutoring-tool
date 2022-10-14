@@ -1,7 +1,7 @@
 import { ChatResponseBody } from './../@types/api/chat';
 import { createError } from './../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ChatAccessQuery, ErrorStatus, UserResponseBody } from '../@types';
+import { ChatFetchQuery, ErrorStatus, UserResponseBody } from '../@types';
 import { id, _id } from '../utils/helpers/mongo';
 import ChatRepository from '../repositories/chat';
 
@@ -9,7 +9,7 @@ const get: RequestHandler<
   {},
   ChatResponseBody,
   UserResponseBody,
-  ChatAccessQuery
+  ChatFetchQuery
 > = async (request, response, next) => {
   try {
     const { userId, meetingId } = request.query;
