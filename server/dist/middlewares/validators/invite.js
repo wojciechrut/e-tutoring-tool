@@ -16,6 +16,9 @@ const send = async (request, _response, next) => {
         if (!receiverId) {
             throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, 'Missing user id parameter.');
         }
+        if ((0, mongo_1.id)(sender._id) === receiverId) {
+            throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, 'You are already friends.');
+        }
         const receiver = (_a = (await user_1.default.findOne({ _id: (0, mongo_1._id)(receiverId) }))) === null || _a === void 0 ? void 0 : _a.toObject();
         if (!receiver) {
             throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, "Couldn't find user with this id.");
@@ -47,6 +50,7 @@ const setAccepted = async (request, _response, next) => {
         const invite = await invite_1.default.findOne({
             _id: inviteId,
             receiver: (0, mongo_1.id)(userId),
+            active: true,
         });
         if (!invite) {
             throw (0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, 'Invite does not exist or you are not receiver of it.');

@@ -39,4 +39,18 @@ const create = async (query: UserRegisterRequestBody) => {
   return Model.findOne({ email }).select(Selector.STANDARD);
 };
 
-export default { findAll, findOne, findByCredentials, create, exists };
+const makeFriends = async (userId1: string, userId2: string) => {
+  return Promise.all([
+    Model.updateOne({ _id: userId1 }, { $push: { friends: userId2 } }),
+    Model.updateOne({ _id: userId2 }, { $push: { friends: userId1 } }),
+  ]);
+};
+
+export default {
+  findAll,
+  findOne,
+  findByCredentials,
+  create,
+  exists,
+  makeFriends,
+};

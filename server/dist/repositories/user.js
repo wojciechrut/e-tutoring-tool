@@ -37,4 +37,17 @@ const create = async (query) => {
     await user_1.default.create(Object.assign(Object.assign({}, query), { password: hashedPassword }));
     return user_1.default.findOne({ email }).select(Selector.STANDARD);
 };
-exports.default = { findAll, findOne, findByCredentials, create, exists };
+const makeFriends = async (userId1, userId2) => {
+    return Promise.all([
+        user_1.default.updateOne({ _id: userId1 }, { $push: { friends: userId2 } }),
+        user_1.default.updateOne({ _id: userId2 }, { $push: { friends: userId1 } }),
+    ]);
+};
+exports.default = {
+    findAll,
+    findOne,
+    findByCredentials,
+    create,
+    exists,
+    makeFriends,
+};

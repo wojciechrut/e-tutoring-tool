@@ -1,5 +1,5 @@
 import { createError } from './../utils/helpers/create-error';
-import { id } from './../utils/helpers/mongo';
+import { id, _id } from './../utils/helpers/mongo';
 import { UserResponseBody } from '../@types/api/user';
 import {
   InviteSendQuery,
@@ -10,6 +10,7 @@ import {
 import { RequestHandler } from 'express';
 import InviteRepository from '../repositories/invite';
 import { ErrorStatus } from '../@types';
+import UserRepository from '../repositories/user';
 
 const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
   request,
@@ -56,11 +57,24 @@ const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
 const setAccepted: RequestHandler<
   InviteSetAcceptedParams,
   {},
-  UserResponseBody & { senderId?: string },
+  UserResponseBody & { senderId: string },
   InviteSetAcceptedQuery
 > = async (request, response, next) => {
   try {
-    response.send(request.body);
+    const { accept } = request.query;
+    const { inviteId } = request.params;
+    const { _id: receiver, senderId: sender } = request.body;
+
+    await InviteRepository.setInactive({
+      _id: inviteId,
+    });
+
+    if (accept === 'true') {
+      await UserRepository.makeFriends(id(receiver), sender);
+      response.send('Invite accepted.');
+    } else {
+      response.send('Invite declined.');
+    }
   } catch (error) {
     next(error);
   }

@@ -20,7 +20,7 @@ const exists = async (query) => {
     return invite_1.default.exists(query);
 };
 const setInactive = async (query) => {
-    const { sender, receiver } = query;
-    return invite_1.default.updateOne({ sender, receiver }, { active: false });
+    const { sender, receiver, _id } = query;
+    return invite_1.default.updateOne({ _id, sender, receiver }, { $set: { active: false } });
 };
 exports.default = { create, findOne, setInactive, exists, findAll };

@@ -7,6 +7,7 @@ const create_error_1 = require("./../utils/helpers/create-error");
 const mongo_1 = require("./../utils/helpers/mongo");
 const invite_1 = __importDefault(require("../repositories/invite"));
 const _types_1 = require("../@types");
+const user_1 = __importDefault(require("../repositories/user"));
 const send = async (request, response, next) => {
     try {
         const { userId: receiverId } = request.query;
@@ -38,7 +39,19 @@ const getAll = async (_request, response, next) => {
 };
 const setAccepted = async (request, response, next) => {
     try {
-        response.send(request.body);
+        const { accept } = request.query;
+        const { inviteId } = request.params;
+        const { _id: receiver, senderId: sender } = request.body;
+        await invite_1.default.setInactive({
+            _id: inviteId,
+        });
+        if (accept === 'true') {
+            await user_1.default.makeFriends((0, mongo_1.id)(receiver), sender);
+            response.send('Invite accepted.');
+        }
+        else {
+            response.send('Invite declined.');
+        }
     }
     catch (error) {
         next(error);

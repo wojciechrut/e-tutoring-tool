@@ -27,8 +27,11 @@ const exists = async (query: Query) => {
 };
 
 const setInactive = async (query: Query) => {
-  const { sender, receiver } = query;
-  return Model.updateOne({ sender, receiver }, { active: false });
+  const { sender, receiver, _id } = query;
+  return Model.updateOne(
+    { _id, sender, receiver },
+    { $set: { active: false } }
+  );
 };
 
 export default { create, findOne, setInactive, exists, findAll };

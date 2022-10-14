@@ -24,6 +24,10 @@ const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
       throw createError(ErrorStatus.BAD_REQUEST, 'Missing user id parameter.');
     }
 
+    if (id(sender._id) === receiverId) {
+      throw createError(ErrorStatus.BAD_REQUEST, 'You are already friends.');
+    }
+
     const receiver = (
       await UserRepository.findOne({ _id: _id(receiverId) })
     )?.toObject();
@@ -78,7 +82,7 @@ const setAccepted: RequestHandler<
     const invite = await InviteRepository.findOne({
       _id: inviteId,
       receiver: id(userId),
-      // active: 'true,
+      active: true,
     });
 
     if (!invite) {
