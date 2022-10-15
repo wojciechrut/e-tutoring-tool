@@ -1,7 +1,6 @@
-import { UserResponseBody } from './user';
+import { ChatAccessRequestBody } from './chat';
 
-export type MessageSendRequestBody = UserResponseBody & {
-  chat: string;
+export type MessageSendRequestBody = ChatAccessRequestBody & {
   text: string;
   files?: Array<string>;
 };

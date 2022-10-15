@@ -5,7 +5,7 @@ import ChatRepository from '../repositories/chat';
 import { id } from '../utils/helpers/mongo';
 import { ErrorStatus } from '../@types';
 
-const access: RequestHandler<{}, {}, ChatAccessRequestBody> = async (
+const chatAccess: RequestHandler<{}, {}, ChatAccessRequestBody> = async (
   request,
   _response,
   next
@@ -24,4 +24,4 @@ const access: RequestHandler<{}, {}, ChatAccessRequestBody> = async (
   }
 };
 
-export default access;
+export default chatAccess;
