@@ -1,19 +1,21 @@
+import { MeResposneLocals } from './../@types/api/user';
 import { ChatResponseBody } from './../@types/api/chat';
 import { createError } from './../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ChatFetchQuery, ErrorStatus, UserResponseBody } from '../@types';
+import { ChatFetchQuery, ErrorStatus } from '../@types';
 import { id, _id } from '../utils/helpers/mongo';
 import ChatRepository from '../repositories/chat';
 
 const get: RequestHandler<
   {},
   ChatResponseBody,
-  UserResponseBody,
-  ChatFetchQuery
+  any,
+  ChatFetchQuery,
+  MeResposneLocals
 > = async (request, response, next) => {
   try {
     const { userId, meetingId } = request.query;
-    const { _id: requesterId } = request.body;
+    const { _id: requesterId } = response.locals;
 
     if (meetingId) {
       //meeting chat z obiektu meeting

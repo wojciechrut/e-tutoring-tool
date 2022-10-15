@@ -9,7 +9,7 @@ export type UserRegisterRequestBody = PickRequiredOptional<
 
 export type UserResponseBody = Omit<User, 'password'>;
 
-export type MeResposneBody = UserResponseBody & {
+export type MeResposneLocals = UserResponseBody & {
   token: string;
 };
 

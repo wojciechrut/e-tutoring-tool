@@ -1,4 +1,3 @@
-import { UserResponseBody } from './user';
 import { Chat } from '../../models/chat';
 import { ModelId } from '../../models/types/_id';
 
@@ -12,7 +11,7 @@ export type ChatFetchQuery =
       meetingId: string;
     };
 
-export type ChatAccessRequestBody = UserResponseBody & {
+export type ChatAccessRequestBody = {
   chat: ModelId;
 };
 

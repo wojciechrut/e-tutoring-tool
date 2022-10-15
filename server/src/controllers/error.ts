@@ -1,7 +1,23 @@
 import { ErrorRequestHandler, RequestHandler } from 'express';
+import fs from 'fs';
 
 const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
 const UNKNOWN_ERROR = 'Unknown error.';
+
+export const errorClearFiles: ErrorRequestHandler = async (
+  error,
+  request,
+  _response,
+  next
+) => {
+  const { files } = request;
+  if (files && Array.isArray(files)) {
+    for (const file of files) {
+      fs.unlink(file.path, console.log);
+    }
+  }
+  next(error);
+};
 
 export const errorLogger: ErrorRequestHandler = (
   error,

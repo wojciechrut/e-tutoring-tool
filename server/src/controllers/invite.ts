@@ -1,6 +1,6 @@
 import { createError } from './../utils/helpers/create-error';
 import { id, _id } from './../utils/helpers/mongo';
-import { UserResponseBody } from '../@types/api/user';
+import { MeResposneLocals } from '../@types/api/user';
 import {
   InviteSendQuery,
   InviteSetAcceptedParams,
@@ -12,14 +12,16 @@ import InviteRepository from '../repositories/invite';
 import { ErrorStatus } from '../@types';
 import UserRepository from '../repositories/user';
 
-const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
-  request,
-  response,
-  next
-) => {
+const send: RequestHandler<
+  {},
+  {},
+  {},
+  InviteSendQuery,
+  MeResposneLocals
+> = async (request, response, next) => {
   try {
     const { userId: receiverId } = request.query;
-    const { _id: senderId } = request.body;
+    const { _id: senderId } = response.locals;
 
     const invite = await InviteRepository.create({
       receiver: receiverId,
@@ -57,13 +59,15 @@ const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
 const setAccepted: RequestHandler<
   InviteSetAcceptedParams,
   {},
-  UserResponseBody & { senderId: string },
-  InviteSetAcceptedQuery
+  { senderId: string },
+  InviteSetAcceptedQuery,
+  MeResposneLocals
 > = async (request, response, next) => {
   try {
     const { accept } = request.query;
     const { inviteId } = request.params;
-    const { _id: receiver, senderId: sender } = request.body;
+    const { senderId: sender } = request.body;
+    const { _id: receiver } = response.locals;
 
     await InviteRepository.setInactive({
       _id: inviteId,

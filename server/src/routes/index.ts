@@ -9,7 +9,7 @@ const apiRoutes = express.Router();
 apiRoutes.use('/user', userRoutes);
 apiRoutes.use('/invite', inviteRoutes);
 apiRoutes.use('/chat', chatRoutes);
-apiRoutes.use('/mesasge', messageRoutes);
+apiRoutes.use('/message', messageRoutes);
 
 const router = express.Router();
 router.use('/api', apiRoutes);

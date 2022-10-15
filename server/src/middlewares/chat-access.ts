@@ -1,27 +1,43 @@
 import { createError } from './../utils/helpers/create-error';
-import { ChatAccessRequestBody } from './../@types/api/chat';
 import { RequestHandler } from 'express';
 import ChatRepository from '../repositories/chat';
 import { id } from '../utils/helpers/mongo';
-import { ErrorStatus } from '../@types';
+import { ErrorStatus, MeResposneLocals } from '../@types';
 
-const chatAccess: RequestHandler<{}, {}, ChatAccessRequestBody> = async (
+const chatAccess: RequestHandler<{}, {}, any, {}, MeResposneLocals> = async (
   request,
-  _response,
-  next
+  response,
+  _next
 ) => {
-  try {
-    const { _id, chat } = request.body;
+  const { chat } = request.body;
+  const { _id } = response.locals;
 
-    if (!(await ChatRepository.userHasAccess(id(_id), id(chat)))) {
-      throw createError(
-        ErrorStatus.FORBIDDEN,
-        "You don't have access to this chat."
-      );
-    }
+  if (!chat) {
+    throw createError(ErrorStatus.BAD_REQUEST, 'You must specify chat.');
+  }
+
+  if (!(await ChatRepository.userHasAccess(id(_id), id(chat)))) {
+    throw createError(
+      ErrorStatus.FORBIDDEN,
+      "You don't have access to this chat."
+    );
+  }
+};
+
+const chatAccessMiddleware: RequestHandler<
+  {},
+  {},
+  any,
+  {},
+  MeResposneLocals
+> = async (request, response, next) => {
+  try {
+    await chatAccess(request, response, next);
+
+    next();
   } catch (error) {
     next(error);
   }
 };
 
-export default chatAccess;
+export default chatAccessMiddleware;

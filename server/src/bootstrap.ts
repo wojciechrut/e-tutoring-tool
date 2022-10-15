@@ -2,6 +2,7 @@ import {
   errorWrongEndpoint,
   errorLogger,
   errorResponder,
+  errorClearFiles,
 } from './controllers/error';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -28,6 +29,7 @@ const startServer = () => {
   app.use(express.json());
   app.use(cors());
   app.use(router);
+  app.use(errorClearFiles);
   app.use(errorLogger);
   app.use(errorResponder);
   app.use(errorWrongEndpoint);

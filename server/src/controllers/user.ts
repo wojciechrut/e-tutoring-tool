@@ -1,10 +1,9 @@
-import { MultipleUsersResponseBody, MeResposneBody } from '../@types/api/user';
-import { createError } from './../utils/helpers/create-error';
 import {
-  UserRegisterRequestBody,
-  UserResponseBody,
-  UserCredentials,
+  MultipleUsersResponseBody,
+  MeResposneLocals,
 } from '../@types/api/user';
+import { createError } from './../utils/helpers/create-error';
+import { UserRegisterRequestBody, UserCredentials } from '../@types/api/user';
 import UserRepository from './../repositories/user';
 import { RequestHandler } from 'express';
 import JWT from './../utils/helpers/jtw';
@@ -12,7 +11,7 @@ import { _id } from '../utils/helpers/mongo';
 
 const register: RequestHandler<
   {},
-  MeResposneBody,
+  MeResposneLocals,
   UserRegisterRequestBody
 > = async (request, response, next) => {
   try {
@@ -51,7 +50,7 @@ const getAll: RequestHandler<{}, MultipleUsersResponseBody> = async (
 
 // }
 
-const login: RequestHandler<{}, MeResposneBody, UserCredentials> = async (
+const login: RequestHandler<{}, MeResposneLocals, UserCredentials> = async (
   request,
   response,
   next
@@ -71,17 +70,17 @@ const login: RequestHandler<{}, MeResposneBody, UserCredentials> = async (
   }
 };
 
-const me: RequestHandler<{}, {}, UserResponseBody> = async (
-  request,
+const me: RequestHandler<{}, {}, {}, {}, MeResposneLocals> = async (
+  _request,
   response,
   next
 ) => {
   try {
-    if (!request.body.email) {
+    if (!response.locals.email) {
       throw createError(500, 'Error parsing user data.');
     }
 
-    response.send(request.body);
+    response.send(response.locals);
   } catch (error) {
     next(error);
   }

@@ -1,8 +1,8 @@
+import { MeResposneLocals } from './../../@types/api/user';
 import {
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
 } from './../../@types/api/invite';
-import { UserResponseBody } from '../../@types/api/user';
 import { InviteSendQuery } from '../../@types/api/invite';
 import { RequestHandler } from 'express';
 import UserRepository from '../../repositories/user';
@@ -11,14 +11,16 @@ import { createError } from '../../utils/helpers/create-error';
 import { ErrorStatus } from '../../@types';
 import { id, _id } from '../../utils/helpers/mongo';
 
-const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
-  request,
-  _response,
-  next
-) => {
+const send: RequestHandler<
+  {},
+  {},
+  {},
+  InviteSendQuery,
+  MeResposneLocals
+> = async (request, response, next) => {
   try {
     const { userId: receiverId } = request.query;
-    const sender = request.body;
+    const sender = response.locals;
 
     if (!receiverId) {
       throw createError(ErrorStatus.BAD_REQUEST, 'Missing user id parameter.');
@@ -64,13 +66,14 @@ const send: RequestHandler<{}, {}, UserResponseBody, InviteSendQuery> = async (
 const setAccepted: RequestHandler<
   InviteSetAcceptedParams,
   {},
-  UserResponseBody & { senderId?: string },
-  InviteSetAcceptedQuery
-> = async (request, _response, next) => {
+  { senderId?: string },
+  InviteSetAcceptedQuery,
+  MeResposneLocals
+> = async (request, response, next) => {
   try {
     const { inviteId } = request.params;
     const { accept } = request.query;
-    const { _id: userId } = request.body;
+    const { _id: userId } = response.locals;
 
     if (!accept) {
       throw createError(
