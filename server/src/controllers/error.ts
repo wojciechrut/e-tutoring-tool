@@ -25,7 +25,11 @@ export const errorLogger: ErrorRequestHandler = (
   _response,
   next
 ) => {
-  console.log(`error ${error.message} \n ${error}`);
+  console.log(
+    `====ERROR===\n MESSAGE: ${
+      error.message || JSON.stringify(error.messages)
+    } \n OBJECT: ${JSON.stringify(error)}\n`
+  );
   next(error);
 };
 

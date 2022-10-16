@@ -77,7 +77,7 @@ const checkFileType = (
   }
 };
 
-const multerUpload = (type: UploadType) => {
+const multerUpload = (type: UploadType, fieldName: string) => {
   const { path, fileSize, maxCount, fileType } = uploadInfo[type];
   console.log(path);
   return multer({
@@ -86,7 +86,7 @@ const multerUpload = (type: UploadType) => {
     fileFilter: (_request, file, cb) => {
       checkFileType(fileType, file, cb);
     },
-  }).array('files', maxCount);
+  }).array(fieldName, maxCount);
 };
 
 export default multerUpload;

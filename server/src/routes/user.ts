@@ -3,6 +3,8 @@ import UserValidator from '../middlewares/validators/user';
 import UserController from '../controllers/user';
 import { bodyValidator, Action } from '../middlewares/validators/body';
 import auth from '../middlewares/auth';
+import fileUpload from '../middlewares/file-upload';
+import { UploadType } from '../utils/helpers/multer-upload';
 
 const userRoutes = express.Router();
 
@@ -12,6 +14,7 @@ userRoutes.route('/me').get(auth, UserController.me);
 userRoutes
   .route('/')
   .post(
+    fileUpload(UploadType.AVATAR, 'avatar'),
     bodyValidator(Action.REGISTER_USER),
     UserValidator.register,
     UserController.register
