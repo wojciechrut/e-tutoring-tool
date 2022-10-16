@@ -5,17 +5,14 @@ import multerUpload, { UploadType } from '../utils/helpers/multer-upload';
 import { ErrorStatus } from '../@types';
 
 const multerCodeMessages: Record<string, string> = {
-  LIMIT_UNEXPECTED_FILE: 'Too many files.',
+  LIMIT_UNEXPECTED_FILE: 'Unexpected file.',
 };
 
 export const upload =
-  (
-    type: UploadType,
-    fieldName = 'files'
-  ): RequestHandler<{}, {}, any, {}, MeResposneLocals> =>
+  (type: UploadType): RequestHandler<{}, {}, any, {}, MeResposneLocals> =>
   async (request, response, next) => {
     try {
-      const upload = multerUpload(type, fieldName);
+      const upload = multerUpload(type);
 
       upload(request, response, async (error) => {
         try {

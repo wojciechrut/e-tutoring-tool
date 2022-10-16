@@ -15,7 +15,9 @@ const register: RequestHandler<
   UserRegisterRequestBody
 > = async (request, response, next) => {
   try {
-    const user = await UserRepository.create(request.body);
+    const { file } = request;
+    const avatar = file && `static/avatars/${file.filename}`;
+    const user = await UserRepository.create({ ...request.body, avatar });
     if (!user) {
       throw createError(500);
     }

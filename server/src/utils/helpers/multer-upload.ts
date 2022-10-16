@@ -22,6 +22,8 @@ type UploadOptions = {
   maxCount: number;
   fileType: RegExp;
   path: string;
+  fieldName?: string;
+  multipleFiles?: boolean;
 };
 
 const uploadInfo: Record<UploadType, UploadOptions> = {
@@ -30,6 +32,7 @@ const uploadInfo: Record<UploadType, UploadOptions> = {
     maxCount: 1,
     path: AVATARS_DIR,
     fileType: fileTypes.image,
+    fieldName: 'avatar',
   },
   message: {
     fileSize: 4000000,
@@ -77,16 +80,20 @@ const checkFileType = (
   }
 };
 
-const multerUpload = (type: UploadType, fieldName: string) => {
-  const { path, fileSize, maxCount, fileType } = uploadInfo[type];
-  console.log(path);
-  return multer({
+const multerUpload = (type: UploadType) => {
+  const { path, fileSize, maxCount, fileType, fieldName, multipleFiles } =
+    uploadInfo[type];
+  const multerInstance = multer({
     storage: getStorage(path),
     limits: { fileSize },
     fileFilter: (_request, file, cb) => {
       checkFileType(fileType, file, cb);
     },
-  }).array(fieldName, maxCount);
+  });
+
+  return multipleFiles
+    ? multerInstance.array(fieldName || 'files', maxCount)
+    : multerInstance.single(fieldName || 'file');
 };
 
 export default multerUpload;

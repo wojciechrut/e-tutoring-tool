@@ -14,7 +14,7 @@ userRoutes.route('/me').get(auth, UserController.me);
 userRoutes
   .route('/')
   .post(
-    fileUpload(UploadType.AVATAR, 'avatar'),
+    fileUpload(UploadType.AVATAR),
     bodyValidator(Action.REGISTER_USER),
     UserValidator.register,
     UserController.register
