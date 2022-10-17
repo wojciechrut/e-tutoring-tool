@@ -5,6 +5,7 @@ import { Action, bodyValidator } from "../middlewares/validators/body";
 import auth from "../middlewares/auth";
 import fileUpload from "../middlewares/file-upload";
 import { UploadType } from "../utils/helpers/multer-upload";
+import saveFiles from "../middlewares/file-save";
 
 const userRoutes = express.Router();
 
@@ -17,7 +18,8 @@ userRoutes
     fileUpload(UploadType.AVATAR),
     bodyValidator(Action.REGISTER_USER),
     UserValidator.register,
-    UserController.register
+    UserController.register,
+    saveFiles
   );
 
 userRoutes

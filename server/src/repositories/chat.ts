@@ -1,6 +1,7 @@
-import { Selector as UserSelector } from './user';
-import Model from '../models/chat';
-import { Types } from 'mongoose';
+import { Selector as UserSelector } from "./user";
+import Model from "../models/chat";
+import { Types } from "mongoose";
+import { ModelId } from "../models/types/_id";
 
 type SingleChatQuery = {
   users: [string, string];
@@ -11,9 +12,14 @@ type ManyChatsQuery = {
   users?: string;
 };
 
+type AddMessageQuery = {
+  chat: ModelId;
+  message: ModelId;
+};
+
 const populator = [
-  { path: 'users', select: UserSelector.STANDARD },
-  { path: 'lastMessage' },
+  { path: "users", select: UserSelector.STANDARD },
+  { path: "lastMessage" },
 ];
 
 const findOrCreate = async (users: SingleChatQuery) => {
@@ -65,6 +71,13 @@ const userHasAccess = async (user: string, chat: string) => {
   });
 };
 
+const addMessage = async ({ chat, message }: AddMessageQuery) => {
+  return Model.update(
+    { _id: chat },
+    { lastMessage: message, $push: { messages: message } }
+  );
+};
+
 export default {
   findOrCreate,
   create,
@@ -72,4 +85,5 @@ export default {
   findOne,
   findAll,
   userHasAccess,
+  addMessage,
 };

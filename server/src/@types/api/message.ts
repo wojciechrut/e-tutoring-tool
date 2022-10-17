@@ -1,6 +1,3 @@
-import { ChatAccessRequestBody } from './chat';
-
-export type MessageSendRequestBody = ChatAccessRequestBody & {
+export type MessageSendRequestBody = {
   text: string;
-  files?: Array<string>;
 };

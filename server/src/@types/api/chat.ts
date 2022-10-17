@@ -1,5 +1,5 @@
-import { Chat } from '../../models/chat';
-import { ModelId } from '../../models/types/_id';
+import { Chat } from "../../models/chat";
+import { ModelId } from "../../models/types/_id";
 
 export type ChatFetchQuery =
   | {
@@ -11,7 +11,7 @@ export type ChatFetchQuery =
       meetingId: string;
     };
 
-export type ChatAccessRequestBody = {
+export type ChatAccessQuery = {
   chat: ModelId;
 };
 

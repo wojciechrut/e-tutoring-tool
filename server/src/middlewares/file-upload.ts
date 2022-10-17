@@ -40,7 +40,7 @@ const extractUploadsMetadata = (
 export const upload =
   (
     type: UploadType
-  ): RequestHandler<{}, {}, any, {}, FileUploadResponseLocals> =>
+  ): RequestHandler<any, any, any, any, FileUploadResponseLocals> =>
   async (request, response, next) => {
     const upload = multerUpload(type);
 

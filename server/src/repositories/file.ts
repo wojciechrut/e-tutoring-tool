@@ -7,8 +7,12 @@ const create = async (query: Query) => {
   return Model.create(query);
 };
 
+const findAll = async (query: Query) => {
+  return Model.find(query);
+};
+
 const createMany = async (query: Array<Query>) => {
   return Model.insertMany(query);
 };
 
-export default { create, createMany };
+export default { create, createMany, findAll };

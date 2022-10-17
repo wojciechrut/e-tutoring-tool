@@ -2,14 +2,16 @@ import { createError } from "../utils/helpers/create-error";
 import { RequestHandler } from "express";
 import ChatRepository from "../repositories/chat";
 import { id } from "../utils/helpers/mongo";
-import { ErrorStatus, MeResponseLocals } from "../@types";
+import { ChatAccessQuery, ErrorStatus, MeResponseLocals } from "../@types";
 
-const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
-  request,
-  response,
-  next
-) => {
-  const { chat } = request.body;
+const chatAccess: RequestHandler<
+  {},
+  any,
+  {},
+  ChatAccessQuery,
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { chat } = request.query;
   const { _id } = response.locals;
 
   if (!chat) {
