@@ -1,9 +1,9 @@
-import { commonSchemaOptions } from './config/common-config';
-import { Chat } from './chat';
-import { User } from './user';
-import { Types, Schema, model } from 'mongoose';
-import { File } from './file';
-import { ModelId } from './types/_id';
+import { commonSchemaOptions } from "./config/common-config";
+import { Chat } from "./chat";
+import { User } from "./user";
+import { model, Schema, Types } from "mongoose";
+import { File } from "./file";
+import { ModelId } from "./types/_id";
 
 export interface Message {
   _id: ModelId;
@@ -15,14 +15,14 @@ export interface Message {
 
 const messageSchema = new Schema<Message>(
   {
-    sender: { type: Types.ObjectId, required: true, ref: 'User' },
-    chat: { type: Types.ObjectId, required: true, ref: 'Chat' },
-    text: { type: String, default: '' },
-    files: [{ type: Types.ObjectId, default: [], ref: 'File' }],
+    sender: { type: Types.ObjectId, required: true, ref: "User" },
+    chat: { type: Types.ObjectId, required: true, ref: "Chat" },
+    text: { type: String, default: "" },
+    files: [{ type: Types.ObjectId, default: [], ref: "File" }],
   },
   commonSchemaOptions
 );
 
-const Model = model('Message', messageSchema);
+const Model = model("Message", messageSchema);
 
 export default Model;

@@ -1,18 +1,18 @@
-import express from 'express';
-import UserValidator from '../middlewares/validators/user';
-import UserController from '../controllers/user';
-import { bodyValidator, Action } from '../middlewares/validators/body';
-import auth from '../middlewares/auth';
-import fileUpload from '../middlewares/file-upload';
-import { UploadType } from '../utils/helpers/multer-upload';
+import express from "express";
+import UserValidator from "../middlewares/validators/user";
+import UserController from "../controllers/user";
+import { Action, bodyValidator } from "../middlewares/validators/body";
+import auth from "../middlewares/auth";
+import fileUpload from "../middlewares/file-upload";
+import { UploadType } from "../utils/helpers/multer-upload";
 
 const userRoutes = express.Router();
 
-userRoutes.route('/').get(UserController.getAll);
-userRoutes.route('/me').get(auth, UserController.me);
+userRoutes.route("/").get(UserController.getAll);
+userRoutes.route("/me").get(auth, UserController.me);
 
 userRoutes
-  .route('/')
+  .route("/")
   .post(
     fileUpload(UploadType.AVATAR),
     bodyValidator(Action.REGISTER_USER),
@@ -21,7 +21,7 @@ userRoutes
   );
 
 userRoutes
-  .route('/login')
+  .route("/login")
   .post(bodyValidator(Action.LOGIN_USER), UserController.login);
 
 export default userRoutes;

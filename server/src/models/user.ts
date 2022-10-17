@@ -1,6 +1,6 @@
-import { Schema, model, Types } from 'mongoose';
-import { commonSchemaOptions } from './config/common-config';
-import { ModelId } from './types/_id';
+import { model, Schema, Types } from "mongoose";
+import { commonSchemaOptions } from "./config/common-config";
+import { ModelId } from "./types/_id";
 
 export interface User {
   _id: ModelId;
@@ -18,13 +18,13 @@ const userSchema = new Schema<User>(
     password: { type: String, required: true },
     avatar: {
       type: String,
-      default: '/static/avatars/default.jpg',
+      default: "/static/avatars/default.jpg",
     },
-    friends: [{ type: Types.ObjectId, default: [], ref: 'User' }],
+    friends: [{ type: Types.ObjectId, default: [], ref: "User" }],
   },
   commonSchemaOptions
 );
 
-const Model = model('User', userSchema);
+const Model = model("User", userSchema);
 
 export default Model;

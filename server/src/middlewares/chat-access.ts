@@ -1,8 +1,8 @@
-import { createError } from '../utils/helpers/create-error';
-import { RequestHandler } from 'express';
-import ChatRepository from '../repositories/chat';
-import { id } from '../utils/helpers/mongo';
-import { ErrorStatus, MeResponseLocals } from '../@types';
+import { createError } from "../utils/helpers/create-error";
+import { RequestHandler } from "express";
+import ChatRepository from "../repositories/chat";
+import { id } from "../utils/helpers/mongo";
+import { ErrorStatus, MeResponseLocals } from "../@types";
 
 const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
   request,
@@ -13,7 +13,7 @@ const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
   const { _id } = response.locals;
 
   if (!chat) {
-    next(createError(ErrorStatus.BAD_REQUEST, 'You must specify chat.'));
+    next(createError(ErrorStatus.BAD_REQUEST, "You must specify chat."));
     return;
   }
 
