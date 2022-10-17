@@ -1,16 +1,16 @@
-import { createError } from "../utils/helpers/create-error";
-import { id } from "../utils/helpers/mongo";
-import { MeResponseLocals } from "../@types";
+import { createError } from '../utils/helpers/create-error';
+import { id } from '../utils/helpers/mongo';
+import { MeResponseLocals } from '../@types';
 import {
   InviteSendQuery,
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
   MultipleInvitesResponseBody,
-} from "../@types";
-import { RequestHandler } from "express";
-import InviteRepository from "../repositories/invite";
-import { ErrorStatus } from "../@types";
-import UserRepository from "../repositories/user";
+} from '../@types';
+import { RequestHandler } from 'express';
+import InviteRepository from '../repositories/invite';
+import { ErrorStatus } from '../@types';
+import UserRepository from '../repositories/user';
 
 const send: RequestHandler<
   {},
@@ -18,7 +18,7 @@ const send: RequestHandler<
   {},
   InviteSendQuery,
   MeResponseLocals
-> = async (request, response) => {
+> = async (request, response, next) => {
   const { userId: receiverId } = request.query;
   const { _id: senderId } = response.locals;
 
@@ -28,20 +28,23 @@ const send: RequestHandler<
   });
 
   if (!invite) {
-    throw createError(ErrorStatus.SERVER, "Could not send invite.");
+    next(createError(ErrorStatus.SERVER, 'Could not send invite.'));
+    return;
   }
 
-  response.send("Invite sent successfully");
+  response.send('Invite sent successfully');
 };
 
 const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
   _request,
-  response
+  response,
+  next
 ) => {
   const allInvites = await InviteRepository.findAll({});
 
   if (!allInvites) {
-    throw createError(ErrorStatus.SERVER);
+    next(createError(ErrorStatus.SERVER));
+    return;
   }
 
   response.send(allInvites);
@@ -63,11 +66,11 @@ const setAccepted: RequestHandler<
     _id: inviteId,
   });
 
-  if (accept === "true") {
+  if (accept === 'true') {
     await UserRepository.makeFriends(id(receiver), sender);
-    response.send("Invite accepted.");
+    response.send('Invite accepted.');
   } else {
-    response.send("Invite declined.");
+    response.send('Invite declined.');
   }
 };
 

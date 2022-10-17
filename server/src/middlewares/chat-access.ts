@@ -1,26 +1,27 @@
-import { createError } from "../utils/helpers/create-error";
-import { RequestHandler } from "express";
-import ChatRepository from "../repositories/chat";
-import { id } from "../utils/helpers/mongo";
-import { ErrorStatus, MeResponseLocals } from "../@types";
+import { createError } from '../utils/helpers/create-error';
+import { RequestHandler } from 'express';
+import ChatRepository from '../repositories/chat';
+import { id } from '../utils/helpers/mongo';
+import { ErrorStatus, MeResponseLocals } from '../@types';
 
 const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
   request,
   response,
-  _next
+  next
 ) => {
   const { chat } = request.body;
   const { _id } = response.locals;
 
   if (!chat) {
-    throw createError(ErrorStatus.BAD_REQUEST, "You must specify chat.");
+    next(createError(ErrorStatus.BAD_REQUEST, 'You must specify chat.'));
+    return;
   }
 
   if (!(await ChatRepository.userHasAccess(id(_id), id(chat)))) {
-    throw createError(
-      ErrorStatus.FORBIDDEN,
-      "You don't have access to this chat."
+    next(
+      createError(ErrorStatus.FORBIDDEN, "You don't have access to this chat.")
     );
+    return;
   }
 };
 

@@ -1,7 +1,7 @@
-import { createError } from "../../utils/helpers/create-error";
-import { ErrorStatus, UserRegisterRequestBody } from "../../@types";
-import UserRepository from "../../repositories/user";
-import { RequestHandler } from "express";
+import { createError } from '../../utils/helpers/create-error';
+import { ErrorStatus, UserRegisterRequestBody } from '../../@types';
+import UserRepository from '../../repositories/user';
+import { RequestHandler } from 'express';
 
 const register: RequestHandler<{}, {}, UserRegisterRequestBody> = async (
   request,
@@ -12,13 +12,14 @@ const register: RequestHandler<{}, {}, UserRegisterRequestBody> = async (
   const errorMessages: Array<string> = [];
 
   if (await UserRepository.exists({ nickname }))
-    errorMessages.push("This nickname is taken.");
+    errorMessages.push('This nickname is taken.');
 
   if (await UserRepository.exists({ email }))
-    errorMessages.push("This email is taken");
+    errorMessages.push('This email is taken');
 
   if (errorMessages.length > 0) {
-    throw createError(ErrorStatus.BAD_REQUEST, errorMessages);
+    next(createError(ErrorStatus.BAD_REQUEST, errorMessages));
+    return;
   }
 
   next();

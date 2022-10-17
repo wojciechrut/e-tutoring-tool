@@ -3,22 +3,23 @@ import {
   MultipleUsersResponseBody,
   UserCredentials,
   UserRegisterRequestBody,
-} from "../@types";
-import { createError } from "../utils/helpers/create-error";
-import UserRepository from "./../repositories/user";
-import { RequestHandler } from "express";
-import JWT from "./../utils/helpers/jtw";
+} from '../@types';
+import { createError } from '../utils/helpers/create-error';
+import UserRepository from './../repositories/user';
+import { RequestHandler } from 'express';
+import JWT from './../utils/helpers/jtw';
 
 const register: RequestHandler<
   {},
   MeResponseLocals,
   UserRegisterRequestBody
-> = async (request, response) => {
+> = async (request, response, next) => {
   const { file } = request;
   const avatar = file && `static/avatars/${file.filename}`;
   const user = await UserRepository.create({ ...request.body, avatar });
   if (!user) {
-    throw createError(500);
+    next(createError(500));
+    return;
   }
 
   const { _id, ...userData } = user.toObject();
@@ -30,11 +31,12 @@ const register: RequestHandler<
 const getAll: RequestHandler<{}, MultipleUsersResponseBody> = async (
   _request,
   response,
-  _next
+  next
 ) => {
   const allUsers = await UserRepository.findAll();
   if (!allUsers) {
-    throw createError(500);
+    next(createError(500));
+    return;
   }
 
   response.send(allUsers);
@@ -43,11 +45,12 @@ const getAll: RequestHandler<{}, MultipleUsersResponseBody> = async (
 const login: RequestHandler<{}, MeResponseLocals, UserCredentials> = async (
   request,
   response,
-  _next
+  next
 ) => {
   const user = await UserRepository.findByCredentials(request.body);
   if (!user) {
-    throw createError(401, "Wrong credentials.");
+    next(createError(401, 'Wrong credentials.'));
+    return;
   }
 
   const { _id, ...userData } = user.toObject();
@@ -58,10 +61,12 @@ const login: RequestHandler<{}, MeResponseLocals, UserCredentials> = async (
 
 const me: RequestHandler<{}, {}, {}, {}, MeResponseLocals> = async (
   _request,
-  response
+  response,
+  next
 ) => {
   if (!response.locals.email) {
-    throw createError(500, "Error parsing user data.");
+    next(createError(500, 'Error parsing user data.'));
+    return;
   }
 
   response.send(response.locals);

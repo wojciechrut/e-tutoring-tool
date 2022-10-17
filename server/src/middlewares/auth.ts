@@ -1,7 +1,6 @@
-import { MeResponseLocals } from '../@types';
+import { MeResponseLocals, ErrorStatus } from '../@types';
 import { createError } from '../utils/helpers/create-error';
 import { RequestHandler } from 'express';
-import { ErrorStatus } from '../@types';
 import UserRepository from '../repositories/user';
 import JWT from './../utils/helpers/jtw';
 import { _id } from '../utils/helpers/mongo';
@@ -9,13 +8,14 @@ import { _id } from '../utils/helpers/mongo';
 const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   request,
   response,
-  _next
+  next
 ) => {
   const token = JWT.extractFromHeader(request.header('Authorization'));
   const { withFriends } = request.query;
 
   if (!token) {
-    throw createError(ErrorStatus.UNAUTHORIZED, 'Authorization failed');
+    next(createError(ErrorStatus.UNAUTHORIZED, 'Authorization failed'));
+    return;
   }
 
   const decodedId = JWT.decode(token);
@@ -25,25 +25,11 @@ const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   );
 
   if (!user) {
-    throw createError(ErrorStatus.UNAUTHORIZED, 'Invalid token.');
-  }
-
-  response.locals = { ...user.toObject(), token };
-};
-
-const authMiddleware: RequestHandler<
-  any,
-  any,
-  any,
-  any,
-  MeResponseLocals
-> = async (request, response, next) => {
-  try {
-    await auth(request, response, next);
+    next(createError(ErrorStatus.UNAUTHORIZED, 'Invalid token.'));
+  } else {
+    response.locals = { ...user.toObject(), token };
     next();
-  } catch (error) {
-    next(error);
   }
 };
 
-export default authMiddleware;
+export default auth;

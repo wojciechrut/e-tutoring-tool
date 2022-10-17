@@ -4,12 +4,12 @@ import {
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
   MeResponseLocals,
-} from "../../@types";
-import { RequestHandler } from "express";
-import UserRepository from "../../repositories/user";
-import InviteRepository from "../../repositories/invite";
-import { createError } from "../../utils/helpers/create-error";
-import { _id, id } from "../../utils/helpers/mongo";
+} from '../../@types';
+import { RequestHandler } from 'express';
+import UserRepository from '../../repositories/user';
+import InviteRepository from '../../repositories/invite';
+import { createError } from '../../utils/helpers/create-error';
+import { _id, id } from '../../utils/helpers/mongo';
 
 const send: RequestHandler<
   {},
@@ -22,11 +22,13 @@ const send: RequestHandler<
   const sender = response.locals;
 
   if (!receiverId) {
-    throw createError(ErrorStatus.BAD_REQUEST, "Missing user id parameter.");
+    next(createError(ErrorStatus.BAD_REQUEST, 'Missing user id parameter.'));
+    return;
   }
 
   if (id(sender._id) === receiverId) {
-    throw createError(ErrorStatus.BAD_REQUEST, "You are already friends.");
+    next(createError(ErrorStatus.BAD_REQUEST, 'You are already friends.'));
+    return;
   }
 
   const receiver = (
@@ -34,14 +36,15 @@ const send: RequestHandler<
   )?.toObject();
 
   if (!receiver) {
-    throw createError(
-      ErrorStatus.BAD_REQUEST,
-      "Couldn't find user with this id."
+    next(
+      createError(ErrorStatus.BAD_REQUEST, "Couldn't find user with this id.")
     );
+    return;
   }
 
   if (receiver._id === sender._id) {
-    throw createError(ErrorStatus.BAD_REQUEST, "Can't invite yourself.");
+    next(createError(ErrorStatus.BAD_REQUEST, "Can't invite yourself."));
+    return;
   }
 
   const isInviteSentAlready = await InviteRepository.exists({
@@ -50,7 +53,8 @@ const send: RequestHandler<
   });
 
   if (isInviteSentAlready) {
-    throw createError(ErrorStatus.BAD_REQUEST, "You already invited this user");
+    next(createError(ErrorStatus.BAD_REQUEST, 'You already invited this user'));
+    return;
   }
 
   next();
@@ -68,10 +72,10 @@ const setAccepted: RequestHandler<
   const { _id: userId } = response.locals;
 
   if (!accept) {
-    throw createError(
-      ErrorStatus.BAD_REQUEST,
-      "Missing accept query parameter."
+    next(
+      createError(ErrorStatus.BAD_REQUEST, 'Missing accept query parameter.')
     );
+    return;
   }
 
   const invite = await InviteRepository.findOne({
@@ -81,10 +85,13 @@ const setAccepted: RequestHandler<
   });
 
   if (!invite) {
-    throw createError(
-      ErrorStatus.BAD_REQUEST,
-      "Invite does not exist or you are not receiver of it."
+    next(
+      createError(
+        ErrorStatus.BAD_REQUEST,
+        'Invite does not exist or you are not receiver of it.'
+      )
     );
+    return;
   }
 
   request.body.senderId = id(invite.sender._id);
