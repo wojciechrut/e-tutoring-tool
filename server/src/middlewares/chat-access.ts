@@ -1,10 +1,10 @@
-import { createError } from './../utils/helpers/create-error';
-import { RequestHandler } from 'express';
-import ChatRepository from '../repositories/chat';
-import { id } from '../utils/helpers/mongo';
-import { ErrorStatus, MeResposneLocals } from '../@types';
+import { createError } from "../utils/helpers/create-error";
+import { RequestHandler } from "express";
+import ChatRepository from "../repositories/chat";
+import { id } from "../utils/helpers/mongo";
+import { ErrorStatus, MeResponseLocals } from "../@types";
 
-const chatAccess: RequestHandler<{}, {}, any, {}, MeResposneLocals> = async (
+const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
   request,
   response,
   _next
@@ -13,7 +13,7 @@ const chatAccess: RequestHandler<{}, {}, any, {}, MeResposneLocals> = async (
   const { _id } = response.locals;
 
   if (!chat) {
-    throw createError(ErrorStatus.BAD_REQUEST, 'You must specify chat.');
+    throw createError(ErrorStatus.BAD_REQUEST, "You must specify chat.");
   }
 
   if (!(await ChatRepository.userHasAccess(id(_id), id(chat)))) {
@@ -29,15 +29,11 @@ const chatAccessMiddleware: RequestHandler<
   {},
   any,
   {},
-  MeResposneLocals
+  MeResponseLocals
 > = async (request, response, next) => {
-  try {
-    await chatAccess(request, response, next);
+  await chatAccess(request, response, next);
 
-    next();
-  } catch (error) {
-    next(error);
-  }
+  next();
 };
 
 export default chatAccessMiddleware;

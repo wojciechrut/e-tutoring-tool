@@ -1,12 +1,12 @@
-import { MeResposneLocals } from './../@types/api/user';
-import { createError } from './../utils/helpers/create-error';
+import { MeResponseLocals } from '../@types';
+import { createError } from '../utils/helpers/create-error';
 import { RequestHandler } from 'express';
 import { ErrorStatus } from '../@types';
 import UserRepository from '../repositories/user';
 import JWT from './../utils/helpers/jtw';
 import { _id } from '../utils/helpers/mongo';
 
-const auth: RequestHandler<any, any, any, any, MeResposneLocals> = async (
+const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   request,
   response,
   _next
@@ -36,7 +36,7 @@ const authMiddleware: RequestHandler<
   any,
   any,
   any,
-  MeResposneLocals
+  MeResponseLocals
 > = async (request, response, next) => {
   try {
     await auth(request, response, next);

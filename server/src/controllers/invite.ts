@@ -1,59 +1,50 @@
-import { createError } from './../utils/helpers/create-error';
-import { id, _id } from './../utils/helpers/mongo';
-import { MeResposneLocals } from '../@types/api/user';
+import { createError } from "../utils/helpers/create-error";
+import { id } from "../utils/helpers/mongo";
+import { MeResponseLocals } from "../@types";
 import {
   InviteSendQuery,
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
   MultipleInvitesResponseBody,
-} from '../@types/api/invite';
-import { RequestHandler } from 'express';
-import InviteRepository from '../repositories/invite';
-import { ErrorStatus } from '../@types';
-import UserRepository from '../repositories/user';
+} from "../@types";
+import { RequestHandler } from "express";
+import InviteRepository from "../repositories/invite";
+import { ErrorStatus } from "../@types";
+import UserRepository from "../repositories/user";
 
 const send: RequestHandler<
   {},
   {},
   {},
   InviteSendQuery,
-  MeResposneLocals
-> = async (request, response, next) => {
-  try {
-    const { userId: receiverId } = request.query;
-    const { _id: senderId } = response.locals;
+  MeResponseLocals
+> = async (request, response) => {
+  const { userId: receiverId } = request.query;
+  const { _id: senderId } = response.locals;
 
-    const invite = await InviteRepository.create({
-      receiver: receiverId,
-      sender: id(senderId),
-    });
+  const invite = await InviteRepository.create({
+    receiver: receiverId,
+    sender: id(senderId),
+  });
 
-    if (!invite) {
-      throw createError(ErrorStatus.SERVER, 'Could not send invite.');
-    }
-
-    response.send('Invite sent successfully');
-  } catch (error) {
-    next(error);
+  if (!invite) {
+    throw createError(ErrorStatus.SERVER, "Could not send invite.");
   }
+
+  response.send("Invite sent successfully");
 };
 
 const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
   _request,
-  response,
-  next
+  response
 ) => {
-  try {
-    const allInvites = await InviteRepository.findAll({});
+  const allInvites = await InviteRepository.findAll({});
 
-    if (!allInvites) {
-      throw createError(ErrorStatus.SERVER);
-    }
-
-    response.send(allInvites);
-  } catch (error) {
-    next(error);
+  if (!allInvites) {
+    throw createError(ErrorStatus.SERVER);
   }
+
+  response.send(allInvites);
 };
 
 const setAccepted: RequestHandler<
@@ -61,26 +52,22 @@ const setAccepted: RequestHandler<
   {},
   { senderId: string },
   InviteSetAcceptedQuery,
-  MeResposneLocals
-> = async (request, response, next) => {
-  try {
-    const { accept } = request.query;
-    const { inviteId } = request.params;
-    const { senderId: sender } = request.body;
-    const { _id: receiver } = response.locals;
+  MeResponseLocals
+> = async (request, response) => {
+  const { accept } = request.query;
+  const { inviteId } = request.params;
+  const { senderId: sender } = request.body;
+  const { _id: receiver } = response.locals;
 
-    await InviteRepository.setInactive({
-      _id: inviteId,
-    });
+  await InviteRepository.setInactive({
+    _id: inviteId,
+  });
 
-    if (accept === 'true') {
-      await UserRepository.makeFriends(id(receiver), sender);
-      response.send('Invite accepted.');
-    } else {
-      response.send('Invite declined.');
-    }
-  } catch (error) {
-    next(error);
+  if (accept === "true") {
+    await UserRepository.makeFriends(id(receiver), sender);
+    response.send("Invite accepted.");
+  } else {
+    response.send("Invite declined.");
   }
 };
 

@@ -1,10 +1,10 @@
-import { UserRegisterRequestBody, UserCredentials } from '../@types/api/user';
-import Model, { User } from '../models/user';
-import { comparePassword, hashPassword } from '../utils/helpers/password';
+import { UserCredentials, UserRegisterRequestBody } from "../@types";
+import Model, { User } from "../models/user";
+import { comparePassword, hashPassword } from "../utils/helpers/password";
 
 export enum Selector {
-  STANDARD = '-password',
-  WITH_PASSWORD = '',
+  STANDARD = "-password",
+  WITH_PASSWORD = "",
 }
 
 const exists = async (query: Partial<User>) => {
@@ -18,7 +18,7 @@ const findAll = async () => {
 const findOne = async (query: Partial<User>, withFriends = false) => {
   const result = await Model.findOne(query).select(Selector.STANDARD);
   return withFriends && result
-    ? result.populate('friends', Selector.STANDARD)
+    ? result.populate("friends", Selector.STANDARD)
     : result;
 };
 
