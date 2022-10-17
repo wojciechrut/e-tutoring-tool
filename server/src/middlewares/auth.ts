@@ -28,7 +28,7 @@ const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
     next(createError(ErrorStatus.UNAUTHORIZED, "Invalid token."));
     return;
   } else {
-    response.locals = { ...user.toObject(), token };
+    response.locals = { ...response.locals, ...user.toObject(), token };
     next();
   }
 };

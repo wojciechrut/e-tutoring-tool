@@ -3,11 +3,11 @@ import {
   MultipleUsersResponseBody,
   UserCredentials,
   UserRegisterRequestBody,
-} from '../@types';
-import { createError } from '../utils/helpers/create-error';
-import UserRepository from './../repositories/user';
-import { RequestHandler } from 'express';
-import JWT from './../utils/helpers/jtw';
+} from "../@types";
+import { createError } from "../utils/helpers/create-error";
+import UserRepository from "./../repositories/user";
+import { RequestHandler } from "express";
+import JWT from "./../utils/helpers/jtw";
 
 const register: RequestHandler<
   {},
@@ -21,7 +21,6 @@ const register: RequestHandler<
     next(createError(500));
     return;
   }
-
   const { _id, ...userData } = user.toObject();
   const token = JWT.generate(_id);
 
@@ -49,7 +48,7 @@ const login: RequestHandler<{}, MeResponseLocals, UserCredentials> = async (
 ) => {
   const user = await UserRepository.findByCredentials(request.body);
   if (!user) {
-    next(createError(401, 'Wrong credentials.'));
+    next(createError(401, "Wrong credentials."));
     return;
   }
 
@@ -65,7 +64,7 @@ const me: RequestHandler<{}, {}, {}, {}, MeResponseLocals> = async (
   next
 ) => {
   if (!response.locals.email) {
-    next(createError(500, 'Error parsing user data.'));
+    next(createError(500, "Error parsing user data."));
     return;
   }
 

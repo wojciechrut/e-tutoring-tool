@@ -1,8 +1,8 @@
-import { ErrorRequestHandler, RequestHandler } from 'express';
-import fs from 'fs';
+import { ErrorRequestHandler, RequestHandler } from "express";
+import fs from "fs";
 
-const WRONG_ENDPOINT_MESSAGE = 'Wrong endpoint';
-const UNKNOWN_ERROR = 'Unknown error.';
+const WRONG_ENDPOINT_MESSAGE = "Wrong endpoint";
+const UNKNOWN_ERROR = "Unknown error.";
 
 export const errorClearFiles: ErrorRequestHandler = async (
   error,
@@ -22,14 +22,16 @@ export const errorClearFiles: ErrorRequestHandler = async (
 
 export const errorLogger: ErrorRequestHandler = (
   error,
-  _request,
+  request,
   _response,
   next
 ) => {
   console.log(
     `====ERROR===\n MESSAGE: ${
       error.message || JSON.stringify(error.messages)
-    } \n OBJECT: ${JSON.stringify(error)}\n`
+    } \n OBJECT: ${JSON.stringify(error)}\n REQUEST BODY: ${JSON.stringify(
+      request.body
+    )}`
   );
 
   next(error);

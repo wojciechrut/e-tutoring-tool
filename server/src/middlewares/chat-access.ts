@@ -23,18 +23,7 @@ const chatAccess: RequestHandler<{}, {}, any, {}, MeResponseLocals> = async (
     );
     return;
   }
-};
-
-const chatAccessMiddleware: RequestHandler<
-  {},
-  {},
-  any,
-  {},
-  MeResponseLocals
-> = async (request, response, next) => {
-  await chatAccess(request, response, next);
-
   next();
 };
 
-export default chatAccessMiddleware;
+export default chatAccess;

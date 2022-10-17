@@ -1,9 +1,9 @@
-import multer from 'multer';
-import * as getPath from 'path';
+import multer from "multer";
+import * as getPath from "path";
 
-const UPLOAD_DIR = __dirname.concat('/../../../static');
-const AVATARS_DIR = UPLOAD_DIR.concat('/avatars');
-const FILES_DIR = UPLOAD_DIR.concat('/files');
+const UPLOAD_DIR = __dirname.concat("/../../../static");
+const AVATARS_DIR = UPLOAD_DIR.concat("/avatars");
+const FILES_DIR = UPLOAD_DIR.concat("/files");
 
 const fileTypes = {
   image: /jpeg|jpg|png/,
@@ -12,9 +12,9 @@ const fileTypes = {
 };
 
 export enum UploadType {
-  AVATAR = 'avatar',
-  MESSAGE = 'message',
-  NOTE = 'note',
+  AVATAR = "avatar",
+  MESSAGE = "message",
+  NOTE = "note",
 }
 
 type UploadOptions = {
@@ -28,17 +28,18 @@ type UploadOptions = {
 
 const uploadInfo: Record<UploadType, UploadOptions> = {
   avatar: {
-    fileSize: 3000000,
+    fileSize: 4000000,
     maxCount: 1,
     path: AVATARS_DIR,
     fileType: fileTypes.image,
-    fieldName: 'avatar',
+    fieldName: "avatar",
   },
   message: {
     fileSize: 4000000,
     maxCount: 3,
     path: FILES_DIR,
     fileType: fileTypes.all,
+    multipleFiles: true,
   },
   note: {
     fileSize: 4000000,
@@ -48,18 +49,13 @@ const uploadInfo: Record<UploadType, UploadOptions> = {
   },
 };
 
-export enum FileDestination {
-  AVATAR,
-  FILE,
-}
-
 const getStorage = (path: string) =>
   multer.diskStorage({
     destination: (_request, _file, cb) => {
       cb(null, path);
     },
     filename: (_request, file, cb) => {
-      cb(null, 'upload-' + Date.now() + getPath.extname(file.originalname));
+      cb(null, "upload-" + Date.now() + getPath.extname(file.originalname));
     },
   });
 
@@ -76,7 +72,7 @@ const checkFileType = (
   if (properExtension && properMime) {
     return cb(null, true);
   } else {
-    cb(new Error('Wrong file extension.'));
+    cb(new Error("Wrong file extension."));
   }
 };
 
@@ -92,8 +88,8 @@ const multerUpload = (type: UploadType) => {
   });
 
   return multipleFiles
-    ? multerInstance.array(fieldName || 'files', maxCount)
-    : multerInstance.single(fieldName || 'file');
+    ? multerInstance.array(fieldName || "files", maxCount)
+    : multerInstance.single(fieldName || "file");
 };
 
 export default multerUpload;
