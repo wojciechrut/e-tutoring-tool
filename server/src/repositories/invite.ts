@@ -1,5 +1,5 @@
-import { Selector as UserSelector } from './user';
-import Model from './../models/invite';
+import { UserSelector as UserSelector } from "./user";
+import Model from "./../models/invite";
 
 type Query = Partial<{
   _id: string;
@@ -18,8 +18,8 @@ const findOne = async (query: Query) => {
 
 const findAll = async (query: Query) => {
   return Model.find(query)
-    .populate('sender', UserSelector.STANDARD)
-    .populate('receiver', UserSelector.STANDARD);
+    .populate("sender", UserSelector.STANDARD)
+    .populate("receiver", UserSelector.STANDARD);
 };
 
 const exists = async (query: Query) => {

@@ -2,7 +2,7 @@ import { UserCredentials, UserRegisterRequestBody } from "../@types";
 import Model, { User } from "../models/user";
 import { comparePassword, hashPassword } from "../utils/helpers/password";
 
-export enum Selector {
+export enum UserSelector {
   STANDARD = "-password -createdAt -updatedAt",
   WITH_PASSWORD = "-createdAT - updatedAt",
 }
@@ -16,9 +16,9 @@ const findAll = async () => {
 };
 
 const findOne = async (query: Partial<User>, withFriends = false) => {
-  const result = await Model.findOne(query).select(Selector.STANDARD);
+  const result = await Model.findOne(query).select(UserSelector.STANDARD);
   return withFriends && result
-    ? result.populate("friends", Selector.STANDARD)
+    ? result.populate("friends", UserSelector.STANDARD)
     : result;
 };
 
@@ -36,7 +36,7 @@ const create = async (query: UserRegisterRequestBody) => {
   const hashedPassword = await hashPassword(password);
 
   await Model.create({ ...query, password: hashedPassword });
-  return Model.findOne({ email }).select(Selector.STANDARD);
+  return Model.findOne({ email }).select(UserSelector.STANDARD);
 };
 
 const makeFriends = async (userId1: string, userId2: string) => {

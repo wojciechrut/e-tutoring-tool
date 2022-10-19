@@ -1,4 +1,4 @@
-import { Selector as UserSelector } from "./user";
+import { UserSelector as UserSelector } from "./user";
 import Model from "../models/chat";
 import { Types } from "mongoose";
 import { ModelId } from "../models/types/_id";
