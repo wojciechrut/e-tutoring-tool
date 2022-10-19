@@ -3,8 +3,8 @@ import Model, { User } from "../models/user";
 import { comparePassword, hashPassword } from "../utils/helpers/password";
 
 export enum Selector {
-  STANDARD = "-password",
-  WITH_PASSWORD = "",
+  STANDARD = "-password -createdAt -updatedAt",
+  WITH_PASSWORD = "-createdAT - updatedAt",
 }
 
 const exists = async (query: Partial<User>) => {

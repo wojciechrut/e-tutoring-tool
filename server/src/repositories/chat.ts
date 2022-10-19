@@ -2,6 +2,7 @@ import { Selector as UserSelector } from "./user";
 import Model from "../models/chat";
 import { Types } from "mongoose";
 import { ModelId } from "../models/types/_id";
+import { FileSelector } from "./file";
 
 type SingleChatQuery = {
   users: [string, string];
@@ -17,27 +18,33 @@ type AddMessageQuery = {
   message: ModelId;
 };
 
+export enum ChatSelector {
+  STANDARD = "-createdAt -updatedAt",
+}
+
 const populator = [
   { path: "users", select: UserSelector.STANDARD },
   { path: "lastMessage" },
+  { path: "messages" },
+  { path: "messages.files", select: FileSelector.STANDARD },
 ];
 
 const findOrCreate = async (users: SingleChatQuery) => {
-  const existingChat = await findOne(users);
+  const chatExists = await exists(users);
 
-  if (existingChat) {
-    return existingChat;
+  if (!chatExists) {
+    await create(users);
   }
 
-  return create(users);
+  return findOne(users);
 };
 
 const create = async ({ users }: SingleChatQuery) => {
-  const chat = await Model.create({
+  await Model.create({
     users,
   });
 
-  return chat.populate(populator);
+  return findOne({ users });
 };
 
 const exists = async ({ users, ...rest }: SingleChatQuery) => {
@@ -57,11 +64,13 @@ const findOne = async ({ users, ...rest }: SingleChatQuery) => {
       { users: { $elemMatch: { $eq: users[1] } } },
     ],
     ...rest,
-  }).populate(populator);
+  })
+    .populate(populator)
+    .select(ChatSelector.STANDARD);
 };
 
 const findAll = async (query: ManyChatsQuery) => {
-  return Model.find(query);
+  return Model.find(query).select(ChatSelector.STANDARD).populate(populator);
 };
 
 const userHasAccess = async (user: string, chat: string) => {
