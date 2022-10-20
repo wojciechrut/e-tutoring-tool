@@ -3,7 +3,6 @@ import Model, { Leaflet } from "../models/leaflet";
 import { UserSelector } from "./user";
 import { parseForSearch } from "../utils/helpers/search";
 import { leafletCategories } from "../utils/constants/leaflet-categories";
-import { parse } from "dotenv";
 
 type Query = Partial<Omit<Leaflet, "user" | "parsedTitle">> & {
   user?: ModelId;
