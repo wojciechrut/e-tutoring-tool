@@ -8,7 +8,6 @@
       <excludeFolder url="file://$MODULE_DIR$/server/dist" />
       <excludeFolder url="file://$MODULE_DIR$/server/static/files" />
       <excludeFolder url="file://$MODULE_DIR$/.vscode" />
-      <excludeFolder url="file://$MODULE_DIR$/client" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
