@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --names \"next,sass\" --prefix-colors \"red,yellow\" \"npm run next:dev\" \"npm run watch:scss\"",
-    "next:dev": "next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "watch:scss": "typed-scss-modules core/components pages -w --additionalData \"@import './core/styles/_mixins';\""
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.0",
@@ -33,7 +31,6 @@
     "concurrently": "^7.2.2",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.2",
-    "typed-scss-modules": "^6.5.0",
     "typescript": "4.7.4"
   }
 }
