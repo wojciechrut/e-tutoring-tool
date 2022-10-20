@@ -1,10 +1,11 @@
 import { ModelId } from "../models/types/_id";
 import Model, { Leaflet } from "../models/leaflet";
 import { UserSelector } from "./user";
-import { searchMatch } from "../utils/helpers/search";
+import { parseForSearch } from "../utils/helpers/search";
 import { leafletCategories } from "../utils/constants/leaflet-categories";
+import { parse } from "dotenv";
 
-type Query = Partial<Omit<Leaflet, "user">> & {
+type Query = Partial<Omit<Leaflet, "user" | "parsedTitle">> & {
   user?: ModelId;
 };
 
@@ -22,27 +23,32 @@ const findOne = async (_id: ModelId) => {
     .select(LeafletSelector.STANDARD);
 };
 
-const findAll = async (query: Query) => {
+const findAll = async (query: Query, page = 1) => {
   const { levels, subjects, title, lookingFor, user } = query;
-  const results = await Model.find(
+  return Model.paginate(
     Object.assign(
       {
         subjects: { $in: subjects || /.*/ },
         levels: { $in: levels || /.*/ },
         lookingFor: lookingFor || /.*/,
+        parsedTitle: { $regex: new RegExp(parseForSearch(title)) },
       },
       user ? { user } : {}
-    )
-  )
-    .populate(populator)
-    .select(LeafletSelector.STANDARD);
-
-  if (results && Array.isArray(results) && !!title) {
-    return results.filter(({ title: resultTitle }) =>
-      searchMatch(title, resultTitle)
-    );
-  }
-  return results;
+    ),
+    {
+      select: LeafletSelector.STANDARD,
+      populate: populator,
+      lean: true,
+      limit: 10,
+      sort: { createdAt: -1 },
+      page,
+    }
+  ).then(({ docs, hasNextPage, hasPrevPage }) => ({
+    leaflets: docs.map(({ id, ...rest }) => rest),
+    hasNextPage,
+    hasPrevPage,
+    page,
+  }));
 };
 
 const getCategories = () => {
@@ -50,7 +56,10 @@ const getCategories = () => {
 };
 
 const create = async (query: Query) => {
-  const result = await Model.create(query);
+  const result = await Model.create({
+    ...query,
+    parsedTitle: parseForSearch(query.title),
+  });
   return findOne(result._id);
 };
 

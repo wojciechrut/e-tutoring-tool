@@ -41,15 +41,18 @@ const search: RequestHandler<
   {},
   LeafletSearchQuery
 > = async (request, response, next) => {
-  const { title, lookingFor, levels, subjects, user } = request.query;
+  const { title, lookingFor, levels, subjects, user, page } = request.query;
 
-  const searchResult = await LeafletRepository.findAll({
-    title,
-    lookingFor,
-    levels,
-    subjects,
-    user,
-  });
+  const searchResult = await LeafletRepository.findAll(
+    {
+      title,
+      lookingFor,
+      levels,
+      subjects,
+      user,
+    },
+    page ? parseInt(page, 10) : 1
+  );
 
   if (!searchResult) {
     next(500);
