@@ -1,0 +1,42 @@
+html {
+  font-size: 10px;
+
+  &:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  background-color: var(--col-background);
+}
+
+button {
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+input {
+  border: none;
+  font: inherit;
+
+  &:focus {
+    outline: 1px solid var(--col-primary);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+}
