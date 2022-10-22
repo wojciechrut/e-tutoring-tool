@@ -8,7 +8,7 @@ export interface User {
   email: string;
   password: string;
   avatar: string;
-  friends: Array<User>;
+  friends: Array<User | string>;
 }
 
 const userSchema = new Schema<User>(
