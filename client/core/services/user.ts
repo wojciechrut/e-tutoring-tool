@@ -25,8 +25,10 @@ const login = async (credentials: UserCredentials) => {
   );
   if (user) {
     storeToken(user.token);
+    return user;
   }
   removeStoredToken();
+  return null;
 };
 
 const logout = () => {

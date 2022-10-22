@@ -1,5 +1,12 @@
 import Axios, { AxiosInstance } from "axios";
 
+export enum RequestState {
+  IDLE,
+  PENDING,
+  FAILED,
+  SUCCEEDED,
+}
+
 const urls = {
   development: "http://localhost:5000/api",
   production: "http://localhost:5000/api",
