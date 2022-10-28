@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "concurrently --names \"next,scss\" --prefix-colors \"magenta,yellow\" \"yarn next:dev\" \"yarn build:scss\"",
+    "next:dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint:next": "eslint \"**/*.{ts,tsx}\" --cache",
     "lint": "yarn lint:next",
     "lint:scss": "stylelint \"**/*.{css,scss}\" --cache",
     "lint:fix": "yarn lint:next --fix && yarn lint:scss --fix",
-    "build:scss": "typed-scss-modules core/components pages -w --additionalData \"@import 'core/styles/_mixins';\""
+    "build:scss": "typed-scss-modules core/components core/components/atoms pages -w --additionalData \"@import 'core/styles/_mixins';\""
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.0",

@@ -2,10 +2,20 @@
   // fonts
   --font-family-base: "Montserrat", sans-serif;
   --font-family-heading: "Barlow Condensed", sans-serif;
-  --font-size-base: 1.6rem;
+  --font-size-100: 1.3rem;
+  --font-size-200: 1.4rem;
+  --font-size-300: 1.5rem;
+  --font-size-400: 1.6rem;
+  --font-size-500: 1.8rem;
+  --font-size-600: 2rem;
+  --font-size-700: 2.4rem;
+  --font-size-900: 3.2rem;
 
   //colors
-  --col-accent: hsl(347, 89%, 48%);
+  --col-accent-300: hsl(347, 89%, 58%);
+  --col-accent-400: hsl(347, 89%, 48%);
+  --col-accent-500: hsl(347, 89%, 38%);
+  --col-accent-600: hsl(347, 89%, 28%);
   --col-main-300: hsl(231, 44%, 60%);
   --col-main-400: hsl(231, 44%, 50%);
   --col-main-500: hsl(231, 44%, 40%);
@@ -18,6 +28,13 @@
   --col-grey-500: hsl(231, 10%, 41%);
   --col-grey-600: hsl(231, 10%, 34%);
   --col-grey-700: hsl(231, 10%, 27%);
-  --col-white: hsl(0, 0%, 100%);
-  --col-black: hsl(231, 5%, 3%);
+  --col-white: hsl(0, 0%, 99%);
+  --col-black: hsl(231, 5%, 2%);
+  --col-background: hsl(231, 75%, 97%);
+
+  //box-shadows
+  --bs-header: 0px 1px 3px hsla(231, 15%, 10%, 0.09);
+
+  //animations
+  --transition-default: 0.25s ease;
 }

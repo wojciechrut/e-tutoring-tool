@@ -1,0 +1,18 @@
+.link {
+  @include debug();
+  &--primary {
+    @include debug();
+  }
+
+  &--secondary {
+    @include debug();
+  }
+
+  &--transparent {
+    @include debug();
+  }
+
+  &--big {
+    @include debug();
+  }
+}

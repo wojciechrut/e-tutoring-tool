@@ -1,3 +1,4 @@
+$max-content-width: 1400px;
 $breakpoint-sm: 600px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
@@ -27,11 +28,16 @@ $breakpoint-xl: 1280px;
   }
 }
 
-
 @mixin ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+@mixin content-width {
+  max-width: $max-content-width;
+  width: 96%;
+  margin: auto;
 }
 
 @mixin debug {

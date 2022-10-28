@@ -1,3 +1,14 @@
-.layout-test {
-  color: var(--col-accent);
+.global-wrapper {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.content-wrapper {
+  margin-top: 100px;
+  background-color: var(--col-background);
+}
+
+.main-container {
+  min-height: 100vh;
+  @include content-width();
 }

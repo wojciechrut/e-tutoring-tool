@@ -1,0 +1,31 @@
+.header {
+  position: fixed;
+  top: 0;
+  height: 70px;
+  width: 100%;
+  background-color: var(--col-background);
+  transition: all var(--transition-default);
+
+  &--highlight {
+    background-color: var(--col-white);
+    box-shadow: var(--bs-header);
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 17px 20px;
+}
+
+.logo {
+  font-family: var(--font-family-heading);
+  letter-spacing: 1px;
+  font-size: var(--font-size-700);
+
+  &-icon {
+    margin-right: 5px;
+    color: var(--col-accent-400);
+  }
+}
