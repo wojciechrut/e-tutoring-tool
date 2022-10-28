@@ -50,8 +50,12 @@ $breakpoint-xl: 1280px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px;
+  padding: 25px;
   border-radius: 5px;
+
+  @include sm {
+    padding: 32px;
+  }
 }
 
 @mixin debug {

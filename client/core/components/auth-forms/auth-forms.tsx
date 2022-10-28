@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import styles from "./auth-forms.module.scss";
 import { Button } from "components/common/button";
+import { LoginForm } from "components/login-form";
+import { RegisterForm } from "components/register-form";
 
 export const AuthForms: FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,7 +11,7 @@ export const AuthForms: FC = () => {
       <div className={styles.heading}>
         {isLogin ? "Sign in" : "Create account"}
       </div>
-      {isLogin ? "Login form" : "Register form"}
+      {isLogin ? <LoginForm /> : <RegisterForm />}
       <div className={styles.hint}>
         {isLogin ? "Don't have account yet? " : "Already have an account? "}
         <Button
