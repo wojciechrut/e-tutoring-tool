@@ -2,35 +2,28 @@ import { FC, ReactNode } from "react";
 import Link from "next/link";
 import styles from "./styled.link.module.scss";
 import clsx from "clsx";
+import { useRouter } from "next/router";
 
 export type StyledLinkProps = {
   children: ReactNode;
   path: string;
-  type?: "primary" | "secondary" | "transparent";
-  size?: "normal" | "big";
   className?: string;
+  activeClassName?: string;
 };
 
 export const StyledLink: FC<StyledLinkProps> = ({
   children,
   path,
-  type = "primary",
-  size = "normal",
   className,
+  activeClassName,
 }) => {
-  const styleClass =
-    type === "primary"
-      ? styles.linkPrimary
-      : type === "secondary"
-      ? styles.linkSecondary
-      : styles.linkTransparent;
-
-  const sizeClass = size === "big" && styles.linkBig;
+  const { asPath } = useRouter();
+  const active = asPath === path;
 
   return (
     <Link
       href={path}
-      className={clsx(styles.link, styleClass, sizeClass, className)}
+      className={clsx(styles.link, className, active && activeClassName)}
     >
       <a>{children}</a>
     </Link>

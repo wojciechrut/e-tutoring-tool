@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   sassOptions: {
-    prependData: "@import '~/core/styles/_mixins';",
+    prependData: '@import "~/core/styles/_mixins";',
   },
   webpack(config) {
     config.module.rules.push({

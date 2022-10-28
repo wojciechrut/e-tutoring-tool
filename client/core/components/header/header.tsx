@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
             </div>
           </a>
         </Link>
-        <nav className={styles.navbar}></nav>
+        <nav className={styles.navigation}></nav>
       </div>
     </div>
   );

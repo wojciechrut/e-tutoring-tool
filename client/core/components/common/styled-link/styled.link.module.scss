@@ -1,5 +1,6 @@
 .link {
   @include debug();
+
   &--primary {
     @include debug();
   }

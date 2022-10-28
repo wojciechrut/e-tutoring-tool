@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 17px 20px;
+  padding: 17px 10px;
 }
 
 .logo {
@@ -28,4 +28,8 @@
     margin-right: 5px;
     color: var(--col-accent-400);
   }
+}
+
+.navigation {
+  @include debug();
 }

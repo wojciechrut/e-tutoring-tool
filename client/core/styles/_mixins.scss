@@ -36,8 +36,22 @@ $breakpoint-xl: 1280px;
 
 @mixin content-width {
   max-width: $max-content-width;
-  width: 96%;
+  width: calc(100% - 20px);
   margin: auto;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  border-radius: 5px;
 }
 
 @mixin debug {

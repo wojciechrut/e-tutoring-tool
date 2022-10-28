@@ -22,6 +22,8 @@ export const AuthRedirect: React.FC<AuthRedirectProps> = ({
     return <>Loading TODO...</>;
   }
 
+  console.log("user", user, requestState);
+
   if (redirect === "unauthorized" && !user) {
     push("/login");
     return <>Redirecting TODO...</>;
