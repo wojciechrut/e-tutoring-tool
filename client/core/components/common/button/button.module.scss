@@ -2,6 +2,11 @@
   display: inline-block;
   border: none;
   padding: 0.4em 1em;
+  border-radius: 4px;
+
+  &:hover {
+    opacity: 0.9;
+  }
 
   &--link-like {
     color: var(--col-main-400);
@@ -12,5 +17,11 @@
       text-decoration: underline;
       color: var(--col-main-300);
     }
+  }
+
+  &--primary {
+    background-color: var(--col-accent-400);
+    color: var(--col-white);
+    font-weight: 500;
   }
 }

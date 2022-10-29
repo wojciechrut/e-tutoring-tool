@@ -9,11 +9,12 @@ import {
   useState,
 } from "react";
 import UserService from "../services/user";
+import { AppError, parseError } from "helpers/parse-error";
 
 type AuthContext = {
   user: UserData;
   requestState: RequestState;
-  error: unknown;
+  error: AppError;
   login: (credentials: UserCredentials) => Promise<void>;
   logout: () => void;
 };
@@ -24,7 +25,9 @@ const defaultState = {
   requestState: RequestState.IDLE,
 };
 
-const AuthContext = createContext<AuthContext>(defaultState as AuthContext);
+const AuthContext = createContext<AuthContext>(
+  defaultState as unknown as AuthContext
+);
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -32,7 +35,7 @@ type AuthProviderProps = {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserData>(null);
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<AppError>(null);
   const [requestState, setRequestState] = useState<RequestState>(
     RequestState.IDLE
   );
@@ -47,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         })
         .catch((error) => {
           setRequestState(RequestState.FAILED);
-          setError(error);
+          setError(parseError(error));
           return null;
         });
 
@@ -59,7 +62,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRequestState(RequestState.PENDING);
     const user = await UserService.login(credentials)
       .then((user) => user)
-      .catch((error) => setError(error));
+      .catch((error) => setError(parseError(error)));
     setUser(user || null);
     setRequestState(user ? RequestState.SUCCEEDED : RequestState.FAILED);
   };

@@ -1,0 +1,32 @@
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--col-grey-200);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: var(--font-size-300);
+
+  &--with-error {
+    border-color: var(--col-error);
+  }
+
+  &::placeholder {
+    color: var(--col-grey-800);
+  }
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  font-size: var(--font-size-100);
+  color: var(--col-text-navy);
+  margin-bottom: 3px;
+}
+
+.error-message {
+  font-size: var(--font-size-100);
+  color: var(--col-error);
+}

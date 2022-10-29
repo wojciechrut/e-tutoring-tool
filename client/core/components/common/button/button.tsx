@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 type ButtonProps = {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   styleType?: "primary" | "secondary" | "link-like";
   type?: "submit" | "button" | "reset";
@@ -24,6 +24,7 @@ export const Button: FC<ButtonProps> = ({
       className={clsx(
         styles.button,
         styleType === "link-like" && styles.buttonLinkLike,
+        styleType === "primary" && styles.buttonPrimary,
         className
       )}
     >
