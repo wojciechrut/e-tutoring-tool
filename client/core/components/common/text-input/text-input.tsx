@@ -1,5 +1,5 @@
 import styles from "./text-input.module.scss";
-import { FieldErrorsImpl, Path, UseFormRegisterReturn } from "react-hook-form";
+import { Path, UseFormRegisterReturn } from "react-hook-form";
 import { FC } from "react";
 import clsx from "clsx";
 

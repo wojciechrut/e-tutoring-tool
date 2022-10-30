@@ -7,8 +7,8 @@ const FILES_DIR = UPLOAD_DIR.concat("/files");
 
 const fileTypes = {
   image: /jpeg|jpg|png/,
-  document: /doc|docx|pdf|txt/,
-  all: /doc|docx|pdf|txt|jpeg|jpg|png/,
+  document: /doc|docx|pdf|txt|xlsx/,
+  all: /doc|docx|pdf|txt|xlsx|jpeg|jpg|png/,
 };
 
 export enum UploadType {

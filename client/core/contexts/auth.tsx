@@ -1,6 +1,6 @@
 import { UserData } from "services/user";
 import { RequestState } from "services/api";
-import { UserCredentials } from "@types";
+import { UserCredentials, UserRegisterRequestBody } from "@types";
 import {
   createContext,
   ReactNode,
@@ -14,14 +14,19 @@ import { AppError, parseError } from "helpers/parse-error";
 type AuthContext = {
   user: UserData;
   requestState: RequestState;
-  error: AppError;
+  fetchError: AppError;
+  loginError: AppError;
+  registerError: AppError;
   login: (credentials: UserCredentials) => Promise<void>;
+  register: (requestBody: UserRegisterRequestBody) => Promise<void>;
   logout: () => void;
 };
 
 const defaultState = {
   user: null,
-  error: null,
+  fetchError: null,
+  loginError: null,
+  registerError: null,
   requestState: RequestState.IDLE,
 };
 
@@ -35,7 +40,9 @@ type AuthProviderProps = {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserData>(null);
-  const [error, setError] = useState<AppError>(null);
+  const [fetchError, setFetchError] = useState<AppError>(null);
+  const [loginError, setLoginError] = useState<AppError>(null);
+  const [registerError, setRegisterError] = useState<AppError>(null);
   const [requestState, setRequestState] = useState<RequestState>(
     RequestState.IDLE
   );
@@ -45,12 +52,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       UserService.me()
         .then((user) => {
           setRequestState(RequestState.SUCCEEDED);
-          setError(null);
+          setFetchError(null);
           return user;
         })
         .catch((error) => {
           setRequestState(RequestState.FAILED);
-          setError(parseError(error));
+          setFetchError(parseError(error));
           return null;
         });
 
@@ -62,7 +69,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRequestState(RequestState.PENDING);
     const user = await UserService.login(credentials)
       .then((user) => user)
-      .catch((error) => setError(parseError(error)));
+      .catch((error) => setLoginError(parseError(error)));
+    setUser(user || null);
+    setRequestState(user ? RequestState.SUCCEEDED : RequestState.FAILED);
+  };
+
+  const register = async (requestBody: UserRegisterRequestBody) => {
+    setRequestState(RequestState.PENDING);
+    const user = await UserService.register(requestBody)
+      .then((user) => user)
+      .catch((error) => setRegisterError(parseError(error)));
     setUser(user || null);
     setRequestState(user ? RequestState.SUCCEEDED : RequestState.FAILED);
   };
@@ -70,12 +86,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     UserService.logout();
     setUser(null);
-    setRequestState(RequestState.IDLE);
-    setError(null);
+    setFetchError(null);
+    setRequestState(RequestState.SUCCEEDED);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, requestState, error }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        requestState,
+        fetchError,
+        loginError,
+        registerError,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
