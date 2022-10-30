@@ -59,7 +59,6 @@ export const upload =
         const uploadArray = file ? [file] : files ? files : undefined;
         const uploads = extractUploadsMetadata(type, uploadArray);
         response.locals = { ...response.locals, uploads };
-        console.log(response.locals);
         next();
       } catch (err) {
         next(err);

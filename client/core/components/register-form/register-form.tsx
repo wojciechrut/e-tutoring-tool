@@ -60,7 +60,7 @@ const inputs: FormInputs<FieldValues> = [
     type: "file",
     multiple: false,
     accept: "image",
-    label: "Choose profile picture...",
+    label: "Profile picture",
     registerOptions: {
       required: false,
     },
