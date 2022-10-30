@@ -21,3 +21,10 @@
     font-size: var(--font-size-200);
   }
 }
+
+.error-message {
+  font-size: var(--font-size-200);
+  color: var(--col-error);
+  margin-top: 10px;
+  text-align: center;
+}

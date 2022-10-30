@@ -25,3 +25,7 @@ export const parseError = (error: unknown): AppError => {
     messages: errorMessages,
   };
 };
+
+export const getErrorMessage = (error: unknown) => {
+  return parseError(error)?.messages[0] || "";
+};

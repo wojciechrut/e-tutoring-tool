@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { BaseSyntheticEvent, FC } from "react";
 import styles from "./login-form.module.scss";
 import { useForm } from "react-hook-form";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
@@ -34,14 +34,18 @@ const inputs: FormInputs<FieldValues> = [
 ];
 
 export const LoginForm: FC = () => {
-  const { login, loginError } = useAuth();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<FieldValues>();
 
-  const onSubmit = async (values: FieldValues) => login(values);
+  const onSubmit = async (values: FieldValues, event?: BaseSyntheticEvent) => {
+    event?.preventDefault();
+    await login(values);
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +53,6 @@ export const LoginForm: FC = () => {
       <Button type={"submit"} styleType={"primary"}>
         Log In
       </Button>
-      <div className={styles.errorMessage}>{loginError?.messages[0]}</div>
     </form>
   );
 };

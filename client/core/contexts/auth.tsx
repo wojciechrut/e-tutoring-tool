@@ -14,9 +14,7 @@ import { AppError, parseError } from "helpers/parse-error";
 type AuthContext = {
   user: UserData;
   requestState: RequestState;
-  fetchError: AppError;
-  loginError: AppError;
-  registerError: AppError;
+  error: AppError;
   login: (credentials: UserCredentials) => Promise<void>;
   register: (requestBody: UserRegisterRequestBody) => Promise<void>;
   logout: () => void;
@@ -24,9 +22,7 @@ type AuthContext = {
 
 const defaultState = {
   user: null,
-  fetchError: null,
-  loginError: null,
-  registerError: null,
+  error: null,
   requestState: RequestState.IDLE,
 };
 
@@ -40,9 +36,7 @@ type AuthProviderProps = {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserData>(null);
-  const [fetchError, setFetchError] = useState<AppError>(null);
-  const [loginError, setLoginError] = useState<AppError>(null);
-  const [registerError, setRegisterError] = useState<AppError>(null);
+  const [error, setError] = useState<AppError>(null);
   const [requestState, setRequestState] = useState<RequestState>(
     RequestState.IDLE
   );
@@ -52,12 +46,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       UserService.me()
         .then((user) => {
           setRequestState(RequestState.SUCCEEDED);
-          setFetchError(null);
           return user;
         })
-        .catch((error) => {
+        .catch(() => {
           setRequestState(RequestState.FAILED);
-          setFetchError(parseError(error));
           return null;
         });
 
@@ -69,7 +61,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRequestState(RequestState.PENDING);
     const user = await UserService.login(credentials)
       .then((user) => user)
-      .catch((error) => setLoginError(parseError(error)));
+      .catch((error) => setError(parseError(error)));
     setUser(user || null);
     setRequestState(user ? RequestState.SUCCEEDED : RequestState.FAILED);
   };
@@ -78,7 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setRequestState(RequestState.PENDING);
     const user = await UserService.register(requestBody)
       .then((user) => user)
-      .catch((error) => setRegisterError(parseError(error)));
+      .catch((error) => setError(parseError(error)));
     setUser(user || null);
     setRequestState(user ? RequestState.SUCCEEDED : RequestState.FAILED);
   };
@@ -86,7 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     UserService.logout();
     setUser(null);
-    setFetchError(null);
+    setError(null);
     setRequestState(RequestState.SUCCEEDED);
   };
 
@@ -98,9 +90,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logout,
         register,
         requestState,
-        fetchError,
-        loginError,
-        registerError,
+        error,
       }}
     >
       {children}
