@@ -28,7 +28,7 @@ type UploadOptions = {
 
 const uploadInfo: Record<UploadType, UploadOptions> = {
   avatar: {
-    fileSize: 4000000,
+    fileSize: 3000000,
     maxCount: 1,
     path: AVATARS_DIR,
     fileType: fileTypes.image,

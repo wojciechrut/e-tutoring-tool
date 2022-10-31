@@ -1,11 +1,10 @@
 import styles from "./text-input.module.scss";
-import { Path, UseFormRegisterReturn } from "react-hook-form";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { FC } from "react";
 import clsx from "clsx";
 
 export type TextInputProps = {
   htmlType: "text" | "password" | "email";
-  name: Path<string>;
   placeholder?: string;
   register: UseFormRegisterReturn<string>;
   errorMessage?: string;
@@ -14,7 +13,6 @@ export type TextInputProps = {
 
 export const TextInput: FC<TextInputProps> = ({
   htmlType,
-  name,
   placeholder,
   register,
   label,
@@ -22,10 +20,11 @@ export const TextInput: FC<TextInputProps> = ({
 }) => {
   return (
     <div className={styles.inputGroup}>
-      <label className={styles.label} htmlFor={name.toString()}>
+      <label className={styles.label} htmlFor={register.name}>
         {label}
       </label>
       <input
+        id={register.name}
         className={clsx(styles.input, errorMessage && styles.inputWithError)}
         type={htmlType}
         placeholder={placeholder}

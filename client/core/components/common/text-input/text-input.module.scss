@@ -16,6 +16,10 @@
   &::placeholder {
     color: var(--col-grey-800);
   }
+
+  &:focus {
+    border-color: var(--col-main-400);
+  }
 }
 
 .label {

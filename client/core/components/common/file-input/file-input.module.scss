@@ -1,4 +1,45 @@
 .input-group {
-  @include debug();
-  color: red;
+  margin-bottom: 15px;
+}
+
+.input {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.input-replacement {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: var(--font-size-300);
+  padding: 2px 5px;
+  border: 1px solid var(--col-grey-200);
+  border-radius: 3px;
+
+  &:hover,
+  &:focus {
+    border-color: var(--col-main-400);
+    background-color: var(--col-background);
+  }
+}
+
+.filenames {
+  font-style: italic;
+  color: var(--col-main-400);
+  font-size: var(--font-size-200);
+}
+
+.upload-icon {
+  margin-right: 5px;
+  vertical-align: baseline;
+  display: inline;
+}
+
+.input-label {
+  display: block;
+  font-weight: 500;
+  font-size: var(--font-size-100);
+  color: var(--col-text-navy);
+  margin-bottom: 3px;
 }

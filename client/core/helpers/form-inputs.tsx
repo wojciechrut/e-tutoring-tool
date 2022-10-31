@@ -76,7 +76,6 @@ const renderTextInput = <T extends FieldValues>(
   return (
     <TextInput
       key={`formInput-${name}`}
-      name={name}
       register={registerReturn}
       {...restInputProps}
       errorMessage={errors[name]?.message?.toString()}
@@ -94,7 +93,6 @@ const renderFileInput = <T extends FieldValues>(
   return (
     <FileInput
       key={`formInput-${name}`}
-      name={name}
       register={registerReturn}
       {...restInputProps}
       errorMessage={errors[name]?.message?.toString()}

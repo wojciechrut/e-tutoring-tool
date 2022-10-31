@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, FC } from "react";
+import { FC } from "react";
 import styles from "./register-form.module.scss";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
@@ -73,12 +73,10 @@ export const RegisterForm: FC = () => {
     formState: { errors },
     handleSubmit,
   } = useForm<FieldValues>();
-  const { register: userRegister, registerError } = useAuth();
+  const { register: registerUser } = useAuth();
 
-  const onSubmit = (values: FieldValues, event?: BaseSyntheticEvent) => {
-    console.log(event);
-    event?.preventDefault();
-    userRegister(values);
+  const onSubmit = (values: FieldValues) => {
+    registerUser(values);
   };
 
   return (
@@ -88,10 +86,13 @@ export const RegisterForm: FC = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       {renderFormInputs(inputs, register, errors)}
-      <Button type={"submit"} styleType={"primary"}>
+      <Button
+        className={styles.submitButton}
+        type={"submit"}
+        styleType={"primary"}
+      >
         Register
       </Button>
-      <div>{registerError?.messages[0]}</div>
     </form>
   );
 };

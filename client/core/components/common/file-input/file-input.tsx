@@ -1,5 +1,5 @@
-import { Path, UseFormRegisterReturn } from "react-hook-form";
-import { FC } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
+import { FC, useRef, useState } from "react";
 import styles from "./file-input.module.scss";
 import clsx from "clsx";
 
@@ -11,7 +11,6 @@ const fileTypes = {
 };
 
 export type FileInputProps = {
-  name: Path<string>;
   register: UseFormRegisterReturn<string>;
   errorMessage?: string;
   label: string;
@@ -20,20 +19,45 @@ export type FileInputProps = {
 };
 
 export const FileInput: FC<FileInputProps> = ({
-  name,
   register,
   errorMessage,
   label,
   accept = "all",
   multiple = false,
 }) => {
+  const { ref, ...reflessRegister } = register;
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [fileValue, setFileValue] = useState("");
+
+  const onChange = () => {
+    inputRef.current &&
+      setFileValue(inputRef.current.value.replace(/^.*[\\\/]/, ""));
+  };
+
   return (
-    <input
-      className={clsx(styles.input)}
-      type="file"
-      {...register}
-      multiple={multiple}
-      accept={fileTypes[accept]}
-    />
+    <div className={styles.inputGroup}>
+      <div className={styles.inputLabel}>{label}</div>
+      <label className={styles.inputReplacement} htmlFor={register.name}>
+        <i className={clsx(styles.uploadIcon, "fa-solid fa-file-arrow-up")} />
+        Search files...
+      </label>
+      <input
+        id={register.name}
+        className={clsx(styles.input)}
+        type="file"
+        {...reflessRegister}
+        ref={(e) => {
+          ref(e);
+          inputRef.current = e;
+        }}
+        multiple={multiple}
+        accept={fileTypes[accept]}
+        onChange={onChange}
+      />
+      {inputRef.current && <div className={styles.filenames}>{fileValue}</div>}
+      {errorMessage && (
+        <div className={styles.errorMessage}>{errorMessage}</div>
+      )}
+    </div>
   );
 };
