@@ -52,7 +52,7 @@ const login: RequestHandler<{}, MeResponseLocals, UserCredentials> = async (
     return;
   }
 
-  const { _id, ...userData } = user.toObject();
+  const { _id, password, ...userData } = user.toObject();
   const token = JWT.generate(_id);
 
   response.send({ token, _id, ...userData });

@@ -6,14 +6,17 @@ import messageRoutes from "./message";
 import leafletRoutes from "./leaflet";
 
 const apiRoutes = express.Router();
-
 apiRoutes.use("/user", userRoutes);
 apiRoutes.use("/invite", inviteRoutes);
 apiRoutes.use("/chat", chatRoutes);
 apiRoutes.use("/message", messageRoutes);
 apiRoutes.use("/leaflet", leafletRoutes);
 
+const staticRoutes = express.Router();
+staticRoutes.use(express.static("static"));
+
 const router = express.Router();
 router.use("/api", apiRoutes);
+router.use("/static", staticRoutes);
 
 export default router;

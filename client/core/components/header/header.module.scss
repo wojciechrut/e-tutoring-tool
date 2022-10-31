@@ -17,6 +17,10 @@
   align-items: center;
   height: 100%;
   padding: 17px 10px;
+
+  @include sm {
+    padding: 17px 20px;
+  }
 }
 
 .logo {

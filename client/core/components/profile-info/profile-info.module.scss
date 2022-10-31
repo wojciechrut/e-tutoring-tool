@@ -1,0 +1,31 @@
+.wrapper {
+  max-width: 800px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: ". pic ." "info info info";
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.avatar-wrapper {
+  grid-area: pic;
+  display: flex;
+  justify-content: center;
+  background-color: var(--col-white);
+  border-radius: 50%;
+  box-shadow: var(--bs-card);
+}
+
+.user-info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  align-items: center;
+}

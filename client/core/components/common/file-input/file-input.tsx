@@ -55,9 +55,7 @@ export const FileInput: FC<FileInputProps> = ({
         onChange={onChange}
       />
       {inputRef.current && <div className={styles.filenames}>{fileValue}</div>}
-      {errorMessage && (
-        <div className={styles.errorMessage}>{errorMessage}</div>
-      )}
+      {errorMessage && <div>{errorMessage}</div>}
     </div>
   );
 };
