@@ -53,6 +53,7 @@ const register = async (requestBody: UserRegisterRequestBody) => {
 const logout = () => {
   removeStoredToken();
   setAuthFromStorage();
+  location.reload();
 };
 
 const me = async () => {
@@ -61,4 +62,5 @@ const me = async () => {
   return user;
 };
 
-export default { me, login, setAuthFromStorage, logout, register };
+const UserService = { me, login, setAuthFromStorage, logout, register };
+export default UserService;

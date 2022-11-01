@@ -19,6 +19,8 @@
   background-color: var(--col-white);
   border-radius: 50%;
   box-shadow: var(--bs-card);
+  position: relative;
+  z-index: 1;
 }
 
 .user-info {

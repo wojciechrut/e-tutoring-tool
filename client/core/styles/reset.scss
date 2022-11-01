@@ -42,11 +42,6 @@ select {
 
 a {
   text-decoration-skip-ink: auto;
-
-  &:visited,
-  &:focus {
-    color: inherit;
-  }
 }
 
 p,

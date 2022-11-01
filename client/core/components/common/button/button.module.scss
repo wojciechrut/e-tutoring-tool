@@ -24,4 +24,11 @@
     color: var(--col-white);
     font-weight: 500;
   }
+
+  &--secondary {
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--col-black);
+    font-weight: 500;
+  }
 }

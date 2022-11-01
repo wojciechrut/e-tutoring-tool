@@ -1,19 +1,22 @@
 .link {
-  @include debug();
+  --active-color: var(--col-accent-400);
+  text-transform: uppercase;
+  font-size: var(--font-size-400);
+  font-weight: 500;
+  color: var(--col-main-700);
 
   &--primary {
-    @include debug();
+    --active-color: var(--col-white);
+    background-color: var(--col-accent-400);
+    color: var(--col-white);
+    display: inline-block;
+    border: none;
+    padding: 0.2em 0.6em;
+    border-radius: 2px;
   }
 
-  &--secondary {
-    @include debug();
-  }
-
-  &--transparent {
-    @include debug();
-  }
-
-  &--big {
-    @include debug();
+  &:hover,
+  &--active {
+    color: var(--active-color);
   }
 }

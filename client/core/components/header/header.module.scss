@@ -1,4 +1,5 @@
 .header {
+  z-index: 5;
   position: fixed;
   top: 0;
   height: 70px;
@@ -35,5 +36,67 @@
 }
 
 .navigation {
-  @include debug();
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: min(-50%, -275px);
+  width: 50%;
+  min-width: 275px;
+  background-color: var(--col-white);
+  transition: right 0.25s ease-out;
+  display: flex;
+  align-items: center;
+
+  &--open-mobile {
+    right: 0;
+  }
+
+  @include lg {
+    position: relative;
+    margin-left: 40px;
+    flex: 1;
+    right: unset;
+    width: unset;
+    min-width: unset;
+    background-color: unset;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      left: -18px;
+      width: 2px;
+      background-color: var(--col-grey-300);
+    }
+  }
+}
+
+.hamburger {
+  margin-left: auto;
+  z-index: 100;
+
+  @include lg {
+    &:defined {
+      display: none;
+    }
+  }
+}
+
+.blanket {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  background-color: var(--col-blanket);
+
+  &--show {
+    display: block;
+  }
+
+  @include lg {
+    display: none;
+  }
 }

@@ -1,0 +1,30 @@
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  width: 100%;
+  gap: 25px;
+
+  @include lg {
+    justify-content: flex-start;
+    flex-direction: row;
+    height: 36px;
+    gap: 20px;
+    padding: unset;
+  }
+}
+
+.navItem {
+  text-transform: uppercase;
+
+  &--push-right {
+    margin-top: auto;
+
+    @include lg {
+      margin-top: unset;
+      margin-left: auto;
+    }
+  }
+}

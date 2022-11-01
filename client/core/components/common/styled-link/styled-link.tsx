@@ -8,24 +8,30 @@ export type StyledLinkProps = {
   children: ReactNode;
   path: string;
   className?: string;
-  activeClassName?: string;
+  styleType?: "primary" | "secondary";
 };
 
 export const StyledLink: FC<StyledLinkProps> = ({
   children,
   path,
   className,
-  activeClassName,
+  styleType,
 }) => {
   const { asPath } = useRouter();
   const active = asPath === path;
 
   return (
-    <Link
-      href={path}
-      className={clsx(styles.link, className, active && activeClassName)}
-    >
-      <a>{children}</a>
+    <Link href={path}>
+      <a
+        className={clsx(
+          styles.link,
+          className,
+          active && styles.linkActive,
+          styleType === "primary" && styles.linkPrimary
+        )}
+      >
+        {children}
+      </a>
     </Link>
   );
 };
