@@ -1,4 +1,10 @@
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  RegisterOptions,
+} from "react-hook-form";
 import Select, { MultiValue, SingleValue } from "react-select";
 
 export type Option = {
@@ -16,14 +22,24 @@ type SelectInputProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   options: Array<Option>;
-  isMulti: boolean;
+  isMulti?: boolean;
+  placeholder?: string;
+  registerOptions?: RegisterOptions<T>;
+  label?: string;
+  className?: string;
+  errorMessage?: string;
 };
 
 export const SelectInput = <T extends FieldValues>({
   control,
   name,
   options,
-  isMulti = true,
+  isMulti = false,
+  placeholder,
+  registerOptions,
+  label,
+  className,
+  errorMessage,
 }: SelectInputProps<T>) => {
   const getOptionValues = (
     option: SingleValue<Option> | MultiValue<Option>
@@ -38,15 +54,19 @@ export const SelectInput = <T extends FieldValues>({
     <Controller
       name={name}
       control={control}
+      rules={registerOptions}
       render={({ field: { onChange: controllerOnChange, ref } }) => (
         <>
           <Select
+            className={className}
             ref={ref}
             options={options}
             onChange={(option) => {
               controllerOnChange(getOptionValues(option));
             }}
             isMulti={isMulti}
+            classNamePrefix={"react-select"}
+            placeholder={placeholder || "Select..."}
           />
         </>
       )}

@@ -1,4 +1,5 @@
 import {
+  Control,
   FieldErrorsImpl,
   FieldValues,
   Path,
@@ -7,6 +8,7 @@ import {
 } from "react-hook-form";
 import { TextInput } from "components/common/text-input";
 import { FileInput } from "components/common/file-input";
+import { Option, SelectInput } from "components/common/select-input";
 
 type FormInputCommon<T extends FieldValues> = {
   name: Path<T>;
@@ -23,6 +25,9 @@ type FormInputText<T extends FieldValues> = {
 
 type FormInputSelect<T extends FieldValues> = {
   type: "select";
+  isMulti?: boolean;
+  placeholder?: string;
+  options: Array<Option>;
 } & FormInputCommon<T>;
 
 type FormInputFile<T extends FieldValues> = {
@@ -50,10 +55,17 @@ const isFileInput = <T extends FieldValues>(
   return input.type === "file";
 };
 
+const isSelectInput = <T extends FieldValues>(
+  input: FormInput<T>
+): input is FormInputFile<T> => {
+  return input.type === "select";
+};
+
 export const renderFormInputs = <T extends FieldValues>(
   inputs: FormInputs<T>,
   register: UseFormRegister<T>,
-  errors: FieldErrorsImpl<T>
+  errors: FieldErrorsImpl<T>,
+  control?: Control<T>
 ) => {
   return inputs.map((input) => {
     if (isTextInput(input)) {
@@ -61,6 +73,9 @@ export const renderFormInputs = <T extends FieldValues>(
     }
     if (isFileInput(input)) {
       return renderFileInput(input, register, errors);
+    }
+    if (isSelectInput(input) && control) {
+      return renderSelectInput(input, control, errors);
     }
     console.log("render not implemented for this input type");
   });
@@ -77,8 +92,8 @@ const renderTextInput = <T extends FieldValues>(
     <TextInput
       key={`formInput-${name}`}
       register={registerReturn}
-      {...restInputProps}
       errorMessage={errors[name]?.message?.toString()}
+      {...restInputProps}
     />
   );
 };
@@ -94,8 +109,25 @@ const renderFileInput = <T extends FieldValues>(
     <FileInput
       key={`formInput-${name}`}
       register={registerReturn}
-      {...restInputProps}
       errorMessage={errors[name]?.message?.toString()}
+      {...restInputProps}
+    />
+  );
+};
+
+const renderSelectInput = <T extends FieldValues>(
+  input: FormInputSelect<T>,
+  control: Control<T>,
+  errors: FieldErrorsImpl<T>
+) => {
+  const { type, name, ...restInputProps } = input;
+  return (
+    <SelectInput
+      key={`formInput-${name}`}
+      name={name}
+      control={control}
+      errorMessage={errors[name]?.message?.toString()}
+      {...restInputProps}
     />
   );
 };
