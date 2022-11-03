@@ -5,7 +5,14 @@ import {
   Path,
   RegisterOptions,
 } from "react-hook-form";
-import Select, { MultiValue, SingleValue } from "react-select";
+import Select, {
+  GroupBase,
+  MultiValue,
+  MultiValueGenericProps,
+  SingleValue,
+} from "react-select";
+import clsx from "clsx";
+import { ComponentType } from "react";
 
 export type Option = {
   value: string;
@@ -50,6 +57,20 @@ export const SelectInput = <T extends FieldValues>({
     return option ? option.value : null;
   };
 
+  const multiValueContainer:
+    | ComponentType<MultiValueGenericProps<Option, boolean, GroupBase<Option>>>
+    | undefined = ({ selectProps, data }) => {
+    const label = data.label;
+    const selectedOptions = selectProps.value as MultiValue<Option>;
+    const index = selectedOptions?.findIndex(
+      (selected) => selected.label === label
+    );
+    const isLastSelected = index === selectedOptions.length - 1;
+    console.log(index, selectedOptions.length - 1);
+    const labelSuffix = isLastSelected ? ` (${selectedOptions.length})` : ", ";
+    return <>{`${label}${labelSuffix}`}</>;
+  };
+
   return (
     <Controller
       name={name}
@@ -58,7 +79,8 @@ export const SelectInput = <T extends FieldValues>({
       render={({ field: { onChange: controllerOnChange, ref } }) => (
         <>
           <Select
-            className={className}
+            id={name}
+            className={clsx("react-select", className)}
             ref={ref}
             options={options}
             onChange={(option) => {
@@ -67,6 +89,16 @@ export const SelectInput = <T extends FieldValues>({
             isMulti={isMulti}
             classNamePrefix={"react-select"}
             placeholder={placeholder || "Select..."}
+            autoFocus={false}
+            closeMenuOnSelect={!isMulti}
+            isSearchable={false}
+            components={
+              isMulti
+                ? {
+                    MultiValueContainer: multiValueContainer,
+                  }
+                : undefined
+            }
           />
         </>
       )}

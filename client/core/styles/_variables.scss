@@ -16,7 +16,7 @@
   --col-accent-400: hsl(347, 89%, 48%);
   --col-accent-500: hsl(347, 89%, 38%);
   --col-accent-600: hsl(347, 89%, 28%);
-  --col-main-100: hsl(231, 44%, 97%);
+  --col-main-100: hsl(231, 44%, 90%);
   --col-main-200: hsl(231, 44%, 75%);
   --col-main-300: hsl(231, 44%, 60%);
   --col-main-400: hsl(231, 44%, 50%);
@@ -40,6 +40,7 @@
   //box-shadows
   --bs-header: 0px 1px 3px hsla(231, 15%, 10%, 0.09);
   --bs-card: 1px 1px 3px hsla(231, 15%, 10%, 0.08);
+  --bs-select: 0px 0px 5px 1px hsla(231, 15%, 10%, 0.1);
 
   //animations
   --transition-default: 0.25s ease;
