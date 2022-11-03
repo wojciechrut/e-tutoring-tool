@@ -1,0 +1,35 @@
+.container {
+  @include card-layout;
+  box-shadow: var(--bs-card);
+  background-color: var(--col-white);
+  width: 90%;
+  max-width: 450px;
+
+  @include sm {
+    width: 450px;
+    max-width: unset;
+  }
+
+  @include md {
+    width: 500px;
+  }
+
+  @include lg {
+    width: 700px;
+  }
+}
+
+.form {
+  display: grid;
+  width: 100%;
+}
+
+.heading {
+  font-size: var(--font-size-700);
+  margin-bottom: 15px;
+  text-align: center;
+
+  @include sm {
+    font-size: var(--font-size-900);
+  }
+}

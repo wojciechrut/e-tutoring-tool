@@ -62,4 +62,4 @@ const create = async (query: Query) => {
   return findOne(result._id);
 };
 
-export default { findAll, findOne, create, categories: getCategories };
+export default { findAll, findOne, create, getCategories };

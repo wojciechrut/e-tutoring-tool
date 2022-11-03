@@ -27,7 +27,7 @@ type FormInputSelect<T extends FieldValues> = {
   type: "select";
   isMulti?: boolean;
   placeholder?: string;
-  options: Array<Option>;
+  options: Array<Option> | Array<string>;
 } & FormInputCommon<T>;
 
 type FormInputFile<T extends FieldValues> = {
@@ -115,16 +115,32 @@ const renderFileInput = <T extends FieldValues>(
   );
 };
 
+const isStringOptions = (
+  options: FormInputSelect<any>["options"]
+): options is Array<string> => {
+  return typeof options[0] === "string";
+};
+
 const renderSelectInput = <T extends FieldValues>(
   input: FormInputSelect<T>,
   control: Control<T>,
   errors: FieldErrorsImpl<T>
 ) => {
-  const { type, name, ...restInputProps } = input;
+  const { type, name, options, ...restInputProps } = input;
+  let finalOptions;
+  if (isStringOptions(options)) {
+    finalOptions = options.map((option) => ({
+      value: option,
+      label: option,
+    })) as Option[];
+  } else {
+    finalOptions = options as Option[];
+  }
   return (
     <SelectInput
       key={`formInput-${name}`}
       name={name}
+      options={finalOptions || options}
       control={control}
       errorMessage={errors[name]?.message?.toString()}
       {...restInputProps}

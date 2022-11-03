@@ -1,15 +1,9 @@
-.react-select {
-  width: 100%;
-  max-width: 100%;
-
+.react-select,
+.react-select-multi {
   &:defined {
     cursor: pointer;
-
-    &:focus {
-      border: none;
-      box-shadow: none;
-      outline: 0;
-    }
+    max-width: 100%;
+    width: 100%;
   }
 
   &__control {
@@ -17,6 +11,7 @@
     &:defined {
       cursor: pointer;
       min-height: 32.5px;
+      max-width: 100%;
       border: 1px solid var(--col-grey-200);
       font-size: var(--font-size-300);
       border-radius: 3px;
@@ -57,17 +52,7 @@
     &:defined {
       padding: 0;
       margin: 0;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      position: relative;
-      max-width: 80%;
-    }
-  }
-
-  &__value-container--has-value {
-    &:defined {
-      display: block;
+      max-width: 75%;
     }
   }
 
@@ -116,6 +101,16 @@
         background-color: var(--col-main-200);
         color: initial;
       }
+    }
+  }
+}
+
+.react-select-multi {
+  &__value-container--has-value {
+    &:defined {
+      display: block;
+      max-width: 75%;
+      overflow: hidden;
     }
   }
 }

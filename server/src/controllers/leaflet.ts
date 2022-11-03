@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import {
+  LeafletCategoriesResponseBody,
   LeafletPostRequestBody,
   LeafletSearchQuery,
   LeafletSearchResponseBody,
@@ -62,4 +63,11 @@ const search: RequestHandler<
   response.send(searchResult);
 };
 
-export default { post, search };
+const getCategories: RequestHandler<{}, LeafletCategoriesResponseBody> = async (
+  _request,
+  response
+) => {
+  response.send(LeafletRepository.getCategories());
+};
+
+export default { post, search, getCategories };

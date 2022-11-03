@@ -30,7 +30,7 @@ const navItems: Array<NavItem> = [
     key: "chats",
   },
   {
-    for: "auth",
+    for: "common",
     type: "link",
     path: "/leaflets",
     children: "Leaflets",

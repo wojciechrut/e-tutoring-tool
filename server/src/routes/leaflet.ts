@@ -11,4 +11,6 @@ leafletRoutes
 
 leafletRoutes.route("/").get(Controller.search);
 
+leafletRoutes.route("/categories").get(Controller.getCategories);
+
 export default leafletRoutes;

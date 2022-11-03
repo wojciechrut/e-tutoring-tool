@@ -13,6 +13,7 @@ import Select, {
 } from "react-select";
 import clsx from "clsx";
 import { ComponentType } from "react";
+import styles from "./select-input.module.scss";
 
 export type Option = {
   value: string;
@@ -66,42 +67,47 @@ export const SelectInput = <T extends FieldValues>({
       (selected) => selected.label === label
     );
     const isLastSelected = index === selectedOptions.length - 1;
-    console.log(index, selectedOptions.length - 1);
     const labelSuffix = isLastSelected ? ` (${selectedOptions.length})` : ", ";
-    return <>{`${label}${labelSuffix}`}</>;
+    return <span>{`${label}${labelSuffix}`}</span>;
   };
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={registerOptions}
-      render={({ field: { onChange: controllerOnChange, ref } }) => (
-        <>
-          <Select
-            id={name}
-            className={clsx("react-select", className)}
-            ref={ref}
-            options={options}
-            onChange={(option) => {
-              controllerOnChange(getOptionValues(option));
-            }}
-            isMulti={isMulti}
-            classNamePrefix={"react-select"}
-            placeholder={placeholder || "Select..."}
-            autoFocus={false}
-            closeMenuOnSelect={!isMulti}
-            isSearchable={false}
-            components={
-              isMulti
-                ? {
-                    MultiValueContainer: multiValueContainer,
-                  }
-                : undefined
-            }
-          />
-        </>
-      )}
-    />
+    <div className={styles.inputGroup}>
+      <label className={styles.label} htmlFor={name}>
+        {label}
+      </label>
+      <Controller
+        name={name}
+        control={control}
+        rules={registerOptions}
+        render={({ field: { onChange: controllerOnChange, ref } }) => (
+          <>
+            <Select
+              id={name}
+              instanceId={name}
+              className={clsx(styles.input, className)}
+              ref={ref}
+              options={options}
+              onChange={(option) => {
+                controllerOnChange(getOptionValues(option));
+              }}
+              isMulti={isMulti}
+              classNamePrefix={isMulti ? "react-select-multi" : "react-select"}
+              placeholder={placeholder || "Select..."}
+              autoFocus={false}
+              closeMenuOnSelect={!isMulti}
+              isSearchable={false}
+              components={
+                isMulti
+                  ? {
+                      MultiValueContainer: multiValueContainer,
+                    }
+                  : undefined
+              }
+            />
+          </>
+        )}
+      />
+    </div>
   );
 };
