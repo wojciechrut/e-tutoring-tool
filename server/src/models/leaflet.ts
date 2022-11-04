@@ -5,6 +5,7 @@ import { commonSchemaOptions } from "./config/common-config";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 export interface Leaflet {
+  _id: string;
   user: User;
   title: string;
   parsedTitle: string;

@@ -13,6 +13,8 @@ export type LeafletSearchResponseBody = {
   hasNextPage: boolean;
   hasPrevPage: boolean;
   page: number;
+  totalDocs: number;
+  totalPages: number;
 };
 
 export type LeafletCategoriesResponseBody = typeof leafletCategories;

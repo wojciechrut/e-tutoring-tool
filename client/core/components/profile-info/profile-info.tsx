@@ -19,8 +19,8 @@ export const ProfileInfo: FC = () => {
         <div className={styles.avatarWrapper}>
           <Image
             className={styles.avatar}
-            src={staticSource(user.avatar)}
-            alt=""
+            src={staticSource(avatar)}
+            alt="user-avatar"
             width={100}
             height={100}
             objectFit={"cover"}

@@ -42,10 +42,12 @@ const findAll = async (query: Query, page = 1) => {
       sort: { createdAt: -1 },
       page,
     }
-  ).then(({ docs, hasNextPage, hasPrevPage }) => ({
+  ).then(({ docs, hasNextPage, hasPrevPage, totalDocs, totalPages }) => ({
     leaflets: docs.map(({ id, ...rest }) => rest),
     hasNextPage,
     hasPrevPage,
+    totalDocs,
+    totalPages,
     page,
   }));
 };

@@ -10,6 +10,7 @@ export type ButtonProps = {
   styleType?: "primary" | "secondary" | "link-like" | "plain";
   type?: "submit" | "button" | "reset";
   loading?: boolean;
+  disabled?: boolean;
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ export const Button: FC<ButtonProps> = ({
   className,
   styleType = "primary",
   loading = false,
+  disabled = false,
   type,
 }) => {
   return (
@@ -31,7 +33,7 @@ export const Button: FC<ButtonProps> = ({
         styleType === "secondary" && styles.buttonSecondary,
         className
       )}
-      disabled={loading}
+      disabled={disabled || loading}
     >
       {loading ? <Spinner className={styles.spinner} /> : children}
     </button>

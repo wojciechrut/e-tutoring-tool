@@ -2,10 +2,14 @@ import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "components/common/button";
 import styles from "./leaflet-search.module.scss";
-import { LeafletCategoriesResponseBody } from "@types";
+import {
+  LeafletCategoriesResponseBody,
+  LeafletSearchResponseBody,
+} from "@types";
 import LeafletService from "services/leaflet";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { parseError } from "helpers/parse-error";
+import { LeafletList } from "components/leaflet-list";
 
 type FieldValues = {
   levels: Array<string>;
@@ -24,7 +28,9 @@ export const LeafletSearch: FC = () => {
   const [categories, setCategories] =
     useState<LeafletCategoriesResponseBody | null>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>();
+  const [resultMessage, setResultMessage] = useState<string | null>();
+  const [result, setResult] = useState<LeafletSearchResponseBody>();
+  const [query, setQuery] = useState<FieldValues | null>();
 
   useEffect(() => {
     LeafletService.getCategories().then((categories) =>
@@ -32,17 +38,26 @@ export const LeafletSearch: FC = () => {
     );
   }, []);
 
-  const onSubmit = (data: FieldValues) => {
+  const fetchLeaflets = async ({
+    page,
+    ...query
+  }: FieldValues & { page: number }) => {
     setLoading(true);
-    LeafletService.search(data)
-      .then((leaflets) => {
+    LeafletService.search({ page: page.toString(10), ...query })
+      .then((response) => {
         setLoading(false);
-        console.log(leaflets);
+        setResult(response);
+        setQuery(query);
+        setResultMessage(`${response.totalDocs} total`);
       })
       .catch((error) => {
-        setError(parseError(error)?.messages[0]);
+        setResultMessage(parseError(error)?.messages[0]);
         setLoading(false);
       });
+  };
+
+  const onSubmit = async (data: FieldValues) => {
+    fetchLeaflets({ page: 1, ...data });
   };
 
   const inputs: FormInputs<FieldValues> = [
@@ -80,16 +95,55 @@ export const LeafletSearch: FC = () => {
     },
   ];
 
+  const canFetchNext = result?.hasNextPage && query;
+  const canFetchPrev = result?.hasPrevPage && query;
+
+  const fetchNextPage = canFetchNext
+    ? () => fetchLeaflets({ page: result.page + 1, ...query })
+    : undefined;
+
+  const fetchPrevPage = canFetchPrev
+    ? () => fetchLeaflets({ page: result.page - 1, ...query })
+    : undefined;
+
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>Find someone to study with</h1>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        {renderFormInputs(inputs, register, errors, control)}
-        <Button type={"submit"} loading={loading}>
-          Submit
-        </Button>
-      </form>
-      <div className={styles.serverError}>{error}</div>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <h1 className={styles.heading}>Find someone to study with</h1>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          {renderFormInputs(inputs, register, errors, control)}
+          <Button type={"submit"} loading={loading}>
+            Submit
+          </Button>
+        </form>
+        {result && (
+          <div className={styles.pageInfo}>
+            <div className={styles.pageInfoPrev}>
+              <Button
+                disabled={!canFetchPrev || loading}
+                styleType={"link-like"}
+                type={"button"}
+                onClick={fetchPrevPage}
+              >
+                Previous
+              </Button>
+            </div>
+            <span className={styles.pageInfoPage}>Page {result.page}</span>
+            <div className={styles.pageInfoNext}>
+              <Button
+                disabled={!canFetchNext || loading}
+                styleType={"link-like"}
+                type={"button"}
+                onClick={fetchNextPage}
+              >
+                Next
+              </Button>
+            </div>
+            <span className={styles.pageInfoMessage}>{resultMessage}</span>
+          </div>
+        )}
+      </div>
+      {result && <LeafletList leaflets={result.leaflets} />}
     </div>
   );
 };

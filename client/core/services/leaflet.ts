@@ -18,13 +18,15 @@ const getCategories = async () => {
 };
 
 const search = async (query: LeafletSearchQuery) => {
-  const { data: leaflets }: AxiosResponse<LeafletSearchResponseBody> =
-    await api.get(Paths.SEARCH, {
+  const { data }: AxiosResponse<LeafletSearchResponseBody> = await api.get(
+    Paths.SEARCH,
+    {
       params: {
         ...query,
       },
-    });
-  return leaflets;
+    }
+  );
+  return data;
 };
 
 const LeafletService = { getCategories, search };

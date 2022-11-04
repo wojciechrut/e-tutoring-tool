@@ -1,0 +1,7 @@
+.container {
+  @include card-layout();
+  border-radius: 4px;
+  margin-top: 25px;
+  width: 100%;
+  background-color: var(--col-white);
+}

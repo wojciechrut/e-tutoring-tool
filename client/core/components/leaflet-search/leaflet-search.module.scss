@@ -1,7 +1,4 @@
-.container {
-  @include card-layout;
-  box-shadow: var(--bs-card);
-  background-color: var(--col-white);
+.wrapper {
   width: 90%;
   max-width: 450px;
 
@@ -19,6 +16,13 @@
   }
 }
 
+.container {
+  @include card-layout;
+  box-shadow: var(--bs-card);
+  background-color: var(--col-white);
+  width: 100%;
+}
+
 .form {
   display: grid;
   width: 100%;
@@ -34,8 +38,39 @@
   }
 }
 
-.server-error {
-  margin-top: 10px;
+.page-info {
+  margin: 15px auto 0;
   font-size: var(--font-size-200);
   color: var(--col-text-navy);
+  display: grid;
+  grid-template-areas:
+    ". msg ."
+    "prev page next";
+  grid-template-columns: 1fr 2fr 1fr;
+  row-gap: 10px;
+  width: 100%;
+  max-width: 275px;
+
+  &__page {
+    grid-area: page;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  &__next {
+    grid-area: next;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__prev {
+    grid-area: prev;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__message {
+    grid-area: msg;
+    text-align: center;
+  }
 }
