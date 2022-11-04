@@ -1,9 +1,14 @@
 import { AxiosResponse } from "axios";
-import { LeafletCategoriesResponseBody } from "@types";
+import {
+  LeafletCategoriesResponseBody,
+  LeafletSearchQuery,
+  LeafletSearchResponseBody,
+} from "@types";
 import api from "./api";
 
 enum Paths {
   CATEGORIES = "leaflet/categories",
+  SEARCH = "leaflet",
 }
 
 const getCategories = async () => {
@@ -12,6 +17,16 @@ const getCategories = async () => {
   return categories;
 };
 
-const LeafletService = { getCategories };
+const search = async (query: LeafletSearchQuery) => {
+  const { data: leaflets }: AxiosResponse<LeafletSearchResponseBody> =
+    await api.get(Paths.SEARCH, {
+      params: {
+        ...query,
+      },
+    });
+  return leaflets;
+};
+
+const LeafletService = { getCategories, search };
 
 export default LeafletService;

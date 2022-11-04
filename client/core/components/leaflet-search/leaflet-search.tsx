@@ -30,8 +30,7 @@ export const LeafletSearch: FC = () => {
   }, []);
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
-    console.log(categories);
+    LeafletService.search(data).then((leaflets) => console.log(leaflets));
   };
 
   const inputs: FormInputs<FieldValues> = [

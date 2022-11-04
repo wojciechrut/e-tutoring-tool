@@ -10,8 +10,8 @@ export interface Leaflet {
   parsedTitle: string;
   description: string;
   lookingFor: typeof categories.lookingFor[number];
-  levels: [typeof categories.levels[number]];
-  subjects: [typeof categories.subjects];
+  levels: typeof categories.levels;
+  subjects: typeof categories.subjects;
 }
 
 const leafletSchema = new Schema<Leaflet>(
