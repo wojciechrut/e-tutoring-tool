@@ -1,6 +1,7 @@
 import { FC, ReactNode } from "react";
 import styles from "./button.module.scss";
 import clsx from "clsx";
+import Spinner from "assets/spinner.svg";
 
 export type ButtonProps = {
   children: ReactNode;
@@ -8,6 +9,7 @@ export type ButtonProps = {
   className?: string;
   styleType?: "primary" | "secondary" | "link-like" | "plain";
   type?: "submit" | "button" | "reset";
+  loading?: boolean;
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -15,6 +17,7 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   className,
   styleType = "primary",
+  loading = false,
   type,
 }) => {
   return (
@@ -28,8 +31,9 @@ export const Button: FC<ButtonProps> = ({
         styleType === "secondary" && styles.buttonSecondary,
         className
       )}
+      disabled={loading}
     >
-      {children}
+      {loading ? <Spinner className={styles.spinner} /> : children}
     </button>
   );
 };

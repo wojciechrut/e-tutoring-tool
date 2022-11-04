@@ -4,6 +4,15 @@
   padding: 0.4em 1em;
   border-radius: 4px;
 
+  &:disabled {
+    cursor: not-allowed;
+    filter: opacity(70%) grayscale(10%);
+
+    &:hover {
+      opacity: unset;
+    }
+  }
+
   &:hover {
     opacity: 0.85;
   }
@@ -31,4 +40,8 @@
     color: var(--col-black);
     font-weight: 500;
   }
+}
+
+.spinner {
+  height: 24px;
 }
