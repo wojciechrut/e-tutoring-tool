@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: var(--col-white);
+  border-radius: 50%;
+  box-shadow: var(--bs-card);
+  position: relative;
+  z-index: 1;
+}
+
+.avatar {
+  border-radius: 50%;
+}

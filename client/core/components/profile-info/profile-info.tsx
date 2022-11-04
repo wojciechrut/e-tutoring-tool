@@ -1,8 +1,7 @@
 import { FC } from "react";
 import styles from "./profile-info.module.scss";
 import { useAuth } from "contexts/auth";
-import Image from "next/image";
-import { staticSource } from "helpers/static-path";
+import { UserAvatar } from "components/common/user-avatar";
 
 export const ProfileInfo: FC = () => {
   const { user, logout } = useAuth();
@@ -16,16 +15,7 @@ export const ProfileInfo: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <div className={styles.avatarWrapper}>
-          <Image
-            className={styles.avatar}
-            src={staticSource(avatar)}
-            alt="user-avatar"
-            width={100}
-            height={100}
-            objectFit={"cover"}
-          />
-        </div>
+        <UserAvatar avatar={avatar} size={100} className={styles.avatar} />
         <div className={styles.userInfo}>
           <p>{nickname}</p>
           <p>{email}</p>
