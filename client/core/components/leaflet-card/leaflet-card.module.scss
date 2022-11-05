@@ -4,4 +4,9 @@
   margin-top: 25px;
   width: 100%;
   background-color: var(--col-white);
+  display: grid;
+}
+
+.avatar {
+  grid-area: avatar;
 }

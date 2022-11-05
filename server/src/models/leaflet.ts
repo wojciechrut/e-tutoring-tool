@@ -13,6 +13,7 @@ export interface Leaflet {
   lookingFor: typeof categories.lookingFor[number];
   levels: typeof categories.levels;
   subjects: typeof categories.subjects;
+  createdAt: string;
 }
 
 const leafletSchema = new Schema<Leaflet>(

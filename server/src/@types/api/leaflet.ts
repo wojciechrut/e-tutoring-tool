@@ -1,5 +1,6 @@
 import { Leaflet } from "../../models/leaflet";
 import { leafletCategories } from "../../utils/constants/leaflet-categories";
+import { UserResponseBody } from "./user";
 
 export type LeafletPostRequestBody = Omit<Leaflet, "_id" | "user">;
 export type LeafletSearchQuery = Partial<
@@ -8,8 +9,9 @@ export type LeafletSearchQuery = Partial<
     page: string;
   }
 >;
+
 export type LeafletSearchResponseBody = {
-  leaflets: Array<Leaflet>;
+  leaflets: Array<Omit<Leaflet, "user"> & { user: UserResponseBody }>;
   hasNextPage: boolean;
   hasPrevPage: boolean;
   page: number;

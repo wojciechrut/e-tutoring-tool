@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./header.module.scss";
 import clsx from "clsx";
 import Link from "next/link";
@@ -6,11 +6,17 @@ import { useScroll } from "hooks/useScroll";
 import { useAuth } from "contexts/auth";
 import { NavLinks } from "components/nav-links";
 import { Button } from "components/common/button";
+import { useRouter } from "next/router";
 
 export const Header: React.FC = () => {
   const isScrolled = useScroll();
+  const { asPath } = useRouter();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [asPath]);
 
   return (
     <div className={clsx(styles.header, isScrolled && styles.headerHighlight)}>
