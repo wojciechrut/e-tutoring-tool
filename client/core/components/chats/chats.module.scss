@@ -11,10 +11,22 @@
 }
 
 .chats {
+  display: none;
   height: 100%;
   max-width: 300px;
   width: 300px;
   background-color: var(--col-grey-100);
   border-radius: 4px;
   padding: 10px;
+
+  &--show {
+    display: block;
+  }
+}
+
+.current-chat {
+  display: none;
+  &--show {
+    display: block;
+  }
 }

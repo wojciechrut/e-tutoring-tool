@@ -10,6 +10,7 @@ type ChatCardProps = {
   nickname: string;
   lastMessage?: string;
   isFriend: boolean;
+  setCurrentUser: (user: string) => void;
 };
 
 export const ChatCard: FC<ChatCardProps> = ({
@@ -18,11 +19,14 @@ export const ChatCard: FC<ChatCardProps> = ({
   lastMessage,
   isFriend,
   userId,
+  setCurrentUser,
 }) => {
   const router = useRouter();
 
   const showChat = () => {
-    router.push("/chats", { query: { user: userId } }, { shallow: true });
+    router
+      .push("/chats", { query: { user: userId } }, { shallow: true })
+      .then(() => setCurrentUser(userId));
   };
 
   return (

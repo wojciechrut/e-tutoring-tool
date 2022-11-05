@@ -1,26 +1,13 @@
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { Chats } from "components/chats";
+import { AuthRedirect } from "components/auth-redirect";
 
-type PageProps = {
-  currentUser?: string;
-};
-
-export const getServerSideProps: GetServerSideProps<
-  {},
-  { user?: string },
-  PageProps
-> = async ({ query }) => {
-  const { user } = query;
-
-  return {
-    props: {
-      currentUser: user || null,
-    },
-  };
-};
-
-const Chat: NextPage<PageProps> = ({ currentUser }) => {
-  return <Chats currentUser={currentUser} />;
+const Chat: NextPage = () => {
+  return (
+    <AuthRedirect redirect={"unauthorized"}>
+      <Chats />
+    </AuthRedirect>
+  );
 };
 
 export default Chat;
