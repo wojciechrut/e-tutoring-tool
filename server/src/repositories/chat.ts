@@ -10,7 +10,7 @@ type SingleChatQuery = {
 };
 
 type ManyChatsQuery = {
-  users?: string;
+  users?: ModelId;
 };
 
 type AddMessageQuery = {
@@ -27,6 +27,11 @@ const populator = [
   { path: "lastMessage" },
   { path: "messages" },
   { path: "messages.files", select: FileSelector.STANDARD },
+];
+
+const allPopulator = [
+  { path: "users", select: UserSelector.STANDARD },
+  { path: "lastMessage" },
 ];
 
 const findOrCreate = async (users: SingleChatQuery) => {
@@ -70,7 +75,7 @@ const findOne = async ({ users, ...rest }: SingleChatQuery) => {
 };
 
 const findAll = async (query: ManyChatsQuery) => {
-  return Model.find(query).select(ChatSelector.STANDARD).populate(populator);
+  return Model.find(query).select(ChatSelector.STANDARD).populate(allPopulator);
 };
 
 const userHasAccess = async (user: string, chat: string) => {
