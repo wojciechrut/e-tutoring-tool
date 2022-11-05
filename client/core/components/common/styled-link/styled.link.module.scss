@@ -15,6 +15,19 @@
     border-radius: 2px;
   }
 
+  &--icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: var(--col-grey-200);
+    }
+  }
+
   &:hover,
   &--active {
     color: var(--active-color);

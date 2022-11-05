@@ -97,6 +97,7 @@ export const SelectInput = <T extends FieldValues>({
               autoFocus={false}
               closeMenuOnSelect={!isMulti}
               isSearchable={false}
+              isClearable={true}
               components={
                 isMulti
                   ? {

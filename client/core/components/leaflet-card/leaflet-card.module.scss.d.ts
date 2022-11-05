@@ -1,4 +1,5 @@
 export const container: string;
+export const leafletButtons: string;
 export const leafletDate: string;
 export const leafletLevels: string;
 export const leafletLookingFor: string;

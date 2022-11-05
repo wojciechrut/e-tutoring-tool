@@ -7,13 +7,14 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   row-gap: 5px;
+  align-items: center;
   font-size: var(--font-size-300);
   grid-template-areas:
     "title title title title"
     "user user user date"
     "for for for for"
     "subjects subjects subjects subjects"
-    "levels levels levels levels";
+    "levels levels levels buttons";
 }
 
 .user-avatar {
@@ -45,6 +46,15 @@
 .leaflet-date {
   grid-area: date;
   text-align: right;
+  margin-bottom: 10px;
+}
+
+.leaflet-buttons {
+  grid-area: buttons;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
 }
 
 .leaflet-looking-for {
@@ -58,6 +68,6 @@
 }
 
 .leaflet-levels {
-  @include max-lines-ellipsis(1);
+  @include max-lines-ellipsis(2);
   grid-area: levels;
 }
