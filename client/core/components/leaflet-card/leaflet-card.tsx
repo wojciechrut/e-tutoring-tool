@@ -28,7 +28,7 @@ export const LeafletCard: FC<LeafletCardProps> = ({ leaflet }) => {
         <StyledLink path={`/leaflet/${_id}`} styleType={"icon"}>
           <i className="fa-solid fa-circle-info" />
         </StyledLink>
-        <StyledLink path={`/chat?user=${userId}`} styleType={"icon"}>
+        <StyledLink path={`/chats?user=${userId}`} styleType={"icon"}>
           <i className="fa-solid fa-message" />
         </StyledLink>
       </div>

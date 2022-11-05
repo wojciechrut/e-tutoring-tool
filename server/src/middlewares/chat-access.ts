@@ -15,13 +15,13 @@ const chatAccess: RequestHandler<
   const { _id } = response.locals;
 
   if (!chat) {
-    next(createError(ErrorStatus.BAD_REQUEST, "You must specify chat."));
+    next(createError(ErrorStatus.BAD_REQUEST, "You must specify chats."));
     return;
   }
 
   if (!(await ChatRepository.userHasAccess(id(_id), id(chat)))) {
     next(
-      createError(ErrorStatus.FORBIDDEN, "You don't have access to this chat.")
+      createError(ErrorStatus.FORBIDDEN, "You don't have access to this chats.")
     );
     return;
   }

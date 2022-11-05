@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import {
   ChatFetchQuery,
   ChatResponseBody,
-  MultipleChatResponseBody,
+  MultipleChatsResponseBody,
 } from "@types";
 import UserService from "services/user";
 import api from "./api";
@@ -14,7 +14,7 @@ enum Paths {
 
 const getMyChats = async () => {
   UserService.setAuthFromStorage();
-  const { data: chats }: AxiosResponse<MultipleChatResponseBody> =
+  const { data: chats }: AxiosResponse<MultipleChatsResponseBody> =
     await api.get(Paths.MINE);
   return chats;
 };
@@ -22,7 +22,7 @@ const getMyChats = async () => {
 const accessChat = async ({ userId, meetingId }: ChatFetchQuery) => {
   UserService.setAuthFromStorage();
   if (meetingId) {
-    console.log("todo chat by meeting");
+    console.log("todo chats by meeting");
     return;
   } else if (userId) {
     const { data: chat }: AxiosResponse<ChatResponseBody> = await api.get(

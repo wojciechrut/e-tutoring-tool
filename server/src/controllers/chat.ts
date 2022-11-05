@@ -3,7 +3,7 @@ import {
   ChatResponseBody,
   ErrorStatus,
   MeResponseLocals,
-  MultipleChatResponseBody,
+  MultipleChatsResponseBody,
 } from "../@types";
 import { createError } from "../utils/helpers/create-error";
 import { RequestHandler } from "express";
@@ -21,8 +21,8 @@ const get: RequestHandler<
   const { _id: requesterId } = response.locals;
 
   if (meetingId) {
-    //meeting chat z obiektu meeting
-    console.log("chat by meeting todo");
+    //meeting chats z obiektu meeting
+    console.log("chats by meeting todo");
     return;
   }
 
@@ -42,7 +42,7 @@ const get: RequestHandler<
 
 const mine: RequestHandler<
   {},
-  MultipleChatResponseBody,
+  MultipleChatsResponseBody,
   {},
   {},
   MeResponseLocals

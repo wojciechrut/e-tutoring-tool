@@ -8,7 +8,7 @@ export interface Chat {
   _id: ModelId;
   users: Array<User>;
   messages: Array<Message>;
-  lastMessage: Message;
+  lastMessage?: Message;
 }
 
 const chatSchema = new Schema<Chat>(

@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { Chats } from "components/chats";
 
 type PageProps = {
-  currentUser: string;
+  currentUser?: string;
 };
 
 export const getServerSideProps: GetServerSideProps<
@@ -12,15 +12,9 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const { user } = query;
 
-  if (!user || Array.isArray(user)) {
-    return {
-      notFound: true,
-    };
-  }
-
   return {
     props: {
-      currentUser: user,
+      currentUser: user || null,
     },
   };
 };

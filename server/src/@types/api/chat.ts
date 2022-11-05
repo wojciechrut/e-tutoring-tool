@@ -17,5 +17,3 @@ export type ChatAccessQuery = {
 
 export type ChatResponseBody = Chat;
 export type MultipleChatsResponseBody = Array<Omit<Chat, "messages">>;
-
-export type MultipleChatResponseBody = Array<Chat>;
