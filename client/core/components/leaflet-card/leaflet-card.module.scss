@@ -5,8 +5,59 @@
   width: 100%;
   background-color: var(--col-white);
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 5px;
+  font-size: var(--font-size-300);
+  grid-template-areas:
+    "title title title title"
+    "user user user date"
+    "for for for for"
+    "subjects subjects subjects subjects"
+    "levels levels levels levels";
 }
 
-.avatar {
-  grid-area: avatar;
+.user-avatar {
+  border: 1px solid var(--col-grey-100);
+}
+
+.user {
+  grid-area: user;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-nickname {
+  grid-area: nickname;
+}
+
+.leaflet-title {
+  grid-area: title;
+  @include max-lines-ellipsis(2);
+  font-size: var(--font-size-600);
+  color: var(--col-text-navy);
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.leaflet-date {
+  grid-area: date;
+  text-align: right;
+}
+
+.leaflet-looking-for {
+  @include max-lines-ellipsis(1);
+  grid-area: for;
+}
+
+.leaflet-subjects {
+  @include max-lines-ellipsis(1);
+  grid-area: subjects;
+}
+
+.leaflet-levels {
+  @include max-lines-ellipsis(1);
+  grid-area: levels;
 }
