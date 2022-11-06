@@ -11,6 +11,7 @@ export interface Message {
   chat: Chat;
   text?: string;
   files?: File[];
+  createdAt: string;
 }
 
 const messageSchema = new Schema<Message>(

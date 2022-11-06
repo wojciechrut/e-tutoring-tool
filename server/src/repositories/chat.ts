@@ -22,10 +22,15 @@ export enum ChatSelector {
   STANDARD = "-createdAt -updatedAt",
 }
 
-const populator = [
+const populator: Parameters<typeof Model.populate>[0] = [
   { path: "users", select: UserSelector.STANDARD },
   { path: "lastMessage" },
-  { path: "messages" },
+  {
+    path: "messages",
+    options: {
+      sort: { createdAt: -1 },
+    },
+  },
   { path: "messages.files", select: FileSelector.STANDARD },
 ];
 
