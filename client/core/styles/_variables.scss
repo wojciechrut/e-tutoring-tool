@@ -2,6 +2,7 @@
   // fonts
   --font-family-base: "Montserrat", sans-serif;
   --font-family-heading: "Barlow Condensed", sans-serif;
+  --font-size-min: 1.1rem;
   --font-size-100: 1.3rem;
   --font-size-200: 1.4rem;
   --font-size-300: 1.5rem;
@@ -41,6 +42,7 @@
   //box-shadows
   --bs-header: 0px 1px 3px hsla(231, 15%, 10%, 0.09);
   --bs-card: 1px 1px 3px hsla(231, 15%, 10%, 0.08);
+  --bs-card-inset: inset 0px 0px 1px 2px hsla(231, 15%, 10%, 0.11);
   --bs-select: 0px 0px 5px 1px hsla(231, 15%, 10%, 0.1);
 
   //animations

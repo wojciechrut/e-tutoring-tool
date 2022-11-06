@@ -46,15 +46,15 @@ $breakpoint-xl: 1280px;
   justify-content: center;
 }
 
-@mixin card-layout {
+@mixin card-layout($padding: 25px, $desktop-padding: 32px) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 25px;
+  padding: $padding;
   border-radius: 5px;
 
   @include sm {
-    padding: 32px;
+    padding: $desktop-padding;
   }
 }
 
@@ -63,6 +63,15 @@ $breakpoint-xl: 1280px;
   -webkit-line-clamp: $lines;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@mixin hover-card-shadow {
+  transition: box-shadow 0.25s;
+  box-shadow: var(--bs-card);
+
+  &:hover {
+    box-shadow: var(--bs-card-inset);
+  }
 }
 
 @mixin debug {

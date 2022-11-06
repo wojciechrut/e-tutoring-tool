@@ -1,0 +1,5 @@
+.container {
+  @include card-layout();
+  background-color: var(--col-white);
+  width: 100%;
+}

@@ -1,16 +1,17 @@
 .container {
   @include card-layout();
+  @include hover-card-shadow();
   position: relative;
   cursor: pointer;
   flex-direction: row;
   background-color: var(--col-white);
-  box-shadow: var(--bs-card);
   gap: 15px;
 }
 
 .avatar {
   border: 1px solid var(--col-grey-100);
   border-radius: 50%;
+  align-self: flex-start;
 }
 
 .text-section {
@@ -18,11 +19,11 @@
   flex-direction: column;
   justify-content: center;
   gap: 10px;
+  flex: 1;
 }
 
 .last-message,
 .nickname {
-  @include max-lines-ellipsis(2);
   display: inline-block;
   flex: 1;
   text-align: left;
@@ -33,5 +34,14 @@
 }
 
 .last-message {
-  font-size: var(--font-size-200);
+  @include max-lines-ellipsis(2);
+  font-size: var(--font-size-100);
+  color: var(--col-text-navy);
+  min-height: 40px;
+}
+
+.last-message-date {
+  align-self: flex-end;
+  font-size: var(--font-size-min);
+  color: var(--col-grey-700);
 }

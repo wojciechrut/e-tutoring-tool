@@ -8,16 +8,24 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .chats {
   display: none;
   height: 100%;
   max-width: 300px;
-  width: 300px;
+  width: 100%;
   background-color: var(--col-grey-100);
   border-radius: 4px;
   padding: 10px;
+  overflow-y: scroll;
+
+  @include md {
+    display: block;
+    margin-right: 5px;
+  }
 
   &--show {
     display: block;
@@ -26,7 +34,45 @@
 
 .current-chat {
   display: none;
+  width: 100%;
+  margin: auto;
+  height: 100%;
+
+  @include md {
+    display: block;
+  }
+
   &--show {
     display: block;
+  }
+
+  &-container {
+    height: 100%;
+    width: 100%;
+    background-color: var(--col-grey-100);
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  &__top {
+    @include card-layout(12px, 12px);
+    background-color: var(--col-white);
+    flex-direction: row;
+    box-shadow: var(--bs-card);
+    margin-bottom: 5px;
+  }
+
+  &__back-button {
+    margin-left: auto;
+
+    @include md {
+      display: none;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 }

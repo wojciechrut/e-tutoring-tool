@@ -7,34 +7,41 @@ import { useAuth } from "contexts/auth";
 import Spinner from "assets/spinner.svg";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { Button } from "components/common/button";
+import { printDatabaseDate } from "helpers/date";
+import { UserAvatar } from "components/common/user-avatar";
 
 export const Chats: FC = () => {
+  const { push } = useRouter();
   const { user } = useRouter().query;
-  const [currentUser, setCurrentUser] = useState<string | null>();
+  const [currentUserId, setCurrentUserId] = useState<string | null>();
   const { user: userData } = useAuth();
   const [chats, setChats] = useState<MultipleChatsResponseBody | null>();
   const [loadingChats, setLoadingChats] = useState<boolean>(true);
   const [currentChat, setCurrentChat] = useState<ChatResponseBody | null>();
-  const [loadingCurrentChat, setLoadingCurrentChat] = useState<boolean>(true);
-  const [showCurrentChat, setShowCurrentChat] = useState<boolean>(
-    !!currentUser
-  );
+  const [loadingCurrentChat, setLoadingCurrentChat] = useState<boolean>(false);
 
   useEffect(() => {
     const queryUser = typeof user === "string" ? user : undefined;
-    setCurrentUser(queryUser);
+    setCurrentUserId(queryUser);
   }, [user]);
 
   useEffect(() => {
-    currentUser &&
+    if (currentUserId) {
+      setLoadingCurrentChat(true);
       ChatService.accessChat({
-        userId: currentUser,
+        userId: currentUserId,
         meetingId: undefined,
       }).then((chat) => {
         setCurrentChat(chat);
         setLoadingCurrentChat(false);
       });
-  }, [currentUser]);
+    }
+
+    if (!currentUserId) {
+      setCurrentChat(null);
+    }
+  }, [currentUserId]);
 
   useEffect(() => {
     ChatService.getMyChats().then((chats) => {
@@ -42,6 +49,16 @@ export const Chats: FC = () => {
       setLoadingChats(false);
     });
   }, []);
+
+  const showAllChats = () => {
+    push("/chats", { query: undefined }, { shallow: true }).then(() =>
+      setCurrentUserId(null)
+    );
+  };
+
+  const currentUser = currentChat?.users.find(
+    (user) => user._id !== userData?._id
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -64,7 +81,11 @@ export const Chats: FC = () => {
                         lastMessage={lastMessage?.text}
                         isFriend={isFriend}
                         userId={user._id.toString()}
-                        setCurrentUser={setCurrentUser}
+                        setCurrentUser={setCurrentUserId}
+                        lastMessageDate={
+                          lastMessage &&
+                          printDatabaseDate(lastMessage.createdAt)
+                        }
                       />
                     </li>
                   )
@@ -81,7 +102,29 @@ export const Chats: FC = () => {
             !!currentChat && styles.currentChatShow
           )}
         >
-          {loadingChats ? <Spinner /> : <div> current chat</div>}
+          {loadingCurrentChat ? (
+            <Spinner />
+          ) : (
+            <div className={styles.currentChatContainer}>
+              {currentChat && currentUser ? (
+                <div className={styles.currentChatTop}>
+                  <div className={styles.currentChatUser}>
+                    <UserAvatar avatar={currentUser.avatar} size={35} />
+                    <span>{currentUser.nickname}</span>
+                  </div>
+                  <Button
+                    className={styles.currentChatBackButton}
+                    styleType={"link-like"}
+                    onClick={() => showAllChats()}
+                  >
+                    chats &rarr;
+                  </Button>
+                </div>
+              ) : (
+                <>Select chat</>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
