@@ -28,11 +28,14 @@ const populator: Parameters<typeof Model.populate>[0] = [
   {
     path: "messages",
     options: {
-      sort: { createdAt: -1 },
+      sort: { createdAt: 1 },
       limit: 100,
+      populate: [
+        { path: "files", select: FileSelector.STANDARD },
+        { path: "sender", select: "nickname avatar" },
+      ],
     },
   },
-  { path: "messages.files", select: FileSelector.STANDARD },
 ];
 
 const allPopulator = [
@@ -81,7 +84,10 @@ const findOne = async ({ users, ...rest }: SingleChatQuery) => {
 };
 
 const findAll = async (query: ManyChatsQuery) => {
-  return Model.find(query).select(ChatSelector.STANDARD).populate(allPopulator);
+  return Model.find(query)
+    .sort({ updatedAt: -1 })
+    .select(ChatSelector.STANDARD)
+    .populate(allPopulator);
 };
 
 const userHasAccess = async (user: string, chat: string) => {

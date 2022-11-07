@@ -1,3 +1,4 @@
 export type MessageSendRequestBody = {
-  text: string;
+  text?: string;
+  files?: Array<string>;
 };

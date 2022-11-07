@@ -1,5 +1,5 @@
 import { UseFormRegisterReturn } from "react-hook-form";
-import { FC, useRef, useState } from "react";
+import { ChangeEventHandler, FC, useRef, useState } from "react";
 import styles from "./file-input.module.scss";
 import clsx from "clsx";
 
@@ -27,11 +27,16 @@ export const FileInput: FC<FileInputProps> = ({
 }) => {
   const { ref, ...reflessRegister } = register;
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [fileValue, setFileValue] = useState("");
+  const [fileValue, setFileValue] = useState<string | null>(null);
 
-  const onChange = () => {
-    inputRef.current &&
-      setFileValue(inputRef.current.value.replace(/^.*[\\\/]/, ""));
+  const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const names = Array.from(files).map(({ name }) =>
+        name.replace(/^.*[\\\/]/, "")
+      );
+      setFileValue(names.join(", "));
+    }
   };
 
   return (
@@ -50,7 +55,7 @@ export const FileInput: FC<FileInputProps> = ({
           ref(e);
           inputRef.current = e;
         }}
-        multiple={multiple}
+        multiple
         accept={fileTypes[accept]}
         onChange={onChange}
       />

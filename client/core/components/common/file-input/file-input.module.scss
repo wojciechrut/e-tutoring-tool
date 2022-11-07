@@ -28,6 +28,7 @@
   font-style: italic;
   color: var(--col-main-400);
   font-size: var(--font-size-200);
+  @include max-lines-ellipsis(2);
 }
 
 .upload-icon {

@@ -2,14 +2,17 @@ import { AxiosResponse } from "axios";
 import {
   ChatFetchQuery,
   ChatResponseBody,
+  MessageSendRequestBody,
   MultipleChatsResponseBody,
 } from "@types";
 import UserService from "services/user";
 import api from "./api";
+import { createFormData } from "helpers/form-data";
 
 enum Paths {
   MINE = "chat/mine",
   ACCESS = "chat",
+  SEND_MESSAGE = "message",
 }
 
 const getMyChats = async () => {
@@ -35,5 +38,19 @@ const accessChat = async ({ userId, meetingId }: ChatFetchQuery) => {
   }
 };
 
-const ChatService = { getMyChats, accessChat };
+const sendMessage = async ({
+  chat,
+  text,
+  files,
+}: MessageSendRequestBody & { chat: string }) => {
+  UserService.setAuthFromStorage();
+  const { data: response }: AxiosResponse<string> = await api.post(
+    Paths.SEND_MESSAGE,
+    createFormData({ text, files }),
+    { params: { chat } }
+  );
+  return response;
+};
+
+const ChatService = { getMyChats, accessChat, sendMessage };
 export default ChatService;

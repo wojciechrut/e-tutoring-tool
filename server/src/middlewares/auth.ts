@@ -13,7 +13,9 @@ const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   const token = JWT.extractFromHeader(request.header("Authorization"));
   const { withFriends } = request.query;
 
+  console.log(token)
   if (!token) {
+    console.log(123);
     next(createError(ErrorStatus.UNAUTHORIZED, "Authorization failed"));
     return;
   }

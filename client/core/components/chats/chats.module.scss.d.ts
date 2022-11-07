@@ -1,4 +1,6 @@
+export const chatBox: string;
 export const chats: string;
+export const chatsList: string;
 export const chatsShow: string;
 export const container: string;
 export const currentChat: string;

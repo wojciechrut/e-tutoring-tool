@@ -14,6 +14,10 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding-top: 125px;
+  padding-top: 100px;
   padding-bottom: 20px;
+
+  @include sm {
+    padding-top: 125px;
+  }
 }

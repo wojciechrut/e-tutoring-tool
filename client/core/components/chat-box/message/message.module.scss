@@ -1,0 +1,31 @@
+.message {
+  position: relative;
+  background-color: var(--col-white);
+  padding: 3px 6px;
+  border-radius: 6px;
+  align-self: flex-start;
+  word-break: break-word;
+  margin-left: 30px;
+  max-width: calc(100% - 80px);
+  min-width: 50px;
+  --avatar-position: auto auto 0px -32px;
+
+  &__avatar {
+    position: absolute;
+    bottom: 0;
+    inset: var(--avatar-position);
+    border: 1px solid var(--col-grey-300);
+  }
+
+  &--mine {
+    align-self: flex-end;
+    margin-left: unset;
+    margin-right: 30px;
+    background-color: var(--col-main-200);
+    --avatar-position: auto -32px 0 auto;
+  }
+
+  &--last-of-sender {
+    margin-bottom: 10px;
+  }
+}

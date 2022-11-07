@@ -12,3 +12,5 @@ export type FileUploadResponseLocals = MeResponseLocals & {
 export type UploadedIdsResponseLocals = {
   uploadedIds?: Array<ModelId>;
 };
+
+export type FileData = File;

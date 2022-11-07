@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { Button } from "components/common/button";
 import { printDatabaseDate } from "helpers/date";
 import { UserAvatar } from "components/common/user-avatar";
+import { ChatBox } from "components/chat-box";
 
 export const Chats: FC = () => {
   const { push } = useRouter();
@@ -67,7 +68,7 @@ export const Chats: FC = () => {
           {loadingChats ? (
             <Spinner />
           ) : chats ? (
-            <ul>
+            <ul className={styles.chatsList}>
               {chats.map(({ users, lastMessage, _id }) => {
                 const user = users.find((user) => user._id !== userData?._id);
                 const isFriend =
@@ -104,26 +105,25 @@ export const Chats: FC = () => {
         >
           {loadingCurrentChat ? (
             <Spinner />
-          ) : (
+          ) : currentChat && currentUser ? (
             <div className={styles.currentChatContainer}>
-              {currentChat && currentUser ? (
-                <div className={styles.currentChatTop}>
-                  <div className={styles.currentChatUser}>
-                    <UserAvatar avatar={currentUser.avatar} size={35} />
-                    <span>{currentUser.nickname}</span>
-                  </div>
-                  <Button
-                    className={styles.currentChatBackButton}
-                    styleType={"link-like"}
-                    onClick={() => showAllChats()}
-                  >
-                    chats &rarr;
-                  </Button>
+              <div className={styles.currentChatTop}>
+                <div className={styles.currentChatUser}>
+                  <UserAvatar avatar={currentUser.avatar} size={35} />
+                  <span>{currentUser.nickname}</span>
                 </div>
-              ) : (
-                <>Select chat</>
-              )}
+                <Button
+                  className={styles.currentChatBackButton}
+                  styleType={"link-like"}
+                  onClick={() => showAllChats()}
+                >
+                  chats &rarr;
+                </Button>
+              </div>
+              <ChatBox className={styles.chatBox} chat={currentChat} />
             </div>
+          ) : (
+            <>Select chat</>
           )}
         </div>
       </div>

@@ -7,8 +7,11 @@ export type AppError =
   | null
   | undefined;
 
-export const parseError = (error: unknown): AppError => {
+export const parseError = (error?: unknown): AppError => {
   let responseStatus, errorMessages;
+  if (!error) {
+    return;
+  }
   if (error instanceof AxiosError) {
     const { status, messages } = error?.response?.data;
     responseStatus = status || "500";

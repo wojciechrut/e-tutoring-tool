@@ -1,5 +1,6 @@
 import {
   Control,
+  FieldErrors,
   FieldErrorsImpl,
   FieldValues,
   Path,
@@ -64,7 +65,7 @@ const isSelectInput = <T extends FieldValues>(
 export const renderFormInputs = <T extends FieldValues>(
   inputs: FormInputs<T>,
   register: UseFormRegister<T>,
-  errors: FieldErrorsImpl<T>,
+  errors: FieldErrorsImpl<T> | FieldErrors<T>,
   control?: Control<T>
 ) => {
   return inputs.map((input) => {
@@ -84,7 +85,7 @@ export const renderFormInputs = <T extends FieldValues>(
 const renderTextInput = <T extends FieldValues>(
   input: FormInputText<T>,
   register: UseFormRegister<T>,
-  errors: FieldErrorsImpl<T>
+  errors: FieldErrorsImpl<T> | FieldErrors<T>
 ) => {
   const { type, registerOptions, name, ...restInputProps } = input;
   const registerReturn = register(name, registerOptions);
@@ -101,7 +102,7 @@ const renderTextInput = <T extends FieldValues>(
 const renderFileInput = <T extends FieldValues>(
   input: FormInputFile<T>,
   register: UseFormRegister<T>,
-  errors: FieldErrorsImpl<T>
+  errors: FieldErrorsImpl<T> | FieldErrors<T>
 ) => {
   const { type, registerOptions, name, ...restInputProps } = input;
   const registerReturn = register(name, registerOptions);
@@ -124,7 +125,7 @@ const isStringOptions = (
 const renderSelectInput = <T extends FieldValues>(
   input: FormInputSelect<T>,
   control: Control<T>,
-  errors: FieldErrorsImpl<T>
+  errors: FieldErrorsImpl<T> | FieldErrors<T>
 ) => {
   const { type, name, options, ...restInputProps } = input;
   let finalOptions;

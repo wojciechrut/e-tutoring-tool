@@ -86,11 +86,7 @@ export const RegisterForm: FC = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       {renderFormInputs(inputs, register, errors)}
-      <Button
-        className={styles.submitButton}
-        type={"submit"}
-        styleType={"primary"}
-      >
+      <Button type={"submit"} styleType={"primary"}>
         Register
       </Button>
     </form>

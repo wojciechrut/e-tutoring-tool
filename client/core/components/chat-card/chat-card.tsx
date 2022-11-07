@@ -19,7 +19,6 @@ export const ChatCard: FC<ChatCardProps> = ({
   nickname,
   lastMessage,
   lastMessageDate,
-  isFriend,
   userId,
   setCurrentUser,
 }) => {
@@ -39,9 +38,7 @@ export const ChatCard: FC<ChatCardProps> = ({
         <span className={styles.lastMessage}>
           {lastMessage || "Chat empty"}
         </span>
-        <span className={styles.lastMessageDate}>
-          {lastMessageDate}2011-11-10
-        </span>
+        <span className={styles.lastMessageDate}>{lastMessageDate}</span>
       </div>
     </div>
   );
