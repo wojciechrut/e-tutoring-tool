@@ -3,6 +3,7 @@ import {
   ChatFetchQuery,
   ChatResponseBody,
   MessageSendRequestBody,
+  MessageSendResponseBody,
   MultipleChatsResponseBody,
 } from "@types";
 import UserService from "services/user";
@@ -44,11 +45,10 @@ const sendMessage = async ({
   files,
 }: MessageSendRequestBody & { chat: string }) => {
   UserService.setAuthFromStorage();
-  const { data: response }: AxiosResponse<string> = await api.post(
-    Paths.SEND_MESSAGE,
-    createFormData({ text, files }),
-    { params: { chat } }
-  );
+  const { data: response }: AxiosResponse<MessageSendResponseBody> =
+    await api.post(Paths.SEND_MESSAGE, createFormData({ text, files }), {
+      params: { chat },
+    });
   return response;
 };
 

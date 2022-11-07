@@ -7,7 +7,7 @@ export enum RequestState {
   SUCCEEDED,
 }
 
-const urls = {
+export const urls = {
   development: "http://localhost:5000/api",
   production: "http://localhost:5000/api",
   test: "http://localhost:5000/api",

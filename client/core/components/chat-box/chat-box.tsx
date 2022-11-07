@@ -6,6 +6,7 @@ import { useAuth } from "contexts/auth";
 import { Message } from "components/chat-box/message";
 import { useScrollAnchor } from "hooks/useScrollAnchor";
 import { Panel } from "components/chat-box/panel";
+import { useSocket } from "hooks/useSocket";
 
 type ChatBoxProps = {
   chat: ChatResponseBody;
@@ -16,6 +17,7 @@ export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
   const { messages } = chat;
   const { user } = useAuth();
   const anchorRef = useRef<HTMLDivElement>(null);
+  const { connected } = useSocket();
   const scrollRefresh = useScrollAnchor(anchorRef);
 
   return (
@@ -37,6 +39,7 @@ export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
       </div>
       <div className={styles.panel}>
         <Panel chatId={chat._id.toString()} />
+        {connected && "lol"}
       </div>
     </div>
   );

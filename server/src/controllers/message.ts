@@ -1,12 +1,13 @@
 import { RequestHandler } from "express";
 import {
+  ChatAccessQuery,
   FileUploadResponseLocals,
+  MessageSendRequestBody,
   UploadedIdsResponseLocals,
-} from "../@types/api/file";
+} from "../@types";
 import { createError } from "../utils/helpers/create-error";
 import MessageRepository from "../repositories/message";
 import ChatRepository from "../repositories/chat";
-import { ChatAccessQuery, MessageSendRequestBody } from "../@types";
 
 const send: RequestHandler<
   {},
@@ -20,16 +21,16 @@ const send: RequestHandler<
     const { chat } = request.query;
     const { text } = request.body;
 
-    const { _id: message } = await MessageRepository.create({
+    const message = await MessageRepository.create({
       sender,
       files,
       chat,
       text,
     });
 
-    await ChatRepository.addMessage({ chat, message });
+    await ChatRepository.addMessage({ chat, message: message._id });
 
-    response.send("Message sent successfully");
+    response.send(message);
   } catch (error) {
     next(createError(500, "Error occurred while sending a message"));
   }
