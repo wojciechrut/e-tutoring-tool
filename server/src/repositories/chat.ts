@@ -98,7 +98,7 @@ const userHasAccess = async (user: string, chat: string) => {
 };
 
 const addMessage = async ({ chat, message }: AddMessageQuery) => {
-  return Model.update(
+  return Model.updateOne(
     { _id: chat },
     { lastMessage: message, $push: { messages: message } }
   );

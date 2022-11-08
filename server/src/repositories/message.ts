@@ -14,8 +14,10 @@ export enum MessageSelector {
   STANDARD = "-createdAt -updatedAt",
 }
 
-const create = (query: Query) => {
-  return Model.create(query);
+const create = async (query: Query) => {
+  const message = await Model.create(query);
+  const { _id } = message.toObject();
+  return findOne({ _id });
 };
 
 const findAll = (query: Query) => {
@@ -23,7 +25,19 @@ const findAll = (query: Query) => {
 };
 
 const findOne = (query: Query) => {
-  return Model.findOne(query).select(MessageSelector.STANDARD);
+  return Model.findOne(query)
+    .select(MessageSelector.STANDARD)
+    .populate([
+      {
+        path: "chat",
+        select: "users",
+        populate: [{ path: "users", select: "_id nickname" }],
+      },
+      {
+        path: "sender",
+        select: "-friends",
+      },
+    ]);
 };
 
 export default { create, findAll, findOne };

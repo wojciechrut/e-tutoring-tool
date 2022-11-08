@@ -5,9 +5,11 @@ import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
 import ChatService from "services/chat";
 import { parseError } from "helpers/parse-error";
+import { MessageSendResponseBody } from "@types";
 
 type PanelProps = {
   chatId: string;
+  addMessage: (message: MessageSendResponseBody) => void;
 };
 
 type FieldValues = {
@@ -45,7 +47,7 @@ const messageInputs: FormInputs<FieldValues> = [
   },
 ];
 
-export const Panel: FC<PanelProps> = ({ chatId }) => {
+export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
   const {
     register,
     handleSubmit,
@@ -61,8 +63,9 @@ export const Panel: FC<PanelProps> = ({ chatId }) => {
       files,
       chat: chatId,
     })
-      .then(() => {
+      .then((message) => {
         reset(initialState);
+        addMessage(message);
       })
       .catch((error) => {
         setErrorMessage(parseError(error)?.messages[0]);

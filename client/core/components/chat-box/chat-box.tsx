@@ -1,6 +1,6 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styles from "./chat-box.module.scss";
-import { ChatResponseBody } from "@types";
+import { ChatResponseBody, MessageSendResponseBody } from "@types";
 import clsx from "clsx";
 import { useAuth } from "contexts/auth";
 import { Message } from "components/chat-box/message";
@@ -14,32 +14,51 @@ type ChatBoxProps = {
 };
 
 export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
-  const { messages } = chat;
   const { user } = useAuth();
+  const { connected, sendMessage, handleMessageReceived } = useSocket(
+    user?._id.toString() as string
+  );
+  const [messages, setMessages] = useState(chat.messages);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const { connected } = useSocket();
   const scrollRefresh = useScrollAnchor(anchorRef);
+
+  const addMessage = (message: MessageSendResponseBody) => {
+    sendMessage(message);
+    setMessages((previous) => [...previous, message]);
+  };
+
+  useEffect(() => {
+    handleMessageReceived((message) => {
+      setMessages((previous) => [...previous, message]);
+    });
+  }, [handleMessageReceived]);
+
+  useEffect(() => {
+    scrollRefresh();
+  }, [scrollRefresh, messages]);
 
   return (
     <div className={clsx(styles.container, className)}>
+      {connected && "con"}
       <div className={styles.messages}>
-        {messages.map(({ _id, sender, files, text, createdAt }, index) => (
-          <Message
-            key={_id.toString()}
-            text={text}
-            date={createdAt}
-            files={files}
-            sender={sender.nickname}
-            senderAvatar={sender.avatar}
-            lastOfSender={sender._id !== messages[index + 1]?.sender._id}
-            mine={sender._id === user?._id}
-          />
-        ))}
+        {messages.map(
+          ({ _id, sender, files, text, createdAt }, index, array) => (
+            <Message
+              key={`${_id.toString()}-${array.length}`}
+              text={text}
+              date={createdAt}
+              files={files}
+              sender={sender.nickname}
+              senderAvatar={sender.avatar}
+              lastOfSender={sender._id !== messages[index + 1]?.sender._id}
+              mine={sender._id === user?._id}
+            />
+          )
+        )}
         <div ref={anchorRef} />
       </div>
       <div className={styles.panel}>
-        <Panel chatId={chat._id.toString()} />
-        {connected && "lol"}
+        <Panel chatId={chat._id.toString()} addMessage={addMessage} />
       </div>
     </div>
   );

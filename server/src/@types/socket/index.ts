@@ -1,7 +1,12 @@
+import { Message } from "../../models/message";
+
 export interface ServerToClientEvents {
-  connected: (message: string) => void;
+  connected: () => void;
+  messageReceived: ((message: Message) => void) | undefined;
 }
 
 export interface ClientToServerEvents {
-  test: (message: string) => void;
+  setup: (userId: string) => void;
+  joinChat: (chatId: string) => void;
+  sendMessage: (message: Message) => void;
 }

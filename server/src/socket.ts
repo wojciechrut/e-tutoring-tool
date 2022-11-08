@@ -18,16 +18,36 @@ export const setupSocket = (server: http.Server) => {
   >(server, {
     pingTimeout: 60000,
     cors: {
-      origin: "*",
+      origin: ["http://localhost:5000"],
+      methods: ["GET", "POST"],
     },
   });
 
   io.on("connection", (socket) => {
     console.log("Socket connected");
 
-    socket.emit("connected", "Connected to socket");
-    socket.on("test", (message) => {
-      console.log("test socket send: " + message);
+    socket.on("setup", (userId) => {
+      socket.join(userId);
+      socket.emit("connected");
+    });
+
+    socket.on("joinChat", (chatId) => {
+      socket.join(chatId);
+    });
+
+    socket.on("sendMessage", (message) => {
+      const { users } = message.chat;
+
+      users.forEach((user) => {
+        if (!(user._id === message.sender._id)) {
+          socket.in(user._id.toString()).emit("messageReceived", message);
+        }
+      });
+    });
+
+    socket.off("setup", (userId) => {
+      console.log("Socket - user disconnected");
+      socket.leave(userId);
     });
   });
 };

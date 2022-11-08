@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import {
   ChatAccessQuery,
+  ErrorStatus,
   FileUploadResponseLocals,
   MessageSendRequestBody,
   UploadedIdsResponseLocals,
@@ -16,24 +17,25 @@ const send: RequestHandler<
   ChatAccessQuery,
   FileUploadResponseLocals & UploadedIdsResponseLocals
 > = async (request, response, next) => {
-  try {
-    const { _id: sender, uploadedIds: files } = response.locals;
-    const { chat } = request.query;
-    const { text } = request.body;
+  const { _id: sender, uploadedIds: files } = response.locals;
+  const { chat } = request.query;
+  const { text } = request.body;
 
-    const message = await MessageRepository.create({
-      sender,
-      files,
-      chat,
-      text,
-    });
+  const message = await MessageRepository.create({
+    sender,
+    files,
+    chat,
+    text,
+  });
 
-    await ChatRepository.addMessage({ chat, message: message._id });
-
-    response.send(message);
-  } catch (error) {
-    next(createError(500, "Error occurred while sending a message"));
+  if (!message) {
+    next(createError(ErrorStatus.SERVER));
+    return;
   }
+
+  await ChatRepository.addMessage({ chat, message: message._id });
+
+  response.send(message);
 };
 
 export default { send };
