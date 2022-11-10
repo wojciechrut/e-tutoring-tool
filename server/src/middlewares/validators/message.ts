@@ -1,11 +1,11 @@
 import {
   ChatAccessQuery,
   ErrorStatus,
+  FileUploadResponseLocals,
   MessageSendRequestBody,
 } from "../../@types";
 import { RequestHandler } from "express";
 import { createError } from "../../utils/helpers/create-error";
-import { FileUploadResponseLocals } from "../../@types/api/file";
 
 const send: RequestHandler<
   {},

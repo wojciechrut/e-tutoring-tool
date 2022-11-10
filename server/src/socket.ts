@@ -24,8 +24,6 @@ export const setupSocket = (server: http.Server) => {
   });
 
   io.on("connection", (socket) => {
-    console.log("Socket connected");
-
     socket.on("setup", (userId) => {
       socket.join(userId);
       socket.emit("connected");

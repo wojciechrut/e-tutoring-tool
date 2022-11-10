@@ -15,6 +15,7 @@ type FormInputCommon<T extends FieldValues> = {
   name: Path<T>;
   registerOptions?: RegisterOptions<T>;
   label: string;
+  key?: string;
   className?: string;
 };
 
@@ -22,6 +23,7 @@ type FormInputText<T extends FieldValues> = {
   type: "text";
   htmlType: "text" | "email" | "password";
   placeholder?: string;
+  noMargin?: boolean;
 } & FormInputCommon<T>;
 
 type FormInputSelect<T extends FieldValues> = {
@@ -35,6 +37,8 @@ type FormInputFile<T extends FieldValues> = {
   type: "file";
   multiple: boolean;
   accept: "all" | "image" | "document";
+  noText?: boolean;
+  watchedValue?: FileList;
 } & FormInputCommon<T>;
 
 type FormInput<T extends FieldValues> =

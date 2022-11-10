@@ -18,7 +18,7 @@
 
 .panel {
   @include card-layout(12px, 12px);
-  background-color: var(--col-grey-200);
+  background-color: var(--col-white);
   box-shadow: var(--bs-card);
   flex: 1;
 }

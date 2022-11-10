@@ -5,9 +5,49 @@
 
 .form {
   width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.form-top {
   display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .error {
   font-size: var(--font-size-100);
+  color: var(--col-error);
+  font-weight: 500;
+  margin-top: -10px;
+}
+
+.text-input {
+  min-width: 80%;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.file-input {
+  border: 1px solid var(--col-main-700) !important;
+
+  &:hover {
+    background-color: var(--col-main-700) !important;
+    color: var(--col-white);
+  }
+  margin-top: 5px;
+}
+
+.send-button {
+  border-radius: 50%;
+  width: 32.5px;
+  height: 32.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--col-main-700);
+}
+
+.send-button-container {
+  width: 10%;
 }

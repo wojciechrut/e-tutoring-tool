@@ -39,7 +39,6 @@ export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
 
   return (
     <div className={clsx(styles.container, className)}>
-      {connected && "con"}
       <div className={styles.messages}>
         {messages.map(
           ({ _id, sender, files, text, createdAt }, index, array) => (

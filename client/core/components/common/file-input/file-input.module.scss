@@ -22,13 +22,20 @@
     border-color: var(--col-main-400);
     background-color: var(--col-background);
   }
+
+  &--no-text {
+    span {
+      font-size: 0;
+    }
+  }
 }
 
 .filenames {
   font-style: italic;
-  color: var(--col-main-400);
+  color: var(--col-main-600);
   font-size: var(--font-size-200);
   @include max-lines-ellipsis(2);
+  word-break: break-word;
 }
 
 .upload-icon {
@@ -38,9 +45,10 @@
 }
 
 .input-label {
-  display: block;
+  display: inline-block;
   font-weight: 500;
   font-size: var(--font-size-100);
   color: var(--col-text-navy);
   margin-bottom: 3px;
+  margin-left: 5px;
 }

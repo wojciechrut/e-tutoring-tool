@@ -46,6 +46,7 @@ const uploadInfo: Record<UploadType, UploadOptions> = {
     maxCount: 3,
     path: FILES_DIR,
     fileType: fileTypes.image,
+    multipleFiles: true,
   },
 };
 

@@ -1,12 +1,11 @@
-import { ErrorStatus } from "../@types";
+import { ErrorStatus, FileUploadResponseLocals } from "../@types";
 import { createError } from "../utils/helpers/create-error";
 import { RequestHandler } from "express";
 import multerUpload, { UploadType } from "../utils/helpers/multer-upload";
-import { FileUploadResponseLocals } from "../@types/api/file";
 import { File } from "../models/file";
 
 const multerCodeMessages: Record<string, string> = {
-  LIMIT_UNEXPECTED_FILE: "Unexpected file.",
+  LIMIT_UNEXPECTED_FILE: "Too many files.",
 };
 
 const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {

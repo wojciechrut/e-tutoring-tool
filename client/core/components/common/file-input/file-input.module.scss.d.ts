@@ -3,4 +3,5 @@ export const input: string;
 export const inputGroup: string;
 export const inputLabel: string;
 export const inputReplacement: string;
+export const inputReplacementNoText: string;
 export const uploadIcon: string;

@@ -14,7 +14,7 @@ type PanelProps = {
 
 type FieldValues = {
   message: string;
-  files?: Array<string>;
+  files?: FileList;
 };
 
 const initialState: FieldValues = {
@@ -22,37 +22,13 @@ const initialState: FieldValues = {
   files: undefined,
 };
 
-const messageInputs: FormInputs<FieldValues> = [
-  {
-    name: "files",
-    type: "file",
-    multiple: true,
-    accept: "all",
-    label: "",
-    registerOptions: {
-      required: false,
-    },
-  },
-  {
-    name: "message",
-    type: "text",
-    htmlType: "text",
-    label: "",
-    registerOptions: {
-      maxLength: {
-        value: 125,
-        message: "Message too long",
-      },
-    },
-  },
-];
-
 export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm<FieldValues>();
   const [errorMessage, setErrorMessage] = useState<string | null>();
 
@@ -66,11 +42,41 @@ export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
       .then((message) => {
         reset(initialState);
         addMessage(message);
+        setErrorMessage(null);
       })
       .catch((error) => {
         setErrorMessage(parseError(error)?.messages[0]);
       });
   };
+
+  const messageInputs: FormInputs<FieldValues> = [
+    {
+      name: "message",
+      type: "text",
+      htmlType: "text",
+      noMargin: true,
+      label: "",
+      className: styles.textInput,
+      registerOptions: {
+        maxLength: {
+          value: 125,
+          message: "Message too long",
+        },
+      },
+    },
+    {
+      name: "files",
+      type: "file",
+      label: "Maximum 3 files",
+      multiple: true,
+      accept: "all",
+      className: styles.fileInput,
+      registerOptions: {
+        required: false,
+      },
+      watchedValue: watch("files"),
+    },
+  ];
 
   return (
     <div className={styles.panel}>
@@ -79,10 +85,17 @@ export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
       >
-        {renderFormInputs(messageInputs, register, errors)}
-        <Button type={"submit"}>Submit</Button>
+        <div className={styles.formTop}>
+          {renderFormInputs([messageInputs[0]], register, errors)}
+          <div className={styles.sendButtonContainer}>
+            <Button className={styles.sendButton} type={"submit"}>
+              <i className="fa-solid fa-arrow-up-right-from-square" />
+            </Button>
+          </div>
+        </div>
+        {renderFormInputs([messageInputs[1]], register, errors)}
+        <div className={styles.error}>{errorMessage}</div>
       </form>
-      <div className={styles.error}>{errorMessage}</div>
     </div>
   );
 };

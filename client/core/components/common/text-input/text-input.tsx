@@ -9,6 +9,8 @@ export type TextInputProps = {
   register: UseFormRegisterReturn<string>;
   errorMessage?: string;
   label: string;
+  noMargin?: boolean;
+  className?: string;
 };
 
 export const TextInput: FC<TextInputProps> = ({
@@ -17,9 +19,17 @@ export const TextInput: FC<TextInputProps> = ({
   register,
   label,
   errorMessage,
+  noMargin = false,
+  className,
 }) => {
   return (
-    <div className={styles.inputGroup}>
+    <div
+      className={clsx(
+        styles.inputGroup,
+        noMargin && styles.inputGroupNoMargin,
+        className
+      )}
+    >
       <label className={styles.label} htmlFor={register.name}>
         {label}
       </label>

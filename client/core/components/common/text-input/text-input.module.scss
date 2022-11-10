@@ -1,5 +1,9 @@
 .input-group {
   margin-bottom: 15px;
+
+  &--noMargin {
+    margin: 0;
+  }
 }
 
 .input {
