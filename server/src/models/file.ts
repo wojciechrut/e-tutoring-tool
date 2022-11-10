@@ -1,16 +1,14 @@
 import { commonSchemaOptions } from "./config/common-config";
-import { model, Schema, Types } from "mongoose";
+import { model, ObjectId, Schema, Types } from "mongoose";
 import { ModelId } from "./types/_id";
-import { User } from "./user";
-import { Chat } from "./chat";
 
 export interface File {
   _id: ModelId;
-  uploader: User;
+  uploader: ObjectId;
   type: "image" | "document";
   path: string;
   originalName: string;
-  chat?: Chat;
+  chat?: ObjectId;
 }
 
 const fileSchema = new Schema<File>(

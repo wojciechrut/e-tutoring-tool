@@ -46,7 +46,7 @@ const makeFriends = async (userId1: string, userId2: string) => {
   ]);
 };
 
-export default {
+const UserRepository = {
   findAll,
   findOne,
   findByCredentials,
@@ -54,3 +54,4 @@ export default {
   exists,
   makeFriends,
 };
+export default UserRepository;

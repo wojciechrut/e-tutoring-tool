@@ -15,9 +15,13 @@ const findAll = async (query: Query) => {
   return Model.find(query);
 };
 
+const findOne = async (query: Query) => {
+  return Model.findOne(query);
+};
+
 const createMany = async (query: Array<Query>) => {
   return Model.insertMany(query);
 };
 
-const FileRepository = { create, createMany, findAll };
+const FileRepository = { create, createMany, findAll, findOne };
 export default FileRepository;

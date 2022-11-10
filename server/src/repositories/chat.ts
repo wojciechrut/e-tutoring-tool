@@ -104,7 +104,7 @@ const addMessage = async ({ chat, message }: AddMessageQuery) => {
   );
 };
 
-export default {
+const ChatRepository = {
   findOrCreate,
   create,
   exists,
@@ -113,3 +113,5 @@ export default {
   userHasAccess,
   addMessage,
 };
+
+export default ChatRepository;
