@@ -12,7 +12,7 @@ export type ChatFetchQuery =
     };
 
 export type ChatAccessQuery = {
-  chat: ModelId;
+  chat?: ModelId;
 };
 
 export type ChatResponseBody = Chat;

@@ -6,11 +6,15 @@ export type FileUploadResponseLocals = MeResponseLocals & {
   uploads?: Array<{
     path: string;
     type: File["type"];
+    originalName: string;
+    chat?: ModelId;
   }>;
 };
 
 export type UploadedIdsResponseLocals = {
   uploadedIds?: Array<ModelId>;
 };
+
+export type MultipleFilesResponseBody = Array<File>;
 
 export type FileData = File;

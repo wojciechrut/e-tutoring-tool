@@ -19,4 +19,5 @@ const createMany = async (query: Array<Query>) => {
   return Model.insertMany(query);
 };
 
-export default { create, createMany, findAll };
+const FileRepository = { create, createMany, findAll };
+export default FileRepository;

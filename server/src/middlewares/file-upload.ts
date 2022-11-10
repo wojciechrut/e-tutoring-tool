@@ -9,12 +9,16 @@ const multerCodeMessages: Record<string, string> = {
 };
 
 const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {
-  const { filename, mimetype } = file;
+  const { filename, mimetype, originalname } = file;
   const fileType: File["type"] = mimetype.startsWith("image")
     ? "image"
     : "document";
   const folder = type === "avatar" ? "avatars" : "files";
-  return { path: `static/${folder}/${filename}`, type: fileType };
+  return {
+    path: `static/${folder}/${filename}`,
+    type: fileType,
+    originalName: originalname,
+  };
 };
 
 const extractUploadsMetadata = (
@@ -39,21 +43,26 @@ const extractUploadsMetadata = (
 export const upload =
   (
     type: UploadType
-  ): RequestHandler<any, any, any, any, FileUploadResponseLocals> =>
+  ): RequestHandler<
+    any,
+    any,
+    any,
+    { chat?: string },
+    FileUploadResponseLocals
+  > =>
   async (request, response, next) => {
     const upload = multerUpload(type);
+    upload(request, response, async (error) => {
+      if (error) {
+        const { code } = error;
 
-    upload(request, response, (error) => {
+        const codeMessage = multerCodeMessages[code];
+        next(
+          createError(ErrorStatus.BAD_REQUEST, codeMessage || error.message)
+        );
+        return;
+      }
       try {
-        if (error) {
-          const { code } = error;
-
-          const codeMessage = multerCodeMessages[code];
-          next(
-            createError(ErrorStatus.BAD_REQUEST, codeMessage || error.message)
-          );
-          return;
-        }
         const { file, files } = request;
         const uploadArray = file ? [file] : files ? files : undefined;
         const uploads = extractUploadsMetadata(type, uploadArray);

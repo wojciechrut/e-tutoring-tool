@@ -28,7 +28,7 @@ const send: RequestHandler<
     text,
   });
 
-  if (!message) {
+  if (!message || !chat) {
     next(createError(ErrorStatus.SERVER));
     return;
   }

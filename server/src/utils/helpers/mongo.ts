@@ -1,9 +1,9 @@
-import { ModelId } from './../../models/types/_id';
-import { JwtPayload } from 'jsonwebtoken';
-import { Types } from 'mongoose';
+import { ModelId } from "../../models/types/_id";
+import { JwtPayload } from "jsonwebtoken";
+import { Types } from "mongoose";
 
 export const id = (_id: ModelId) => {
-  if (typeof _id === 'string') return _id;
+  if (typeof _id === "string") return _id;
   return _id.toString();
 };
 
