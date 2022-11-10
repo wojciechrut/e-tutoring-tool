@@ -36,6 +36,7 @@ export const FileInput: FC<FileInputProps> = ({
   const inputRef = useRef<HTMLInputElement | null>();
 
   useEffect(() => {
+    setFileValue("");
     const files = watchedValue;
     if (files && files.length > 0) {
       const names = Array.from(files).map(({ name }) =>
@@ -44,8 +45,7 @@ export const FileInput: FC<FileInputProps> = ({
       setFileValue(names.join(", "));
       return;
     }
-    setFileValue("");
-  }, [watchedValue]);
+  }, [watchedValue, restRegister]);
 
   return (
     <div className={styles.inputGroup}>
