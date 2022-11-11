@@ -22,6 +22,13 @@ const findAll = async (query: Query) => {
     .populate("receiver", UserSelector.STANDARD);
 };
 
+const findUsersActive = async (userId: string) => {
+  return Model.find({ receiver: userId, active: true }).populate(
+    "sender",
+    UserSelector.STANDARD
+  );
+};
+
 const exists = async (query: Parameters<typeof Model.exists>[0]) => {
   return Model.exists(query);
 };
@@ -31,5 +38,12 @@ const setInactive = async (query: Query) => {
 
   return Model.updateOne({ _id }, { $set: { active: false } });
 };
-const InviteRepository = { create, findOne, setInactive, exists, findAll };
+const InviteRepository = {
+  create,
+  findOne,
+  setInactive,
+  exists,
+  findAll,
+  findUsersActive,
+};
 export default InviteRepository;

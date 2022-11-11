@@ -126,4 +126,18 @@ const getInviteStatus: RequestHandler<
   response.send({ status: "can invite" });
 };
 
-export default { send, getAll, setAccepted, getInviteStatus };
+const getMine: RequestHandler<
+  {},
+  MultipleInvitesResponseBody,
+  {},
+  {},
+  MeResponseLocals
+> = async (_request, response, _next) => {
+  const invites = await InviteRepository.findUsersActive(
+    response.locals._id.toString()
+  );
+
+  response.send(invites);
+};
+
+export default { send, getAll, setAccepted, getInviteStatus, getMine };
