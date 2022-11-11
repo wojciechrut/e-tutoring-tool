@@ -35,9 +35,7 @@ export const ChatCard: FC<ChatCardProps> = ({
       <UserAvatar className={styles.avatar} avatar={avatar} size={60} />
       <div className={styles.textSection}>
         <span className={styles.nickname}>{nickname}</span>
-        <span className={styles.lastMessage}>
-          {lastMessage || "Chat empty"}
-        </span>
+        <span className={styles.lastMessage}>{lastMessage}</span>
         <span className={styles.lastMessageDate}>{lastMessageDate}</span>
       </div>
     </div>

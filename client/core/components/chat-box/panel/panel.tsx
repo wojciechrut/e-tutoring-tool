@@ -36,7 +36,7 @@ export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
     const { message, files } = values;
     ChatService.sendMessage({
       text: message,
-      files,
+      files: files || undefined,
       chat: chatId,
     })
       .then((message) => {
@@ -74,7 +74,7 @@ export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {
       registerOptions: {
         required: false,
       },
-      watchedValue: watch("files"),
+      watchedValue: watch("files") || undefined,
     },
   ];
 

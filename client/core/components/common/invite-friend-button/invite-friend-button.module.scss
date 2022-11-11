@@ -1,0 +1,38 @@
+.wrapper {
+  background-color: var(--col-main-200);
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+.container {
+  @include flex-center();
+  gap: 5px;
+}
+
+.button {
+  @include flex-center();
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 25%;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: var(--col-main-100);
+  }
+}
+
+.label {
+  font-size: var(--font-size-200);
+  text-transform: uppercase;
+  font-weight: 500;
+  @include max-lines-ellipsis(2);
+}
+
+.spinner {
+  max-height: 22px;
+  max-width: 22px;
+}

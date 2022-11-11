@@ -96,10 +96,11 @@ const getInviteStatus: RequestHandler<
   }
 
   const isFriend = requesterFriends.some((friend) => {
-    return typeof friend === "string" ? friend === user : friend._id === user;
+    return friend.toString() === user;
   });
+  console.log({ isFriend, requesterFriends, requesterId, user });
   if (isFriend) {
-    response.send({ status: "friend" });
+    response.send({ status: "friend", inviteId: undefined });
     return;
   }
 
@@ -109,21 +110,24 @@ const getInviteStatus: RequestHandler<
     active: true,
   });
   if (isSent) {
-    response.send({ status: "invite sent" });
+    response.send({ status: "invite sent", inviteId: undefined });
     return;
   }
 
-  const isReceived = await InviteRepository.exists({
+  const receivedInvite = await InviteRepository.findOne({
     sender: user,
-    receiver: requesterId,
+    receiver: requesterId.toString(),
     active: true,
   });
-  if (isReceived) {
-    response.send({ status: "invited by" });
+  if (receivedInvite) {
+    response.send({
+      status: "invited by",
+      inviteId: receivedInvite._id.toString(),
+    });
     return;
   }
 
-  response.send({ status: "can invite" });
+  response.send({ status: "can invite", inviteId: undefined });
 };
 
 const getMine: RequestHandler<

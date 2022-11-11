@@ -11,6 +11,7 @@ import { Button } from "components/common/button";
 import { printDatabaseDate } from "helpers/date";
 import { UserAvatar } from "components/common/user-avatar";
 import { ChatBox } from "components/chat-box";
+import { InviteFriendButton } from "components/common/invite-friend-button";
 
 export const Chats: FC = () => {
   const { push } = useRouter();
@@ -111,6 +112,7 @@ export const Chats: FC = () => {
                 <div className={styles.currentChatUser}>
                   <UserAvatar avatar={currentUser.avatar} size={35} />
                   <span>{currentUser.nickname}</span>
+                  <InviteFriendButton userId={currentUser._id.toString()} />
                 </div>
                 <Button
                   className={styles.currentChatBackButton}

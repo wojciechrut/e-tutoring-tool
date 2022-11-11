@@ -70,6 +70,7 @@ const setAccepted: RequestHandler<
   const { inviteId } = request.params;
   const { accept } = request.query;
   const { _id: userId } = response.locals;
+  console.log({ userId, accept, inviteId });
 
   if (!accept) {
     next(
