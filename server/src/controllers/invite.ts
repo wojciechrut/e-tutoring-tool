@@ -1,16 +1,18 @@
-import { createError } from '../utils/helpers/create-error';
-import { id } from '../utils/helpers/mongo';
-import { MeResponseLocals } from '../@types';
+import { createError } from "../utils/helpers/create-error";
+import { id } from "../utils/helpers/mongo";
 import {
+  ErrorStatus,
   InviteSendQuery,
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
+  InviteStatusRequestQuery,
+  InviteStatusResponseBody,
+  MeResponseLocals,
   MultipleInvitesResponseBody,
-} from '../@types';
-import { RequestHandler } from 'express';
-import InviteRepository from '../repositories/invite';
-import { ErrorStatus } from '../@types';
-import UserRepository from '../repositories/user';
+} from "../@types";
+import { RequestHandler } from "express";
+import InviteRepository from "../repositories/invite";
+import UserRepository from "../repositories/user";
 
 const send: RequestHandler<
   {},
@@ -28,11 +30,11 @@ const send: RequestHandler<
   });
 
   if (!invite) {
-    next(createError(ErrorStatus.SERVER, 'Could not send invite.'));
+    next(createError(ErrorStatus.SERVER, "Could not send invite."));
     return;
   }
 
-  response.send('Invite sent successfully');
+  response.send("Invite sent successfully");
 };
 
 const getAll: RequestHandler<{}, MultipleInvitesResponseBody> = async (
@@ -66,12 +68,62 @@ const setAccepted: RequestHandler<
     _id: inviteId,
   });
 
-  if (accept === 'true') {
+  if (accept === "true") {
     await UserRepository.makeFriends(id(receiver), sender);
-    response.send('Invite accepted.');
+    response.send("Invite accepted.");
   } else {
-    response.send('Invite declined.');
+    response.send("Invite declined.");
   }
 };
 
-export default { send, getAll, setAccepted };
+const getInviteStatus: RequestHandler<
+  {},
+  InviteStatusResponseBody,
+  {},
+  InviteStatusRequestQuery,
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { _id: requesterId, friends: requesterFriends } = response.locals;
+  const { user } = request.query;
+
+  if (!user || user === requesterId) {
+    next(
+      createError(
+        ErrorStatus.BAD_REQUEST,
+        "You must specify user other than ourself"
+      )
+    );
+  }
+
+  const isFriend = requesterFriends.some((friend) => {
+    return typeof friend === "string" ? friend === user : friend._id === user;
+  });
+  if (isFriend) {
+    response.send({ status: "friend" });
+    return;
+  }
+
+  const isSent = await InviteRepository.exists({
+    sender: requesterId,
+    receiver: user,
+    active: true,
+  });
+  if (isSent) {
+    response.send({ status: "invite sent" });
+    return;
+  }
+
+  const isReceived = await InviteRepository.exists({
+    sender: user,
+    receiver: requesterId,
+    active: true,
+  });
+  if (isReceived) {
+    response.send({ status: "invited by" });
+    return;
+  }
+
+  response.send({ status: "can invite" });
+};
+
+export default { send, getAll, setAccepted, getInviteStatus };

@@ -18,5 +18,3 @@ export type MeResponseBody = MeResponseLocals;
 export type MultipleUsersResponseBody = Array<UserResponseBody>;
 
 export type UserCredentials = Pick<User, "email" | "password">;
-
-export type UserAuthorizationRequestBody = { token: string };

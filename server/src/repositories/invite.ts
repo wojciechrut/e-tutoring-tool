@@ -22,16 +22,14 @@ const findAll = async (query: Query) => {
     .populate("receiver", UserSelector.STANDARD);
 };
 
-const exists = async (query: Query) => {
+const exists = async (query: Parameters<typeof Model.exists>[0]) => {
   return Model.exists(query);
 };
 
 const setInactive = async (query: Query) => {
-  const { sender, receiver, _id } = query;
-  return Model.updateOne(
-    { _id, sender, receiver },
-    { $set: { active: false } }
-  );
-};
+  const { _id } = query;
 
-export default { create, findOne, setInactive, exists, findAll };
+  return Model.updateOne({ _id }, { $set: { active: false } });
+};
+const InviteRepository = { create, findOne, setInactive, exists, findAll };
+export default InviteRepository;

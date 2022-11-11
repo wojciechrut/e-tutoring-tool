@@ -4,12 +4,12 @@ import {
   InviteSetAcceptedParams,
   InviteSetAcceptedQuery,
   MeResponseLocals,
-} from '../../@types';
-import { RequestHandler } from 'express';
-import UserRepository from '../../repositories/user';
-import InviteRepository from '../../repositories/invite';
-import { createError } from '../../utils/helpers/create-error';
-import { _id, id } from '../../utils/helpers/mongo';
+} from "../../@types";
+import { RequestHandler } from "express";
+import UserRepository from "../../repositories/user";
+import InviteRepository from "../../repositories/invite";
+import { createError } from "../../utils/helpers/create-error";
+import { _id, id } from "../../utils/helpers/mongo";
 
 const send: RequestHandler<
   {},
@@ -22,12 +22,12 @@ const send: RequestHandler<
   const sender = response.locals;
 
   if (!receiverId) {
-    next(createError(ErrorStatus.BAD_REQUEST, 'Missing user id parameter.'));
+    next(createError(ErrorStatus.BAD_REQUEST, "Missing user id parameter."));
     return;
   }
 
   if (id(sender._id) === receiverId) {
-    next(createError(ErrorStatus.BAD_REQUEST, 'You are already friends.'));
+    next(createError(ErrorStatus.BAD_REQUEST, "You are already friends."));
     return;
   }
 
@@ -53,7 +53,7 @@ const send: RequestHandler<
   });
 
   if (isInviteSentAlready) {
-    next(createError(ErrorStatus.BAD_REQUEST, 'You already invited this user'));
+    next(createError(ErrorStatus.BAD_REQUEST, "You already invited this user"));
     return;
   }
 
@@ -73,7 +73,7 @@ const setAccepted: RequestHandler<
 
   if (!accept) {
     next(
-      createError(ErrorStatus.BAD_REQUEST, 'Missing accept query parameter.')
+      createError(ErrorStatus.BAD_REQUEST, "Missing accept query parameter.")
     );
     return;
   }
@@ -88,7 +88,7 @@ const setAccepted: RequestHandler<
     next(
       createError(
         ErrorStatus.BAD_REQUEST,
-        'Invite does not exist or you are not receiver of it.'
+        "Invite does not exist or you are not receiver of it."
       )
     );
     return;

@@ -10,5 +10,6 @@ inviteRoutes.route("/").post(auth, InviteValidator.send, InviteController.send);
 inviteRoutes
   .route("/:inviteId")
   .post(auth, InviteValidator.setAccepted, InviteController.setAccepted);
+inviteRoutes.route("/status").get(auth, InviteController.getInviteStatus);
 
 export default inviteRoutes;
