@@ -15,7 +15,7 @@ const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {
     : "document";
   const folder = type === "avatar" ? "avatars" : "files";
   return {
-    path: `static/${folder}/${filename}`,
+    path: `/static/${folder}/${filename}`,
     type: fileType,
     originalName: originalname,
   };

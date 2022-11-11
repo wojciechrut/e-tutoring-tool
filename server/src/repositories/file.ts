@@ -4,7 +4,7 @@ import { ModelId } from "../models/types/_id";
 type Query = Partial<File | { uploader: ModelId }>;
 
 export enum FileSelector {
-  STANDARD = "_id path uploader type",
+  STANDARD = "_id path uploader type originalName",
 }
 
 const create = async (query: Query) => {

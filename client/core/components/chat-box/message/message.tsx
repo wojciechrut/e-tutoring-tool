@@ -3,6 +3,7 @@ import styles from "./message.module.scss";
 import { FileData } from "@types";
 import clsx from "clsx";
 import { UserAvatar } from "components/common/user-avatar";
+import { FileDownload } from "components/common/file-download";
 
 type MessageProps = {
   text?: string;
@@ -26,19 +27,34 @@ export const Message: FC<MessageProps> = ({
   return (
     <div
       className={clsx(
-        styles.message,
-        mine && styles.messageMine,
-        lastOfSender && styles.messageLastOfSender
+        styles.container,
+        mine && styles.containerMine,
+        lastOfSender && styles.containerLastOfSender
       )}
     >
-      {lastOfSender && (
-        <UserAvatar
-          className={styles.messageAvatar}
-          avatar={senderAvatar}
-          size={25}
-        />
+      {text && <span className={clsx(styles.message)}>{text}</span>}
+      {files && files.length > 0 && (
+        <div className={styles.files}>
+          {files.map(({ _id, originalName, path, type }) => (
+            <FileDownload
+              key={_id.toString()}
+              name={originalName}
+              path={path}
+              type={type}
+              className={mine && styles.fileDownloadMine}
+            />
+          ))}
+        </div>
       )}
-      {text}
+      {lastOfSender && (
+        <>
+          <UserAvatar
+            className={styles.avatar}
+            avatar={senderAvatar}
+            size={25}
+          />
+        </>
+      )}
     </div>
   );
 };

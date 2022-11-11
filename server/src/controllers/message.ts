@@ -35,6 +35,7 @@ const send: RequestHandler<
 
   await ChatRepository.addMessage({ chat, message: message._id });
 
+  console.log(message);
   response.send(message);
 };
 

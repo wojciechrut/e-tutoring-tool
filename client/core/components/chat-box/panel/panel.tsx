@@ -14,12 +14,12 @@ type PanelProps = {
 
 type FieldValues = {
   message: string;
-  files?: FileList;
+  files?: FileList | null;
 };
 
 const initialState: FieldValues = {
   message: "",
-  files: undefined,
+  files: null,
 };
 
 export const Panel: FC<PanelProps> = ({ chatId, addMessage }) => {

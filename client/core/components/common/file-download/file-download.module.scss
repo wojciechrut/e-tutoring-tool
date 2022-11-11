@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--col-main-300);
+  background-color: var(--col-white);
+}
+
+.filename {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 200px;
+}
+
+.download-link {
+  color: var(--col-text-navy);
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: inherit;
+  font-size: var(--font-size-300);
+  margin: 0 10px;
+  gap: 5px;
+}
+
+.icon-wrapper {
+  font-size: var(--font-size-500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 33px;
+  outline: 1px solid var(--col-main-300);
+  background-color: var(--col-main-300);
+  color: var(--col-white);
+}

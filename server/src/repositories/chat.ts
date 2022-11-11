@@ -29,7 +29,6 @@ const populator: Parameters<typeof Model.populate>[0] = [
     path: "messages",
     options: {
       sort: { createdAt: 1 },
-      limit: 100,
       populate: [
         { path: "files", select: FileSelector.STANDARD },
         { path: "sender", select: "nickname avatar" },
