@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+    "@types/fabric": "^4.5.12",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/multer": "^1.4.7",
     "kill-port": "^2.0.1",
