@@ -58,6 +58,13 @@ export const Chats: FC = () => {
     );
   };
 
+  const refetchChats = () => {
+    ChatService.getMyChats().then((chats) => {
+      setChats(chats);
+      setLoadingChats(false);
+    });
+  };
+
   const currentUser = currentChat?.users.find(
     (user) => user._id !== userData?._id
   );
@@ -72,16 +79,18 @@ export const Chats: FC = () => {
             <ul className={styles.chatsList}>
               {chats.map(({ users, lastMessage, _id }) => {
                 const user = users.find((user) => user._id !== userData?._id);
-                const isFriend =
-                  userData?.friends.includes(user?._id || "") || false;
+                const filesCount = lastMessage?.files?.length || 0;
+                const lastMessageLabel =
+                  lastMessage?.text ||
+                  (filesCount > 0 && `Files: ${filesCount}`) ||
+                  "Chat empty";
                 return (
                   user && (
                     <li key={_id.toString()}>
                       <ChatCard
                         avatar={user.avatar}
                         nickname={user.nickname}
-                        lastMessage={lastMessage?.text}
-                        isFriend={isFriend}
+                        lastMessage={lastMessageLabel}
                         userId={user._id.toString()}
                         setCurrentUser={setCurrentUserId}
                         lastMessageDate={
@@ -122,7 +131,11 @@ export const Chats: FC = () => {
                   chats &rarr;
                 </Button>
               </div>
-              <ChatBox className={styles.chatBox} chat={currentChat} />
+              <ChatBox
+                className={styles.chatBox}
+                chat={currentChat}
+                updateLastMessage={refetchChats}
+              />
             </div>
           ) : (
             <>Select chat</>

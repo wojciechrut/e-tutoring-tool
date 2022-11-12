@@ -98,7 +98,6 @@ const getInviteStatus: RequestHandler<
   const isFriend = requesterFriends.some((friend) => {
     return friend.toString() === user;
   });
-  console.log({ isFriend, requesterFriends, requesterId, user });
   if (isFriend) {
     response.send({ status: "friend", inviteId: undefined });
     return;

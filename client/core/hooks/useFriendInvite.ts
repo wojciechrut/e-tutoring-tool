@@ -24,7 +24,6 @@ export const useFriendInvite = (userId: string) => {
       setLoading(true);
       InviteService.send(userId)
         .then((invite) => {
-          setInviteId(invite._id.toString());
           setStatus("invite sent");
           setLoading(false);
         })

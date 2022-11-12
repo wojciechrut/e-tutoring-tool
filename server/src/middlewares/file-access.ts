@@ -32,7 +32,6 @@ const fileAccess: RequestHandler<
     (await ChatRepository.userHasAccess(userId.toString(), chat.toString()));
 
   if (!(isUploader || hasChatAccess)) {
-    console.log({ uploader, chat, path });
     next(
       createError(ErrorStatus.FORBIDDEN, "You don't have access to this file")
     );

@@ -11,12 +11,17 @@ import { useSocket } from "hooks/useSocket";
 type ChatBoxProps = {
   chat: ChatResponseBody;
   className?: string;
+  updateLastMessage: () => void;
 };
 
-export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
+export const ChatBox: FC<ChatBoxProps> = ({
+  chat,
+  className,
+  updateLastMessage,
+}) => {
   const { user } = useAuth();
   const { connected, sendMessage, handleMessageReceived } = useSocket(
-    user?._id.toString() as string
+    user!!._id.toString()
   );
   const [messages, setMessages] = useState(chat.messages);
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -24,6 +29,7 @@ export const ChatBox: FC<ChatBoxProps> = ({ chat, className }) => {
 
   const addMessage = (message: MessageSendResponseBody) => {
     sendMessage(message);
+    updateLastMessage();
     setMessages((previous) => [...previous, message]);
   };
 

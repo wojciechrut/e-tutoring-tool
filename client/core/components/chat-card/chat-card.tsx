@@ -10,7 +10,6 @@ type ChatCardProps = {
   nickname: string;
   lastMessage?: string;
   lastMessageDate?: string;
-  isFriend: boolean;
   setCurrentUser: (user: string) => void;
 };
 
