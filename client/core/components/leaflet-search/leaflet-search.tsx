@@ -73,6 +73,7 @@ export const LeafletSearch: FC = () => {
           message: "Phrase too long",
         },
       },
+      noMargin: true,
     },
     {
       type: "select",

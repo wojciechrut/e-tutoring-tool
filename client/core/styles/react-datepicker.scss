@@ -1,0 +1,168 @@
+@import "react-datepicker/dist/react-datepicker.css";
+
+//overriding default react-datepicker classes styles
+.react-datepicker {
+  --border: 1px solid var(--col-main-600);
+  --border-inside: 1px solid var(--col-grey-200);
+  --hp: 4px;
+  --vp: 8px;
+  --day-col-width: 30px;
+  font-family: inherit;
+  font-size: var(--font-size-300);
+  color: var(--col-black);
+  border: var(--border);
+  background-color: var(--col-white);
+  width: 100%;
+  box-shadow: var(--bs-select);
+  display: flex;
+
+  &__tab-loop {
+    width: 100%;
+    position: relative;
+  }
+
+  &-popper {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  &__input {
+    &-container {
+      width: 100%;
+      border: 1px solid var(--col-grey-200);
+      border-radius: 3px;
+      font-size: var(--font-size-300);
+
+      & > input {
+        width: 100%;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+    }
+  }
+
+  &__triangle {
+    transform: translate(50px) !important;
+  }
+
+  &__triangle::before,
+  &-popper[data-placement^="bottom"],
+  &-popper[data-placement^="top"] {
+    border-bottom-color: var(--col-main-600) !important;
+    border-top-color: var(--col-main-600) !important;
+  }
+
+  &__triangle::after {
+    border-bottom-color: var(--col-white) !important;
+  }
+
+  &__header {
+    padding: var(--vp) var(--hp);
+    background-color: var(--col-white);
+    border-bottom: var(--border-inside);
+  }
+
+  &__navigation {
+    top: 0;
+    height: 40px;
+
+    &-icon {
+      &::before {
+        top: 10px;
+        border-color: var(--col-main-600);
+      }
+    }
+  }
+
+  &__current-month {
+    font-size: var(--font-size-400);
+    color: var(--col-text-navy);
+    margin-bottom: 4px;
+  }
+
+  &__day-names {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: -4px;
+  }
+
+  &__day-name {
+    width: var(--day-col-width);
+    font-size: var(--font-size-200);
+    text-align: center;
+  }
+
+  &__month {
+    margin: 0;
+    padding: var(--vp) var(--hp);
+
+    &-container {
+      flex: 1;
+    }
+  }
+
+  &__week {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__day {
+    width: var(--day-col-width);
+    height: var(--day-col-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+
+    &:hover:not(&--disabled) {
+      background-color: var(--col-main-100) !important;
+    }
+
+    &--selected {
+      background-color: var(--col-main-400);
+      font-weight: 600;
+    }
+  }
+
+  &-time__header {
+    font-size: var(--font-size-100);
+  }
+
+  &__time {
+    flex: 1;
+
+    & * {
+      border-color: var(--border-inside) !important;
+    }
+
+    &-box {
+      height: 100%;
+    }
+
+    &-list {
+      &:defined {
+        min-height: 100%;
+      }
+
+      &-item {
+        margin: 0 5px;
+
+        &:hover {
+          background-color: var(--col-main-100) !important;
+        }
+      }
+    }
+
+    &-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-list-item {
+      &--disabled {
+        display: none;
+      }
+    }
+  }
+}

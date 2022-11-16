@@ -8,7 +8,7 @@ import Spinner from "assets/spinner.svg";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { Button } from "components/common/button";
-import { printDatabaseDate } from "helpers/date";
+import { stringifyDate } from "helpers/date";
 import { UserAvatar } from "components/common/user-avatar";
 import { ChatBox } from "components/chat-box";
 import { InviteFriendButton } from "components/common/invite-friend-button";
@@ -94,8 +94,7 @@ export const Chats: FC = () => {
                         userId={user._id.toString()}
                         setCurrentUser={setCurrentUserId}
                         lastMessageDate={
-                          lastMessage &&
-                          printDatabaseDate(lastMessage.createdAt)
+                          lastMessage && stringifyDate(lastMessage.createdAt)
                         }
                       />
                     </li>

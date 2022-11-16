@@ -11,7 +11,7 @@ export interface Meeting {
   organiser: User;
   chat: Chat;
   whiteboard: Whiteboard;
-  startsAt: string;
+  startsAt: Date;
   finished: boolean;
   invited: Array<User>;
   subjects: typeof leafletCategories.subjects;

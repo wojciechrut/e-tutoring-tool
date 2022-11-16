@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { LeafletSearchResponseBody } from "@types";
 import styles from "./leaflet-card.module.scss";
 import { UserAvatar } from "components/common/user-avatar";
-import { printDatabaseDate } from "helpers/date";
+import { stringifyDate } from "helpers/date";
 import { printArray } from "helpers/string";
 import { StyledLink } from "components/common/styled-link";
 
@@ -19,7 +19,7 @@ export const LeafletCard: FC<LeafletCardProps> = ({ leaflet }) => {
       <p className={styles.leafletLookingFor}>looking for {lookingFor}</p>
       <p className={styles.leafletSubjects}>to study {printArray(subjects)}</p>
       <p className={styles.leafletLevels}>at {printArray(levels)} level</p>
-      <p className={styles.leafletDate}>{printDatabaseDate(createdAt)}</p>
+      <p className={styles.leafletDate}>{stringifyDate(createdAt)}</p>
       <div className={styles.user}>
         <UserAvatar className={styles.userAvatar} avatar={avatar} size={50} />
         <p>{nickname}</p>

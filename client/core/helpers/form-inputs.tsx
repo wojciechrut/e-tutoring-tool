@@ -10,6 +10,7 @@ import {
 import { TextInput } from "components/common/text-input";
 import { FileInput } from "components/common/file-input";
 import { Option, SelectInput } from "components/common/select-input";
+import { DatetimeInput } from "components/common/datetime-input";
 
 type FormInputCommon<T extends FieldValues> = {
   name: Path<T>;
@@ -31,7 +32,7 @@ type FormInputSelect<T extends FieldValues> = {
   isMulti?: boolean;
   placeholder?: string;
   options: Array<Option> | Array<string>;
-  maxSelected: number;
+  maxSelected?: number;
 } & FormInputCommon<T>;
 
 type FormInputFile<T extends FieldValues> = {
@@ -42,10 +43,15 @@ type FormInputFile<T extends FieldValues> = {
   watchedValue?: FileList;
 } & FormInputCommon<T>;
 
+type FormInputDateTime<T extends FieldValues> = {
+  type: "datetime";
+} & FormInputCommon<T>;
+
 type FormInput<T extends FieldValues> =
   | FormInputText<T>
   | FormInputSelect<T>
-  | FormInputFile<T>;
+  | FormInputFile<T>
+  | FormInputDateTime<T>;
 
 export type FormInputs<T extends FieldValues> = Array<FormInput<T>>;
 
@@ -67,6 +73,12 @@ const isSelectInput = <T extends FieldValues>(
   return input.type === "select";
 };
 
+const isDateTimeInput = <T extends FieldValues>(
+  input: FormInput<T>
+): input is FormInputFile<T> => {
+  return input.type === "datetime";
+};
+
 export const renderFormInputs = <T extends FieldValues>(
   inputs: FormInputs<T>,
   register: UseFormRegister<T>,
@@ -82,6 +94,9 @@ export const renderFormInputs = <T extends FieldValues>(
     }
     if (isSelectInput(input) && control) {
       return renderSelectInput(input, control, errors);
+    }
+    if (isDateTimeInput(input) && control) {
+      return renderDateTimeInput(input, control, errors);
     }
     console.log("render not implemented for this input type");
   });
@@ -150,6 +165,21 @@ const renderSelectInput = <T extends FieldValues>(
       control={control}
       errorMessage={errors[name]?.message?.toString()}
       {...restInputProps}
+    />
+  );
+};
+
+const renderDateTimeInput = <T extends FieldValues>(
+  input: FormInputDateTime<T>,
+  control: Control<T>,
+  errors: FieldErrorsImpl<T> | FieldErrors<T>
+) => {
+  return (
+    <DatetimeInput
+      key={`formInput-${input.name}`}
+      {...input}
+      control={control}
+      errorMessage={errors[input.name]?.message?.toString()}
     />
   );
 };
