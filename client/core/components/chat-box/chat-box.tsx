@@ -20,7 +20,7 @@ export const ChatBox: FC<ChatBoxProps> = ({
   updateLastMessage,
 }) => {
   const { user } = useAuth();
-  const { connected, sendMessage, handleMessageReceived } = useSocket(
+  const { sendMessage, handleMessageReceived } = useSocket(
     user!!._id.toString()
   );
   const [messages, setMessages] = useState(chat.messages);

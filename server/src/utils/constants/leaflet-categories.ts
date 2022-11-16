@@ -13,3 +13,13 @@ export const leafletCategories = {
   ],
   levels: ["Elementary school", "Middle school", "High school", "University"],
 };
+
+export const getSymetricLookingFor = (
+  lookingFor: typeof leafletCategories.lookingFor[number]
+) => {
+  return lookingFor === "teacher"
+    ? "student"
+    : lookingFor === "student"
+    ? "teacher"
+    : "study partner";
+};

@@ -4,10 +4,11 @@ import {
   LeafletPostRequestBody,
   LeafletSearchQuery,
   LeafletSearchResponseBody,
-} from "../@types/api/leaflet";
-import { MeResponseLocals } from "../@types";
+  MeResponseLocals,
+} from "../@types";
 import LeafletRepository from "../repositories/leaflet";
 import { createError } from "../utils/helpers/create-error";
+import { getSymetricLookingFor } from "../utils/constants/leaflet-categories";
 
 const post: RequestHandler<
   {},
@@ -47,7 +48,7 @@ const search: RequestHandler<
   const searchResult = await LeafletRepository.findAll(
     {
       title,
-      lookingFor,
+      lookingFor: lookingFor && getSymetricLookingFor(lookingFor),
       levels,
       subjects,
       user,
