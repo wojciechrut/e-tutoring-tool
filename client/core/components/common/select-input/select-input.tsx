@@ -36,6 +36,7 @@ type SelectInputProps<T extends FieldValues> = {
   label?: string;
   className?: string;
   errorMessage?: string;
+  maxSelected?: number;
 };
 
 export const SelectInput = <T extends FieldValues>({
@@ -47,6 +48,7 @@ export const SelectInput = <T extends FieldValues>({
   registerOptions,
   label,
   className,
+  maxSelected,
   errorMessage,
 }: SelectInputProps<T>) => {
   const getOptionValues = (
@@ -56,6 +58,13 @@ export const SelectInput = <T extends FieldValues>({
       return option.map((o) => o.value);
     }
     return option ? option.value : null;
+  };
+
+  const getOptionCount = (option: SingleValue<Option> | MultiValue<Option>) => {
+    if (isMultiValue(option)) {
+      return option.length;
+    }
+    return option ? 1 : 0;
   };
 
   const multiValueContainer:
@@ -98,6 +107,9 @@ export const SelectInput = <T extends FieldValues>({
               closeMenuOnSelect={!isMulti}
               isSearchable={false}
               isClearable={true}
+              isOptionDisabled={(_, selectValue) =>
+                !!maxSelected && selectValue.length >= maxSelected
+              }
               components={
                 isMulti
                   ? {

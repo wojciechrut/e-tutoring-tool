@@ -56,11 +56,21 @@ const logout = () => {
   location.reload();
 };
 
-const me = async () => {
+const me = async (withFriends = false) => {
   setAuthFromStorage();
-  const { data: user }: AxiosResponse<UserData> = await api.get(Paths.ME);
+  const { data: user }: AxiosResponse<UserData> = await api.get(Paths.ME, {
+    params: {
+      withFriends,
+    },
+  });
   return user;
 };
 
-const UserService = { me, login, setAuthFromStorage, logout, register };
+const UserService = {
+  me,
+  login,
+  setAuthFromStorage,
+  logout,
+  register,
+};
 export default UserService;

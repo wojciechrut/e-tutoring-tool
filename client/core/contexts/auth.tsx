@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const fetchUser = async () =>
-      UserService.me()
+      UserService.me(true)
         .then((user) => {
           setRequestState(RequestState.SUCCEEDED);
           return user;

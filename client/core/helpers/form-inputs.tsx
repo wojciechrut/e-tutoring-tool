@@ -31,6 +31,7 @@ type FormInputSelect<T extends FieldValues> = {
   isMulti?: boolean;
   placeholder?: string;
   options: Array<Option> | Array<string>;
+  maxSelected: number;
 } & FormInputCommon<T>;
 
 type FormInputFile<T extends FieldValues> = {

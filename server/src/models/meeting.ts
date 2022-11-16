@@ -7,19 +7,19 @@ import { model, Schema } from "mongoose";
 
 export interface Meeting {
   _id: string;
-  title: string;
+  description: string;
   organiser: User;
   chat: Chat;
   whiteboard: Whiteboard;
   startsAt: string;
-  finishesAt: string;
+  finished: boolean;
   invited: Array<User>;
   subjects: typeof leafletCategories.subjects;
 }
 
 const meetingSchema = new Schema<Meeting>(
   {
-    title: { type: String, required: true },
+    description: { type: String, required: false },
     organiser: { type: Schema.Types.ObjectId, ref: "User", required: true },
     chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
     whiteboard: {
@@ -28,7 +28,7 @@ const meetingSchema = new Schema<Meeting>(
       required: true,
     },
     startsAt: { type: String, required: true },
-    finishesAt: { type: String, required: true },
+    finished: { type: Boolean, default: false },
     invited: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
     subjects: [
       {

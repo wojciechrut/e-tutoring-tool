@@ -1,0 +1,30 @@
+.wrapper {
+  @include content-width();
+  height: 100%;
+}
+
+.container {
+  @include card-layout();
+  background-color: var(--col-white);
+  max-width: 600px;
+  margin: auto;
+}
+
+.heading {
+  font-size: var(--font-size-900);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  width: 100px;
+}
+
+.creator {
+  margin-top: 15px;
+}
