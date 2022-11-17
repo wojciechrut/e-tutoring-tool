@@ -5,12 +5,13 @@ import { useForm } from "react-hook-form";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
 import LeafletService from "services/leaflet";
+import MeetingService from "services/meeting";
 
 type FieldValues = {
   description: string;
   invited: Array<string>;
   subjects: Array<string>;
-  datetime: string;
+  startsAt: Date;
 };
 
 export const MeetingCreator: FC = () => {
@@ -30,7 +31,9 @@ export const MeetingCreator: FC = () => {
   }, []);
 
   const onSubmit = (values: FieldValues) => {
-    console.log(values);
+    MeetingService.create({ ...values, startsAt: values.startsAt.toString() })
+      .then(console.log)
+      .catch(console.log);
   };
 
   const inputs: FormInputs<FieldValues> = [
@@ -67,7 +70,7 @@ export const MeetingCreator: FC = () => {
     },
     {
       type: "datetime",
-      name: "datetime",
+      name: "startsAt",
       label: "pick a date",
     },
   ];

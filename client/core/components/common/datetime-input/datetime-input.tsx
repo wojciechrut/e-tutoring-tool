@@ -4,6 +4,7 @@ import {
   Controller,
   FieldValues,
   Path,
+  PathValue,
   RegisterOptions,
 } from "react-hook-form";
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -28,7 +29,7 @@ export const DatetimeInput = <T extends FieldValues>({
 }: DatetimePickerProps<T>) => {
   const [now, setNow] = useState(new Date());
   const [value, setValue] = useState<Date>(now);
-  const [inputText, setInputText] = useState(stringifyDate(now));
+  const [inputText, setInputText] = useState("Click to open calendar");
 
   const handleChange = (date: Date | null) => {
     setValue(date || new Date());
@@ -58,6 +59,7 @@ export const DatetimeInput = <T extends FieldValues>({
       <Controller
         name={name}
         control={control}
+        defaultValue={now as PathValue<T, Path<T>>}
         rules={registerOptions}
         render={({ field: { onChange: controllerOnChange, ref } }) => (
           <DatePicker
