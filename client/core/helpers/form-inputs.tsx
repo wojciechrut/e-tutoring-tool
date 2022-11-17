@@ -12,6 +12,7 @@ import { FileInput } from "components/common/file-input";
 import { Option, SelectInput } from "components/common/select-input";
 import { DatetimeInput } from "components/common/datetime-input";
 import { TextAreaInput } from "components/common/textarea-input";
+import { RadioBoxInput } from "components/common/radio-box-input";
 
 type FormInputCommon<T extends FieldValues> = {
   name: Path<T>;
@@ -54,12 +55,19 @@ type FormInputDateTime<T extends FieldValues> = {
   type: "datetime";
 } & FormInputCommon<T>;
 
+type FormInputRadio<T extends FieldValues> = {
+  type: "radio";
+  options: Array<Option> | Array<string>;
+  defaultOptionIndex?: number;
+} & FormInputCommon<T>;
+
 type FormInput<T extends FieldValues> =
   | FormInputText<T>
   | FormInputSelect<T>
   | FormInputFile<T>
   | FormInputDateTime<T>
-  | FormInputTextArea<T>;
+  | FormInputTextArea<T>
+  | FormInputRadio<T>;
 
 export type FormInputs<T extends FieldValues> = Array<FormInput<T>>;
 
@@ -93,6 +101,12 @@ const isTextAreaInput = <T extends FieldValues>(
   return input.type === "textarea";
 };
 
+const isRadioInput = <T extends FieldValues>(
+  input: FormInput<T>
+): input is FormInputRadio<T> => {
+  return input.type === "radio";
+};
+
 export const renderFormInputs = <T extends FieldValues>(
   inputs: FormInputs<T>,
   register: UseFormRegister<T>,
@@ -114,6 +128,9 @@ export const renderFormInputs = <T extends FieldValues>(
     }
     if (isTextAreaInput(input)) {
       return renderTextAreaInput(input, register, errors);
+    }
+    if (isRadioInput(input)) {
+      return renderRadioInput(input, register);
     }
     console.log("render not implemented for this input type");
   });
@@ -198,6 +215,31 @@ const renderSelectInput = <T extends FieldValues>(
       options={finalOptions || options}
       control={control}
       errorMessage={errors[name]?.message?.toString()}
+      {...restInputProps}
+    />
+  );
+};
+
+const renderRadioInput = <T extends FieldValues>(
+  input: FormInputRadio<T>,
+  register: UseFormRegister<T>
+) => {
+  const { type, name, options, ...restInputProps } = input;
+  const registerReturn = register(name);
+  let finalOptions;
+  if (isStringOptions(options)) {
+    finalOptions = options.map((option) => ({
+      value: option,
+      label: option,
+    })) as Option[];
+  } else {
+    finalOptions = options as Option[];
+  }
+  return (
+    <RadioBoxInput
+      key={`formInput-${name}`}
+      options={finalOptions}
+      register={registerReturn}
       {...restInputProps}
     />
   );

@@ -1,0 +1,6 @@
+.container {
+  @include card-layout();
+  background-color: var(--col-white);
+  max-width: 600px;
+  margin: 15px auto auto;
+}

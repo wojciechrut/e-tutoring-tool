@@ -3,11 +3,15 @@ import styles from "./meetings.module.scss";
 import { Button } from "components/common/button";
 import { MeetingCreator } from "components/meeting-creator";
 import clsx from "clsx";
+import { MeetingSearch } from "components/meeting-search";
+import { MeetingSearchResponseBody } from "@types";
 
-type MeetingProps = {};
+type MeetingsProps = {};
 
-export const Meetings: FC<MeetingProps> = () => {
+export const Meetings: FC<MeetingsProps> = () => {
   const [isCreatorOpen, setIsCreatorOpen] = useState<boolean>(true);
+  const [searchedMeetings, setSearchedMeetings] =
+    useState<null | MeetingSearchResponseBody>();
 
   return (
     <div className={styles.wrapper}>
@@ -30,10 +34,14 @@ export const Meetings: FC<MeetingProps> = () => {
           </Button>
         </div>
       </div>
-      {isCreatorOpen && (
+      {isCreatorOpen ? (
         <div className={clsx(styles.container, styles.creator)}>
           <MeetingCreator />
         </div>
+      ) : (
+        <>
+          <MeetingSearch setMeetings={setSearchedMeetings} />
+        </>
       )}
     </div>
   );

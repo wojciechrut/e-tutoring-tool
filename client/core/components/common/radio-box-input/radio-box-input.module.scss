@@ -1,0 +1,37 @@
+.container {
+  @include flex-center();
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 15px;
+}
+
+.input-group {
+  display: block;
+  width: 125px;
+}
+
+.input {
+  display: none;
+
+  & + label {
+    background-color: var(--col-white);
+    color: var(--col-black);
+  }
+
+  &:checked + label {
+    background-color: var(--col-main-700);
+    border-color: transparent;
+    color: var(--col-white);
+  }
+}
+
+.label {
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 6px 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 2px solid var(--col-main-700);
+  cursor: pointer;
+}
