@@ -18,8 +18,8 @@ export const getSymetricLookingFor = (
   lookingFor: typeof leafletCategories.lookingFor[number]
 ) => {
   return lookingFor === "teacher"
-    ? "student"
-    : lookingFor === "student"
+    ? "students"
+    : lookingFor === "students"
     ? "teacher"
     : "study partner";
 };
