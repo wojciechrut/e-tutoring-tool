@@ -1,3 +1,11 @@
 .container {
   width: 100%;
 }
+
+.label {
+  display: block;
+  font-weight: 500;
+  font-size: var(--font-size-100);
+  color: var(--col-text-navy);
+  margin-bottom: 3px;
+}

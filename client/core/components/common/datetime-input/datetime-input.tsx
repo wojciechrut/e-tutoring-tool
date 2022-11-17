@@ -25,7 +25,6 @@ export const DatetimeInput = <T extends FieldValues>({
   control,
   registerOptions,
   label,
-  errorMessage,
 }: DatetimePickerProps<T>) => {
   const [now, setNow] = useState(new Date());
   const [value, setValue] = useState<Date>(now);
@@ -51,12 +50,18 @@ export const DatetimeInput = <T extends FieldValues>({
 
   return (
     <div className={styles.container}>
+      {label && (
+        <label className={styles.label} htmlFor={name}>
+          {label}
+        </label>
+      )}
       <Controller
         name={name}
         control={control}
         rules={registerOptions}
         render={({ field: { onChange: controllerOnChange, ref } }) => (
           <DatePicker
+            id={name}
             selected={new Date(value || "")}
             ref={ref}
             autoComplete="off"

@@ -1,25 +1,33 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./meeting-creator.module.scss";
 import { useAuth } from "contexts/auth";
 import { useForm } from "react-hook-form";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
+import LeafletService from "services/leaflet";
 
 type FieldValues = {
-  level: string;
   description: string;
   invited: Array<string>;
+  subjects: Array<string>;
   datetime: string;
 };
 
 export const MeetingCreator: FC = () => {
   const { user } = useAuth();
+  const [subjects, setSubjects] = useState<Array<string>>([]);
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<FieldValues>();
+
+  useEffect(() => {
+    LeafletService.getCategories().then(({ subjects }) =>
+      setSubjects(subjects)
+    );
+  }, []);
 
   const onSubmit = (values: FieldValues) => {
     console.log(values);
@@ -39,9 +47,28 @@ export const MeetingCreator: FC = () => {
       maxSelected: 3,
     },
     {
+      type: "select",
+      name: "subjects",
+      options: subjects,
+      label: "pick subjects",
+      isMulti: true,
+    },
+    {
+      type: "textarea",
+      name: "description",
+      label: "short description",
+      registerOptions: {
+        maxLength: {
+          value: 125,
+          message: "Too long description",
+        },
+      },
+      rows: 3,
+    },
+    {
       type: "datetime",
       name: "datetime",
-      label: "Pick date and time",
+      label: "pick a date",
     },
   ];
 

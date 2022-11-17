@@ -11,6 +11,7 @@ import { TextInput } from "components/common/text-input";
 import { FileInput } from "components/common/file-input";
 import { Option, SelectInput } from "components/common/select-input";
 import { DatetimeInput } from "components/common/datetime-input";
+import { TextAreaInput } from "components/common/textarea-input";
 
 type FormInputCommon<T extends FieldValues> = {
   name: Path<T>;
@@ -25,6 +26,12 @@ type FormInputText<T extends FieldValues> = {
   htmlType: "text" | "email" | "password";
   placeholder?: string;
   noMargin?: boolean;
+} & FormInputCommon<T>;
+
+type FormInputTextArea<T extends FieldValues> = {
+  type: "textarea";
+  placeholder?: string;
+  rows: number;
 } & FormInputCommon<T>;
 
 type FormInputSelect<T extends FieldValues> = {
@@ -51,7 +58,8 @@ type FormInput<T extends FieldValues> =
   | FormInputText<T>
   | FormInputSelect<T>
   | FormInputFile<T>
-  | FormInputDateTime<T>;
+  | FormInputDateTime<T>
+  | FormInputTextArea<T>;
 
 export type FormInputs<T extends FieldValues> = Array<FormInput<T>>;
 
@@ -79,6 +87,12 @@ const isDateTimeInput = <T extends FieldValues>(
   return input.type === "datetime";
 };
 
+const isTextAreaInput = <T extends FieldValues>(
+  input: FormInput<T>
+): input is FormInputTextArea<T> => {
+  return input.type === "textarea";
+};
+
 export const renderFormInputs = <T extends FieldValues>(
   inputs: FormInputs<T>,
   register: UseFormRegister<T>,
@@ -98,6 +112,9 @@ export const renderFormInputs = <T extends FieldValues>(
     if (isDateTimeInput(input) && control) {
       return renderDateTimeInput(input, control, errors);
     }
+    if (isTextAreaInput(input)) {
+      return renderTextAreaInput(input, register, errors);
+    }
     console.log("render not implemented for this input type");
   });
 };
@@ -111,6 +128,23 @@ const renderTextInput = <T extends FieldValues>(
   const registerReturn = register(name, registerOptions);
   return (
     <TextInput
+      key={`formInput-${name}`}
+      register={registerReturn}
+      errorMessage={errors[name]?.message?.toString()}
+      {...restInputProps}
+    />
+  );
+};
+
+const renderTextAreaInput = <T extends FieldValues>(
+  input: FormInputTextArea<T>,
+  register: UseFormRegister<T>,
+  errors: FieldErrorsImpl<T> | FieldErrors<T>
+) => {
+  const { type, registerOptions, name, ...restInputProps } = input;
+  const registerReturn = register(name, registerOptions);
+  return (
+    <TextAreaInput
       key={`formInput-${name}`}
       register={registerReturn}
       errorMessage={errors[name]?.message?.toString()}

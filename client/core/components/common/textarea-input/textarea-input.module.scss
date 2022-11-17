@@ -1,0 +1,21 @@
+.input-group {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  font-size: var(--font-size-100);
+  color: var(--col-text-navy);
+  margin-bottom: 3px;
+}
+
+.textarea {
+  min-width: 100%;
+  resize: none;
+  border: 1px solid var(--col-grey-200);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: var(--font-size-200);
+  line-height: 1.6;
+}
