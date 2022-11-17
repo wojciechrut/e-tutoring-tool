@@ -19,3 +19,8 @@
   font-size: var(--font-size-200);
   line-height: 1.6;
 }
+
+.error-message {
+  font-size: var(--font-size-100);
+  color: var(--col-error);
+}

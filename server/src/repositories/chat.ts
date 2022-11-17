@@ -5,7 +5,7 @@ import { ModelId } from "../models/types/_id";
 import { FileSelector } from "./file";
 
 type SingleChatQuery = {
-  users?: [string, string];
+  users?: Array<string>;
   _id?: Types.ObjectId;
 };
 
@@ -62,20 +62,30 @@ const create = async ({ users }: SingleChatQuery) => {
 
 const exists = async ({ users, ...rest }: SingleChatQuery) => {
   return Model.exists({
-    $and: users && [
-      { users: { $elemMatch: { $eq: users[0] } } },
-      { users: { $elemMatch: { $eq: users[1] } } },
-    ],
+    $and:
+      users &&
+      users.map((user) => ({
+        users: {
+          $elemMatch: {
+            $eq: user,
+          },
+        },
+      })),
     ...rest,
   });
 };
 
 const findOne = async ({ users, ...rest }: SingleChatQuery) => {
   return Model.findOne({
-    $and: users && [
-      { users: { $elemMatch: { $eq: users[0] } } },
-      { users: { $elemMatch: { $eq: users[1] } } },
-    ],
+    $and:
+      users &&
+      users.map((user) => ({
+        users: {
+          $elemMatch: {
+            $eq: user,
+          },
+        },
+      })),
     ...rest,
   })
     .populate(populator)

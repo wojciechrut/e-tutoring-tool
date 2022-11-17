@@ -7,3 +7,4 @@ export * from "./api/message";
 export * from "./api/leaflet";
 export * from "./api/file";
 export * from "./socket";
+export * from "./api/meeting";

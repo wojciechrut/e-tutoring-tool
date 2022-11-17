@@ -6,6 +6,7 @@ import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
 import LeafletService from "services/leaflet";
 import MeetingService from "services/meeting";
+import { parseError } from "helpers/parse-error";
 
 type FieldValues = {
   description: string;
@@ -17,11 +18,13 @@ type FieldValues = {
 export const MeetingCreator: FC = () => {
   const { user } = useAuth();
   const [subjects, setSubjects] = useState<Array<string>>([]);
+  const [userMessage, setUserMessage] = useState<string | null>();
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<FieldValues>();
 
   useEffect(() => {
@@ -32,8 +35,18 @@ export const MeetingCreator: FC = () => {
 
   const onSubmit = (values: FieldValues) => {
     MeetingService.create({ ...values, startsAt: values.startsAt.toString() })
-      .then(console.log)
-      .catch(console.log);
+      .then(() => {
+        reset({
+          description: "",
+          subjects: [],
+          invited: [],
+          startsAt: new Date(),
+        });
+        setUserMessage("Meeting created!");
+      })
+      .catch((error) => {
+        setUserMessage(parseError(error)?.messages[0]);
+      });
   };
 
   const inputs: FormInputs<FieldValues> = [
@@ -45,6 +58,9 @@ export const MeetingCreator: FC = () => {
           value: _id.toString(),
           label: nickname,
         })) || [],
+      registerOptions: {
+        required: { value: true, message: "Invite at least one person" },
+      },
       label: "invite (maximum 3 people)",
       isMulti: true,
       maxSelected: 3,
@@ -54,6 +70,9 @@ export const MeetingCreator: FC = () => {
       name: "subjects",
       options: subjects,
       label: "pick subjects",
+      registerOptions: {
+        required: { value: true, message: "Select at least one subject" },
+      },
       isMulti: true,
     },
     {
@@ -61,6 +80,7 @@ export const MeetingCreator: FC = () => {
       name: "description",
       label: "short description",
       registerOptions: {
+        required: false,
         maxLength: {
           value: 125,
           message: "Too long description",
@@ -82,6 +102,7 @@ export const MeetingCreator: FC = () => {
         {renderFormInputs(inputs, register, errors, control)}
         <Button type={"submit"}>Submit</Button>
       </form>
+      {userMessage && <div className={styles.userMessage}>{userMessage}</div>}
     </div>
   );
 };

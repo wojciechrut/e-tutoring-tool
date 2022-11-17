@@ -4,6 +4,7 @@ export enum Action {
   REGISTER_USER = "register-user",
   LOGIN_USER = "login-user",
   POST_LEAFLET = "post-leaflet",
+  POST_MEETING = "post-meeting",
 }
 
 export const actionConstraints: Record<Action, BodyConstraints> = {
@@ -21,5 +22,10 @@ export const actionConstraints: Record<Action, BodyConstraints> = {
     required: ["title", "description", "levels", "subjects", "lookingFor"],
     regexValidated: ["title", "description"],
     enumValidated: ["lookingFor", "levels", "subjects"],
+  },
+  "post-meeting": {
+    required: ["subjects", "invited", "startsAt"],
+    enumValidated: ["subjects"],
+    regexValidated: [],
   },
 };

@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import {
+  ErrorStatus,
   LeafletCategoriesResponseBody,
   LeafletPostRequestBody,
   LeafletSearchQuery,
@@ -57,7 +58,7 @@ const search: RequestHandler<
   );
 
   if (!searchResult) {
-    next(500);
+    next(createError(ErrorStatus.SERVER));
     return;
   }
 

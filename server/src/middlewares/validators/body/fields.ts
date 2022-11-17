@@ -8,7 +8,9 @@ export type ValidatedBodyField =
   | "title"
   | "description"
   | "subjects"
-  | "levels";
+  | "levels"
+  | "invited"
+  | "startsAt";
 
 export type BodyConstraints = {
   required: Array<ValidatedBodyField>;

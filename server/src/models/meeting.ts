@@ -27,7 +27,7 @@ const meetingSchema = new Schema<Meeting>(
       ref: "Whiteboard",
       required: true,
     },
-    startsAt: { type: String, required: true },
+    startsAt: { type: Date, required: true },
     finished: { type: Boolean, default: false },
     invited: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
     subjects: [

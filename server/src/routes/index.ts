@@ -5,6 +5,7 @@ import chatRoutes from "./chat";
 import messageRoutes from "./message";
 import leafletRoutes from "./leaflet";
 import fileRoutes from "./file";
+import meetingRoutes from "./meeting";
 
 const apiRoutes = express.Router();
 apiRoutes.use("/user", userRoutes);
@@ -13,6 +14,7 @@ apiRoutes.use("/chat", chatRoutes);
 apiRoutes.use("/message", messageRoutes);
 apiRoutes.use("/leaflet", leafletRoutes);
 apiRoutes.use("/file", fileRoutes);
+apiRoutes.use("/meeting", meetingRoutes);
 
 // for now - TODO
 const staticRoutes = express.Router();

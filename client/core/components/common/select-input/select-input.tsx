@@ -121,6 +121,7 @@ export const SelectInput = <T extends FieldValues>({
           </>
         )}
       />
+      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
     </div>
   );
 };

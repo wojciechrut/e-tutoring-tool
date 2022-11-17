@@ -6,7 +6,7 @@ import { useAuth } from "contexts/auth";
 import { Message } from "components/chat-box/message";
 import { useScrollAnchor } from "hooks/useScrollAnchor";
 import { Panel } from "components/chat-box/panel";
-import { useSocket } from "hooks/useSocket";
+import { useChatSocket } from "hooks/useChatSocket";
 
 type ChatBoxProps = {
   chat: ChatResponseBody;
@@ -20,7 +20,7 @@ export const ChatBox: FC<ChatBoxProps> = ({
   updateLastMessage,
 }) => {
   const { user } = useAuth();
-  const { sendMessage, handleMessageReceived } = useSocket(
+  const { sendMessage, handleMessageReceived } = useChatSocket(
     user!!._id.toString()
   );
   const [messages, setMessages] = useState(chat.messages);

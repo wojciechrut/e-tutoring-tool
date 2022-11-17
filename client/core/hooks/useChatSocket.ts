@@ -8,7 +8,7 @@ import {
 
 const ENDPOINT = "http://localhost:5000";
 
-export const useSocket = (userId: string) => {
+export const useChatSocket = (userId: string) => {
   const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     ENDPOINT,
     { transports: ["websocket"] }

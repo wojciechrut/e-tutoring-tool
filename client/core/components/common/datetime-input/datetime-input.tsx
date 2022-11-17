@@ -26,6 +26,7 @@ export const DatetimeInput = <T extends FieldValues>({
   control,
   registerOptions,
   label,
+  errorMessage,
 }: DatetimePickerProps<T>) => {
   const [now, setNow] = useState(new Date());
   const [value, setValue] = useState<Date>(now);
@@ -84,6 +85,7 @@ export const DatetimeInput = <T extends FieldValues>({
           />
         )}
       />
+      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
     </div>
   );
 };

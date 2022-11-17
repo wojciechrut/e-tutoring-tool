@@ -11,7 +11,6 @@ const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   next
 ) => {
   const token = JWT.extractFromHeader(request.header("Authorization"));
-  const { withFriends } = request.query;
 
   if (!token) {
     next(createError(ErrorStatus.UNAUTHORIZED, "Authorization failed"));
@@ -21,7 +20,7 @@ const auth: RequestHandler<any, any, any, any, MeResponseLocals> = async (
   const decodedId = JWT.decode(token);
   const user = await UserRepository.findOne(
     { _id: _id(decodedId) },
-    withFriends === "true"
+      true
   );
 
   if (!user) {
