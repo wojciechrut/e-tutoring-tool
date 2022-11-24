@@ -99,6 +99,41 @@ const create: RequestHandler<
   response.send(meeting);
 };
 
-const get = () => 3;
+const get: RequestHandler<
+  { id: string },
+  SingleMeetingResponseBody,
+  {},
+  {},
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { id } = request.params;
+  const { _id: userId } = response.locals;
+
+  const meeting = await MeetingRepository.findOne(id);
+
+  if (!meeting) {
+    next(
+      createError(ErrorStatus.BAD_REQUEST, "Meeting with this id doesn't exist")
+    );
+    return;
+  }
+
+  const participantsIds = [meeting.organiser, ...meeting.invited].map(
+    ({ _id }) => _id.toString()
+  );
+
+  if (!participantsIds.includes(userId.toString())) {
+    console.log(participantsIds, userId);
+    next(
+      createError(
+        ErrorStatus.FORBIDDEN,
+        "You don't have access to this meeting"
+      )
+    );
+    return;
+  }
+
+  response.send(meeting);
+};
 
 export default { getAll, create, get, getMine };

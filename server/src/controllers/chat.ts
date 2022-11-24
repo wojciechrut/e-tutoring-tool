@@ -17,14 +17,14 @@ const get: RequestHandler<
   ChatFetchQuery,
   MeResponseLocals
 > = async (request, response, next) => {
-  const { userId, meetingId } = request.query;
+  const { userId } = request.query;
   const { _id: requesterId } = response.locals;
 
-  if (meetingId) {
-    //meeting chats z obiektu meeting
-    console.log("chats by meeting todo");
-    return;
-  }
+  // if (meetingId) {
+  //   //meeting chats z obiektu meeting
+  //   console.log("chats by meeting todo");
+  //   return;
+  // }
 
   if (userId) {
     const chat = await ChatRepository.findOrCreate({

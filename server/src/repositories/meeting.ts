@@ -18,7 +18,7 @@ type Query = Partial<
 >;
 
 const findOne = async (_id: ModelId) => {
-  return Model.findOne({ _id }).populate(populator);
+  return Model.findOne({ _id }).populate(populator).lean();
 };
 
 const findAll = async (query: Query) => {
@@ -33,7 +33,9 @@ const create = async (query: Omit<Query, "_id">) => {
 const findAllUsers = async (userId: ModelId) => {
   return Model.find({
     $or: [{ organiser: userId }, { invited: userId }],
-  }).populate(populator);
+  })
+    .populate(populator)
+    .sort({ startsAt: -1 });
 };
 
 const MeetingRepository = { findOne, findAll, create, findAllUsers };

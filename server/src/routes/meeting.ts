@@ -8,6 +8,7 @@ const meetingRoutes = express.Router();
 
 meetingRoutes.route("/").get(auth, MeetingController.getAll);
 meetingRoutes.route("/mine").get(auth, MeetingController.getMine);
+meetingRoutes.route("/access/:id").get(auth, MeetingController.get);
 meetingRoutes
   .route("/")
   .post(
