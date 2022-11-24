@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import {
   ErrorStatus,
   MeetingCreateRequestBody,
+  MeetingSearchRequestQuery,
   MeetingSearchResponseBody,
   MeResponseLocals,
   SingleMeetingResponseBody,
@@ -9,7 +10,8 @@ import {
 import MeetingRepository from "../repositories/meeting";
 import { createError } from "../utils/helpers/create-error";
 import ChatRepository from "../repositories/chat";
-import WhiteboardRespository from "../repositories/whiteboard";
+import WhiteboardRepository from "../repositories/whiteboard";
+import { getMeetingDateTag } from "../utils/helpers/date";
 
 const getAll: RequestHandler<
   {},
@@ -28,6 +30,34 @@ const getAll: RequestHandler<
   response.send(meetings);
 };
 
+const getMine: RequestHandler<
+  {},
+  MeetingSearchResponseBody,
+  {},
+  MeetingSearchRequestQuery,
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { date } = request.query;
+  const { _id } = response.locals;
+  const userMeetings = await MeetingRepository.findAllUsers(_id);
+
+  if (!userMeetings) {
+    next(createError(ErrorStatus.SERVER));
+    return;
+  }
+
+  const filteredUserMeetings = !!date
+    ? userMeetings.filter((meeting) => {
+        return (
+          (meeting.finished && date === "finished") ||
+          getMeetingDateTag(meeting.startsAt) === date
+        );
+      })
+    : userMeetings;
+
+  response.send(filteredUserMeetings);
+};
+
 const create: RequestHandler<
   {},
   SingleMeetingResponseBody,
@@ -42,7 +72,7 @@ const create: RequestHandler<
     users: [organiser.toString(), ...invited],
   });
 
-  const whiteboard = await WhiteboardRespository.create();
+  const whiteboard = await WhiteboardRepository.create();
 
   if (!chat || !whiteboard) {
     next(createError(ErrorStatus.SERVER));
@@ -71,4 +101,4 @@ const create: RequestHandler<
 
 const get = () => 3;
 
-export default { getAll, create, get };
+export default { getAll, create, get, getMine };

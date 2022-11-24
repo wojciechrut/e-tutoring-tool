@@ -30,5 +30,9 @@ const create = async (query: Omit<Query, "_id">) => {
   return findOne(meeting._id);
 };
 
-const MeetingRepository = { findOne, findAll, create };
+const findAllUsers = async (userId: ModelId) => {
+  return Model.find({ $or: [{ organiser: userId }, { invited: userId }] });
+};
+
+const MeetingRepository = { findOne, findAll, create, findAllUsers };
 export default MeetingRepository;

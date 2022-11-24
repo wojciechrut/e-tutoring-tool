@@ -41,6 +41,7 @@ export const Meetings: FC<MeetingsProps> = () => {
       ) : (
         <>
           <MeetingSearch setMeetings={setSearchedMeetings} />
+          <>{JSON.stringify(searchedMeetings, null, 2)}</>
         </>
       )}
     </div>

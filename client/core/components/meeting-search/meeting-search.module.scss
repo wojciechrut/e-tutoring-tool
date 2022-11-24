@@ -4,3 +4,9 @@
   max-width: 600px;
   margin: 15px auto auto;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

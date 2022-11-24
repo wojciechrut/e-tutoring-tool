@@ -41,7 +41,7 @@ export const Message: FC<MessageProps> = ({
               name={originalName}
               path={path}
               type={type}
-              className={mine && styles.fileDownloadMine}
+              className={mine ? styles.fileDownloadMine : ""}
             />
           ))}
         </div>

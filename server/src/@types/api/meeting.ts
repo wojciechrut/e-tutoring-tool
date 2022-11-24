@@ -9,6 +9,10 @@ export type MeetingSearchResponseBody = Array<
   }
 >;
 
+export type MeetingSearchRequestQuery = {
+  date?: "ongoing" | "upcoming" | "finished";
+};
+
 export type SingleMeetingResponseBody = Omit<
   Meeting,
   "organiser" | "invited" | "whiteboard"

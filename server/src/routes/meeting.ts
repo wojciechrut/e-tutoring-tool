@@ -7,7 +7,7 @@ import { Action, bodyValidator } from "../middlewares/validators/body";
 const meetingRoutes = express.Router();
 
 meetingRoutes.route("/").get(auth, MeetingController.getAll);
-meetingRoutes.route("/:id").get(auth, MeetingController.get);
+meetingRoutes.route("/mine").get(auth, MeetingController.getMine);
 meetingRoutes
   .route("/")
   .post(
