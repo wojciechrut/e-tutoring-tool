@@ -15,7 +15,6 @@ export const urls = {
 
 type CustomAxiosInstance = AxiosInstance & {
   setAuthToken: (token: string) => void;
-  setAuthFromStorage: () => void;
   removeAuthToken: () => void;
 };
 

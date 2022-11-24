@@ -17,7 +17,6 @@ type FieldValues = {
 
 export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
   const {
-    handleSubmit,
     register,
     formState: { errors },
     watch,
@@ -33,7 +32,7 @@ export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
   const subject = watch("subject");
 
   useEffect(() => {
-    MeetingService.getMine({ date }).then((meetings) => {
+    MeetingService.getMine({ date: date || "ongoing" }).then((meetings) => {
       setFoundMeetings(meetings);
       const subjects = new Set(
         meetings.reduce(

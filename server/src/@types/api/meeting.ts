@@ -13,13 +13,15 @@ export type MeetingSearchRequestQuery = {
   date?: "ongoing" | "upcoming" | "finished";
 };
 
+export type WhiteboardResponse = Whiteboard & { _id: string };
+
 export type SingleMeetingResponseBody = Omit<
   Meeting,
   "organiser" | "invited" | "whiteboard"
 > & {
   organiser: UserResponseBody;
   invited: Array<UserResponseBody>;
-  whiteboard: Whiteboard;
+  whiteboard: WhiteboardResponse;
 };
 
 export type MeetingCreateRequestBody = {

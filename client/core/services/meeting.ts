@@ -10,6 +10,7 @@ import api from "services/api";
 enum Paths {
   CREATE = "meeting",
   GET_MINE = "meeting/mine",
+  ACCESS_ONE = "meeting/access",
 }
 
 const create = async (requestBody: MeetingCreateRequestBody) => {
@@ -24,5 +25,10 @@ const getMine = async ({ date }: MeetingSearchRequestQuery) => {
   return meetings;
 };
 
-const MeetingService = { create, getMine };
+const access = async (id: string) => {
+  const { data: meeting }: AxiosResponse<SingleMeetingResponseBody> =
+    await api.get(`${Paths.ACCESS_ONE}/${id}`);
+  return meeting;
+};
+const MeetingService = { create, getMine, access };
 export default MeetingService;
