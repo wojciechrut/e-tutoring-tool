@@ -31,7 +31,9 @@ const create = async (query: Omit<Query, "_id">) => {
 };
 
 const findAllUsers = async (userId: ModelId) => {
-  return Model.find({ $or: [{ organiser: userId }, { invited: userId }] });
+  return Model.find({
+    $or: [{ organiser: userId }, { invited: userId }],
+  }).populate(populator);
 };
 
 const MeetingRepository = { findOne, findAll, create, findAllUsers };

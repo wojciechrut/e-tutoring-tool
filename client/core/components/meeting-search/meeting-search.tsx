@@ -57,7 +57,7 @@ export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
 
   useEffect(() => {
     setMeetings(filteredMeetings);
-  }, [filteredMeetings]);
+  }, [filteredMeetings, setMeetings]);
 
   const inputs: FormInputs<FieldValues> = [
     {

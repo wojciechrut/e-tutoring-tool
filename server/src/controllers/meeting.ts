@@ -50,7 +50,7 @@ const getMine: RequestHandler<
     ? userMeetings.filter((meeting) => {
         return (
           (meeting.finished && date === "finished") ||
-          getMeetingDateTag(meeting.startsAt) === date
+          (!meeting.finished && getMeetingDateTag(meeting.startsAt) === date)
         );
       })
     : userMeetings;

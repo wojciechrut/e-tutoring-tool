@@ -10,6 +10,14 @@
   margin: auto;
 }
 
+.search-result {
+  max-width: 600px;
+  margin: 15px auto;
+  background-color: var(--col-main-100);
+  @include card-layout();
+  gap: 10px;
+}
+
 .heading {
   font-size: var(--font-size-900);
   margin-bottom: 15px;

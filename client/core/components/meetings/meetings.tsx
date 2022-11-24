@@ -5,11 +5,12 @@ import { MeetingCreator } from "components/meeting-creator";
 import clsx from "clsx";
 import { MeetingSearch } from "components/meeting-search";
 import { MeetingSearchResponseBody } from "@types";
+import { MeetingCard } from "components/meeting-card";
 
 type MeetingsProps = {};
 
 export const Meetings: FC<MeetingsProps> = () => {
-  const [isCreatorOpen, setIsCreatorOpen] = useState<boolean>(true);
+  const [isCreatorOpen, setIsCreatorOpen] = useState<boolean>(false);
   const [searchedMeetings, setSearchedMeetings] =
     useState<null | MeetingSearchResponseBody>();
 
@@ -41,7 +42,12 @@ export const Meetings: FC<MeetingsProps> = () => {
       ) : (
         <>
           <MeetingSearch setMeetings={setSearchedMeetings} />
-          <>{JSON.stringify(searchedMeetings, null, 2)}</>
+          <div className={styles.searchResult}>
+            {searchedMeetings &&
+              searchedMeetings.map((meeting) => (
+                <MeetingCard meeting={meeting} key={meeting._id} />
+              ))}
+          </div>
         </>
       )}
     </div>
