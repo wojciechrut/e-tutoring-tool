@@ -1,9 +1,10 @@
 import { SingleMeetingResponseBody } from "@types";
 
+const errorMargin = 1000 * 60; //1min
+
 export const isMeetingFinished = (meeting: SingleMeetingResponseBody) => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const errorMargin = 1000 * 60; //1min
 
   return (
     meeting.finished ||
@@ -14,6 +15,6 @@ export const isMeetingFinished = (meeting: SingleMeetingResponseBody) => {
 export const isMeetingOngoing = (meeting: SingleMeetingResponseBody) => {
   return (
     !isMeetingFinished(meeting) &&
-    new Date(meeting.startsAt).getTime() < new Date().getTime() - 1000 * 60
+    new Date(meeting.startsAt).getTime() - errorMargin < new Date().getTime()
   );
 };

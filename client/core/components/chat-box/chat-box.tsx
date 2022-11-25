@@ -11,7 +11,7 @@ import { useChatSocket } from "hooks/useChatSocket";
 type ChatBoxProps = {
   chat: ChatResponseBody;
   className?: string;
-  updateLastMessage: () => void;
+  updateLastMessage?: () => void;
 };
 
 export const ChatBox: FC<ChatBoxProps> = ({
@@ -29,7 +29,7 @@ export const ChatBox: FC<ChatBoxProps> = ({
 
   const addMessage = (message: MessageSendResponseBody) => {
     sendMessage(message);
-    updateLastMessage();
+    updateLastMessage && updateLastMessage();
     setMessages((previous) => [...previous, message]);
   };
 

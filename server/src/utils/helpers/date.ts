@@ -12,7 +12,7 @@ export const getMeetingDateTag = (date: Date | string) => {
   yesterday.setDate(now.getDate() - 1);
 
   const errorMargin = 1000 * 60; //1 min
-  if (parsedDate.getTime() + errorMargin > now.getTime()) {
+  if (parsedDate.getTime() > now.getTime()) {
     return "upcoming";
   }
   if (parsedDate.getTime() + errorMargin > yesterday.getTime()) {

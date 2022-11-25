@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from "react";
 import { WhiteboardBox } from "components/whiteboard-box";
 import MeetingService from "services/meeting";
 import { parseError } from "helpers/parse-error";
+import styles from "./meeting.module.scss";
+import { ChatBox } from "components/chat-box";
 
 type MeetingProps = {
   meetingId: string;
@@ -11,6 +13,7 @@ type MeetingProps = {
 export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   const [meeting, setMeeting] = useState<SingleMeetingResponseBody | null>();
   const [fetchError, setFetchError] = useState<string | null>();
+  //todo - fullscreen magic
 
   useEffect(() => {
     MeetingService.access(meetingId)
@@ -26,12 +29,15 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
     return <>Loading...</>;
   }
 
-  const { _id, whiteboard } = meeting;
+  const { _id, whiteboard, chat } = meeting;
+  console.log(chat, 1);
 
   return (
-    <>
-      meeting id: {_id}
-      <WhiteboardBox whiteboard={whiteboard}></WhiteboardBox>
-    </>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <WhiteboardBox whiteboard={whiteboard} className={styles.whiteboard} />
+        <ChatBox chat={chat} className={styles.chat} />
+      </div>
+    </div>
   );
 };

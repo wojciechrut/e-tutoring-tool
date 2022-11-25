@@ -2,18 +2,11 @@ import { Meeting } from "../../models/meeting";
 import { UserResponseBody } from "./user";
 import { Whiteboard } from "../../models/whiteboard";
 
-export type MeetingSearchResponseBody = Array<
-  Omit<Meeting, "organiser" | "invited"> & {
-    organiser: UserResponseBody;
-    invited: Array<UserResponseBody>;
-  }
->;
-
 export type MeetingSearchRequestQuery = {
   date?: "ongoing" | "upcoming" | "finished";
 };
 
-export type WhiteboardResponse = Whiteboard & { _id: string };
+export type WhiteboardResponse = Whiteboard;
 
 export type SingleMeetingResponseBody = Omit<
   Meeting,
@@ -23,6 +16,13 @@ export type SingleMeetingResponseBody = Omit<
   invited: Array<UserResponseBody>;
   whiteboard: WhiteboardResponse;
 };
+
+export type MeetingSearchResponseBody = Array<
+  Omit<Meeting, "organiser" | "invited"> & {
+    organiser: UserResponseBody;
+    invited: Array<UserResponseBody>;
+  }
+>;
 
 export type MeetingCreateRequestBody = {
   description: string;

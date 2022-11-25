@@ -1,11 +1,13 @@
 import { UserSelector } from "./user";
 import Model, { Meeting } from "../models/meeting";
 import { ModelId } from "../models/types/_id";
+import { ChatSelector } from "./chat";
 
 const populator: Parameters<typeof Model.populate>[0] = [
   { path: "whiteboard" },
   { path: "invited", select: UserSelector.STANDARD },
   { path: "organiser", select: UserSelector.STANDARD },
+  { path: "chat", select: ChatSelector.STANDARD },
 ];
 
 type Query = Partial<
