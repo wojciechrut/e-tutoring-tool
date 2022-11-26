@@ -30,7 +30,6 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   }
 
   const { _id, whiteboard, chat } = meeting;
-  console.log(chat, 1);
 
   return (
     <div className={styles.wrapper}>
@@ -40,7 +39,11 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
           className={styles.whiteboard}
           meetingId={_id}
         />
-        <ChatBox chat={chat} className={styles.chat} />
+        <div className={styles.chatNotesContainer}>
+          <div className={styles.notes}>Notes todo</div>
+          {/*chat & notes container todo*/}
+          <ChatBox chat={chat} className={styles.chat} />
+        </div>
       </div>
     </div>
   );

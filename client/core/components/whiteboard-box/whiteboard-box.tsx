@@ -1,8 +1,9 @@
 import { WhiteboardResponse } from "@types";
-import { FC, useRef } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./whiteboard-box.module.scss";
 import clsx from "clsx";
-import { useWhiteboard } from "hooks/useWhiteboard";
+import { fabric } from "fabric";
+import { Canvas } from "fabric/fabric-impl";
 
 type WhiteboardBoxProps = {
   meetingId: string;
@@ -10,25 +11,47 @@ type WhiteboardBoxProps = {
   className?: string;
 };
 
+const getInitialCanvas = () =>
+  new fabric.Canvas("canvas", {
+    height: 745,
+    width: 1200,
+    backgroundColor: "white",
+    controlsAboveOverlay: true,
+  });
+
 export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
+  meetingId,
   whiteboard,
   className,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { canvas } = useWhiteboard(canvasRef, containerRef);
+  const [canvas, setCanvas] = useState<Canvas>();
+
+  useEffect(() => {
+    const canvas = getInitialCanvas();
+
+    canvas?.add(
+      new fabric.Triangle({
+        width: 100,
+        height: 50,
+      })
+    );
+
+    setCanvas(canvas);
+  }, []);
 
   return (
     <div className={clsx(styles.container, className)}>
-      {canvas.width}
       <div>whiteboard users avatars</div>
       <div>panel with drawing tools</div>
-      <div
-        id={"canvas-container"}
-        className={styles.canvasContainer}
-        ref={containerRef}
+      <button
+        onClick={() => {
+          canvas?.setZoom(10);
+        }}
       >
-        <canvas id={"canvas"} className={styles.canvas} ref={canvasRef} />
+        test
+      </button>
+      <div className={styles.canvasContainer}>
+        <canvas id={"canvas"} className={styles.canvas} />
       </div>
     </div>
   );

@@ -1,12 +1,17 @@
 .container {
   width: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .canvas-container {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .canvas {
-  width: 100% !important;
-  outline: 1px solid red;
+  z-index: 1;
+  @include viewpoint-related-scale(1200px);
 }

@@ -75,6 +75,17 @@ $breakpoint-xl: 1280px;
   }
 }
 
+@mixin viewpoint-related-scale($element-width) {
+  @for $i from 12 through 48 {
+    @media (min-width: #{$i * 25px}) {
+      $width: $i * 25px - 100px;
+      $scale: ($width + 0px) / $element-width;
+      @debug $scale;
+      transform: scale(min($scale, 1));
+    }
+  }
+}
+
 @mixin debug {
   & *,
   & {
