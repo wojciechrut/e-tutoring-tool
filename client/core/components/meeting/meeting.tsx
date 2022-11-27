@@ -4,7 +4,6 @@ import { WhiteboardBox } from "components/whiteboard-box";
 import MeetingService from "services/meeting";
 import { parseError } from "helpers/parse-error";
 import styles from "./meeting.module.scss";
-import { ChatBox } from "components/chat-box";
 
 type MeetingProps = {
   meetingId: string;
@@ -13,7 +12,6 @@ type MeetingProps = {
 export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   const [meeting, setMeeting] = useState<SingleMeetingResponseBody | null>();
   const [fetchError, setFetchError] = useState<string | null>();
-  //todo - fullscreen magic
 
   useEffect(() => {
     MeetingService.access(meetingId)
@@ -33,17 +31,16 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.orientationMessage}>
+        Please change device orientation. Whiteboard feature is only available
+        for landscape mode
+      </div>
       <div className={styles.container}>
         <WhiteboardBox
           whiteboard={whiteboard}
           className={styles.whiteboard}
           meetingId={_id}
         />
-        <div className={styles.chatNotesContainer}>
-          <div className={styles.notes}>Notes todo</div>
-          {/*chat & notes container todo*/}
-          <ChatBox chat={chat} className={styles.chat} />
-        </div>
       </div>
     </div>
   );

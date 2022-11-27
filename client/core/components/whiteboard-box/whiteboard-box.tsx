@@ -13,8 +13,8 @@ type WhiteboardBoxProps = {
 
 const getInitialCanvas = () =>
   new fabric.Canvas("canvas", {
-    height: 745,
-    width: 1200,
+    height: 900,
+    width: 1600,
     backgroundColor: "white",
     controlsAboveOverlay: true,
   });
@@ -33,6 +33,8 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
       new fabric.Triangle({
         width: 100,
         height: 50,
+        top: 20,
+        left: 500,
       })
     );
 
@@ -41,15 +43,8 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
 
   return (
     <div className={clsx(styles.container, className)}>
-      <div>whiteboard users avatars</div>
-      <div>panel with drawing tools</div>
-      <button
-        onClick={() => {
-          canvas?.setZoom(10);
-        }}
-      >
-        test
-      </button>
+      {/*<div>whiteboard users avatars</div>*/}
+      {/*<div>panel with drawing tools</div>*/}
       <div className={styles.canvasContainer}>
         <canvas id={"canvas"} className={styles.canvas} />
       </div>
