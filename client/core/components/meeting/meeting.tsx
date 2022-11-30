@@ -36,11 +36,7 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
         for landscape mode
       </div>
       <div className={styles.container}>
-        <WhiteboardBox
-          whiteboard={whiteboard}
-          className={styles.whiteboard}
-          meetingId={_id}
-        />
+        <WhiteboardBox whiteboard={whiteboard} meetingId={_id} />
       </div>
     </div>
   );

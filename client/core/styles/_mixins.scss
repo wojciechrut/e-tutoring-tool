@@ -79,18 +79,18 @@ $breakpoint-xl: 1280px;
   @for $i from 12 through 64 {
     @media (min-width: #{$i * 25px}) {
       $width: $i * 25px - 150px;
-      $scale: ($width + 0px) / $element-width;
+      $scale: ($width + 0px) / $element-width - 0.02;
       transform: scale(min($scale, 1));
     }
   }
 }
 
-@mixin viewpoint-related-height($element-width) {
+@mixin viewpoint-related-size($element-width) {
   @for $i from 12 through 64 {
     @media (min-width: #{$i * 25px}) {
       $width: $i * 25px - 150px;
-      height: $width * 9 / 16 + 50px;
-      max-height: $width * 9 / 16 + 50px;
+      height: $width * 9 / 16;
+      width: $width;
     }
   }
 }

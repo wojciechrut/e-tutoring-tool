@@ -1,24 +1,31 @@
 .container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .canvas-container {
-  max-width: 100%;
-  min-width: 100%;
+  position: relative;
+  max-width: 100vw;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  @include viewpoint-related-height(1600px);
+  @include viewpoint-related-size(1600px);
+  max-height: 100vh;
 }
 
 .canvas {
-  border: 2px solid var(--col-main-500);
+  border: 2px solid var(--col-grey-300);
   @include viewpoint-related-scale(1600px);
+}
+
+.tool-box {
+  height: 100%;
+  width: 60px;
+  padding: 10px 0;
 }
