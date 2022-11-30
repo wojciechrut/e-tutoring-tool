@@ -2,22 +2,14 @@ import { WhiteboardResponse } from "@types";
 import { FC, useEffect, useState } from "react";
 import styles from "./whiteboard-box.module.scss";
 import clsx from "clsx";
-import { fabric } from "fabric";
 import { Canvas } from "fabric/fabric-impl";
+import { getInitialCanvas } from "helpers/fabric";
 
 type WhiteboardBoxProps = {
   meetingId: string;
   whiteboard: WhiteboardResponse;
   className?: string;
 };
-
-const getInitialCanvas = () =>
-  new fabric.Canvas("canvas", {
-    height: 900,
-    width: 1600,
-    backgroundColor: "white",
-    controlsAboveOverlay: true,
-  });
 
 export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
   meetingId,
@@ -28,15 +20,6 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
 
   useEffect(() => {
     const canvas = getInitialCanvas();
-
-    canvas?.add(
-      new fabric.Triangle({
-        width: 100,
-        height: 50,
-        top: 20,
-        left: 500,
-      })
-    );
 
     setCanvas(canvas);
   }, []);
