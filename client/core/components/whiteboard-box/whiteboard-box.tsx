@@ -1,9 +1,9 @@
 import { WhiteboardResponse } from "@types";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import styles from "./whiteboard-box.module.scss";
 import clsx from "clsx";
-import { Canvas } from "fabric/fabric-impl";
-import { getInitialCanvas } from "helpers/fabric";
+import { WhiteboardTools } from "components/whiteboard-box/whiteboard-tools";
+import { fabric } from "fabric";
 
 type WhiteboardBoxProps = {
   meetingId: string;
@@ -11,25 +11,26 @@ type WhiteboardBoxProps = {
   className?: string;
 };
 
+const mockObjFromDb = [
+  new fabric.Rect({
+    width: 200,
+    height: 120,
+    stroke: "black",
+  }),
+];
+
 export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
   meetingId,
   whiteboard,
   className,
 }) => {
-  const [canvas, setCanvas] = useState<Canvas>();
-
-  useEffect(() => {
-    const canvas = getInitialCanvas();
-
-    setCanvas(canvas);
-  }, []);
-
   return (
     <div className={clsx(styles.container, className)}>
-      {/*<div>whiteboard users avatars</div>*/}
-      <div className={styles.toolBox}>tools</div>
       <div className={styles.canvasContainer}>
-        <canvas id={"canvas"} className={styles.canvas} />
+        <canvas id="fabricCanvas" className={styles.canvas} />
+      </div>
+      <div className={styles.toolBox}>
+        <WhiteboardTools />
       </div>
       <div className={styles.toolBox}>users and chat</div>
     </div>
