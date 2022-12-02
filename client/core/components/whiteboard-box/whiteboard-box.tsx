@@ -26,11 +26,11 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
 }) => {
   return (
     <div className={clsx(styles.container, className)}>
+      <div className={styles.toolBox}>
+        <WhiteboardTools whiteboard={whiteboard} />
+      </div>
       <div className={styles.canvasContainer}>
         <canvas id="fabricCanvas" className={styles.canvas} />
-      </div>
-      <div className={styles.toolBox}>
-        <WhiteboardTools />
       </div>
       <div className={styles.toolBox}>users and chat</div>
     </div>
