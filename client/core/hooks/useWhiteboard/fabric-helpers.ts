@@ -1,5 +1,5 @@
 import { fabric } from "fabric";
-import { IRectOptions, ITextOptions } from "fabric/fabric-impl";
+import { Canvas, IRectOptions, ITextOptions } from "fabric/fabric-impl";
 
 const CANVAS_ID = "fabricCanvas";
 export const initCanvas = (objects: fabric.Object[]) => {
@@ -10,6 +10,12 @@ export const initCanvas = (objects: fabric.Object[]) => {
     stopContextMenu: true,
   });
 
+  enlivenObjects(canvas, objects);
+
+  return canvas;
+};
+
+export const enlivenObjects = (canvas: Canvas, objects: fabric.Object[]) => {
   fabric.util.enlivenObjects(
     objects,
     (objects: fabric.Object[]) => {
@@ -20,18 +26,16 @@ export const initCanvas = (objects: fabric.Object[]) => {
     },
     "fabric"
   );
-
-  return canvas;
 };
 
 export type Options = IRectOptions & ITextOptions;
 
 export const defaultOptions: Options = {
   width: 200,
-  height: 200,
+  height: 150,
   stroke: "#000000",
   strokeWidth: 3,
-  fill: undefined,
+  fill: "transparent",
   top: 200,
   left: 200,
 };
@@ -48,5 +52,7 @@ const setOptions = (options: Options, objectType: CanvasObjectType) => {
 };
 
 export const createRectangle = (options: IRectOptions) => {
-  return new fabric.Rect(setOptions(options, "figure"));
+  const rect = new fabric.Rect(setOptions(options, "figure"));
+  console.log(rect);
+  return rect;
 };

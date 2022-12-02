@@ -29,6 +29,7 @@ export const setupSocket = (server: http.Server) => {
       socket.emit("connected");
     });
 
+    //todo - look into it instead of sending to users
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
     });
@@ -41,6 +42,19 @@ export const setupSocket = (server: http.Server) => {
           socket.in(user._id.toString()).emit("messageReceived", message);
         }
       });
+    });
+
+    socket.on("joinWhiteboard", (whiteboardId) => {
+      socket.join(whiteboardId);
+    });
+
+    socket.on("leaveWhiteboard", (whiteboardId) => {
+      socket.leave(whiteboardId);
+    });
+
+    socket.on("addObject", (whiteboardId, object) => {
+      console.log("object added ");
+      socket.to(whiteboardId).emit("objectReceived", object);
     });
 
     socket.off("setup", (userId) => {
