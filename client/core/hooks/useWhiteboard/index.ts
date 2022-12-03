@@ -30,6 +30,7 @@ export const useWhiteboard = ({
   //initialization
   useEffect(() => {
     canvas = initCanvas(initialObjects as fabric.Object[]);
+    canvas.getActiveObject();
 
     return () => {
       canvas && canvas.dispose();

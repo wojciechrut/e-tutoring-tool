@@ -6,7 +6,6 @@ const create = async () => {
 };
 
 const addObject = async (_id: string, object: Object) => {
-  console.log({ object });
   await Model.updateOne(
     { _id },
     {

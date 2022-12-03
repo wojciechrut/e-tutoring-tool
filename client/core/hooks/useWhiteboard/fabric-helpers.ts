@@ -39,16 +39,27 @@ export const defaultOptions: Options = {
   fill: "transparent",
   top: 200,
   left: 200,
+  strokeUniform: true,
 };
 
 type CanvasObjectType = "figure" | "text";
 
 const setOptions = (options: Options, objectType: CanvasObjectType) => {
   const withDefault = Object.assign(defaultOptions, options);
-  const { width, height, stroke, fill, strokeWidth, top, left } = withDefault;
+  const { width, height, stroke, fill, strokeWidth, top, left, strokeUniform } =
+    withDefault;
 
   if (objectType === "figure") {
-    return { width, height, stroke, fill, strokeWidth, top, left };
+    return {
+      width,
+      height,
+      stroke,
+      fill,
+      strokeWidth,
+      top,
+      left,
+      strokeUniform,
+    };
   }
 };
 
