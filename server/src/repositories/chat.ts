@@ -1,12 +1,11 @@
 import { UserSelector as UserSelector } from "./user";
 import Model from "../models/chat";
-import { Types } from "mongoose";
 import { ModelId } from "../models/types/_id";
 import { FileSelector } from "./file";
 
 type SingleChatQuery = {
   users?: Array<string>;
-  _id?: Types.ObjectId;
+  _id?: ModelId;
 };
 
 type ManyChatsQuery = {
@@ -53,11 +52,11 @@ const findOrCreate = async (users: SingleChatQuery) => {
 };
 
 const create = async ({ users }: SingleChatQuery) => {
-  await Model.create({
+  const { _id } = await Model.create({
     users,
   });
 
-  return findOne({ users });
+  return Model.findOne({ _id });
 };
 
 const exists = async ({ users, ...rest }: SingleChatQuery) => {

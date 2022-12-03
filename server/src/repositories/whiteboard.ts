@@ -5,5 +5,15 @@ const create = async () => {
   return Model.findOne({ _id: whiteboard._id });
 };
 
-const WhiteboardRespository = { create };
-export default WhiteboardRespository;
+const addObject = async (_id: string, object: Object) => {
+  console.log({ object });
+  await Model.updateOne(
+    { _id },
+    {
+      $push: { objects: object },
+    }
+  );
+};
+
+const WhiteboardRepository = { create, addObject };
+export default WhiteboardRepository;

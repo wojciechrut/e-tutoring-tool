@@ -1,5 +1,6 @@
 import { fabric } from "fabric";
 import { Canvas, IRectOptions, ITextOptions } from "fabric/fabric-impl";
+import { v1 as uuid } from "uuid";
 
 const CANVAS_ID = "fabricCanvas";
 export const initCanvas = (objects: fabric.Object[]) => {
@@ -49,6 +50,13 @@ const setOptions = (options: Options, objectType: CanvasObjectType) => {
   if (objectType === "figure") {
     return { width, height, stroke, fill, strokeWidth, top, left };
   }
+};
+
+export const assignId = (object: fabric.Object) => {
+  const id = uuid();
+  object.set("data", {
+    id,
+  });
 };
 
 export const createRectangle = (options: IRectOptions) => {

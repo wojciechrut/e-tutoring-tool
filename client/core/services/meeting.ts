@@ -30,5 +30,6 @@ const access = async (id: string) => {
     await api.get(`${Paths.ACCESS_ONE}/${id}`);
   return meeting;
 };
+
 const MeetingService = { create, getMine, access };
 export default MeetingService;

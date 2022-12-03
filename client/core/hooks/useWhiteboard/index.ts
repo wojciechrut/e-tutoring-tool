@@ -1,6 +1,7 @@
 import { Canvas } from "fabric/fabric-impl";
 import { useEffect, useState } from "react";
 import {
+  assignId,
   createRectangle,
   defaultOptions,
   enlivenObjects,
@@ -9,9 +10,9 @@ import {
 } from "hooks/useWhiteboard/fabric-helpers";
 import { fabric } from "fabric";
 import { WhiteboardResponse } from "@types";
-import { v1 as uuid } from "uuid";
 import { useAuth } from "contexts/auth";
 import { useWhiteboardSocket } from "hooks/useWhiteboard/useWhiteboardSocket";
+import WhiteboardService from "services/whiteboard";
 
 let canvas: Canvas | null;
 export const useWhiteboard = ({
@@ -55,13 +56,14 @@ export const useWhiteboard = ({
   };
 
   const addObject = (object: fabric.Object) => {
-    object.data = {
-      id: uuid(),
-    };
+    assignId(object);
     sendObject(object);
     canvas?.add(object);
     setDrawing(false);
     canvas?.renderAll();
+    WhiteboardService.addObject(whiteboardId.toString(), object).then(
+      console.log
+    );
   };
 
   const addRectangle = () => {
