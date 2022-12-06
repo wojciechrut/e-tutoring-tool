@@ -6,17 +6,19 @@
   inset: 0;
   height: 100vh;
   overflow: hidden;
+  padding: 0 10px;
 }
 
 .canvas-container {
   position: relative;
   max-width: 100vw;
-  overflow: hidden;
+  //overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  @include viewpoint-related-size(1600px);
   max-height: 100vh;
+  @include viewpoint-related-size(1600px);
+  flex: 1;
 }
 
 .canvas {
@@ -28,4 +30,5 @@
   height: 100%;
   width: 60px;
   padding: 10px 0;
+  flex: 0;
 }

@@ -37,8 +37,8 @@ export const defaultOptions: Options = {
   stroke: "#000000",
   strokeWidth: 3,
   fill: "transparent",
-  top: 200,
-  left: 200,
+  top: 0,
+  left: 0,
   strokeUniform: true,
 };
 

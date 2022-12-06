@@ -47,6 +47,14 @@ export const setupSocket = (server: http.Server) => {
       socket.leave(whiteboardId);
     });
 
+    socket.on("joinVoicecall", (meetingId) => {
+      socket.join(meetingId);
+    });
+
+    socket.on("leaveVoicecall", (meetingId) => {
+      socket.leave(meetingId);
+    });
+
     socket.on("addObject", (whiteboardId, object) => {
       console.log("object added ");
       socket.to(whiteboardId).emit("objectReceived", object);

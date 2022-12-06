@@ -20,7 +20,7 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   }, [meetingId]);
 
   if (fetchError) {
-    return <>{"Couldn't fetch meeting - todo"}</>;
+    return <>{"Meeting not found."}</>;
   }
 
   if (!meeting) {
