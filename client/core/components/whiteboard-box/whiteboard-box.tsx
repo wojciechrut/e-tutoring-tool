@@ -21,7 +21,9 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
         <WhiteboardTools whiteboard={whiteboard} />
       </div>
       <div className={styles.canvasContainer}>
-        <canvas id="fabricCanvas" className={styles.canvas} />
+        <div>
+          <canvas id="fabricCanvas" className={styles.canvas} />
+        </div>
       </div>
       <div className={styles.toolBox}>users and chat</div>
     </div>
