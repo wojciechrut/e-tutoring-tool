@@ -79,7 +79,7 @@ $breakpoint-xl: 1280px;
   @for $i from 12 through 64 {
     @media (min-width: #{$i * 25px}) {
       $width: $i * 25px - 150px;
-      $scale: ($width + 0px) / $element-width - 0.02;
+      $scale: calc(($width + 0px) / $element-width - 0.02);
       transform: scale(min($scale, 1));
     }
   }
@@ -89,7 +89,7 @@ $breakpoint-xl: 1280px;
   @for $i from 12 through 64 {
     @media (min-width: #{$i * 25px}) {
       $width: $i * 25px - 150px;
-      height: $width * 9 / 16;
+      height: calc($width * 9 / 16);
       width: $width;
     }
   }
