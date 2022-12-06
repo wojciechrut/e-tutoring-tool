@@ -21,7 +21,7 @@ export const ChatBox: FC<ChatBoxProps> = ({
 }) => {
   const { user } = useAuth();
   const { sendMessage, handleMessageReceived } = useChatSocket(
-    user!!._id.toString()
+    chat._id.toString()
   );
   const [messages, setMessages] = useState(chat.messages);
   const anchorRef = useRef<HTMLDivElement>(null);

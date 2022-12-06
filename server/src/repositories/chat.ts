@@ -41,14 +41,14 @@ const allPopulator = [
   { path: "lastMessage" },
 ];
 
-const findOrCreate = async (users: SingleChatQuery) => {
-  const chatExists = await exists(users);
+const findOrCreate = async (query: SingleChatQuery) => {
+  const chatExists = await exists(query);
 
   if (!chatExists) {
-    await create(users);
+    await create(query);
   }
 
-  return findOne(users);
+  return findOne(query);
 };
 
 const create = async ({ users }: SingleChatQuery) => {

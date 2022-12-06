@@ -8,7 +8,7 @@ import {
 
 const ENDPOINT = "http://localhost:5000";
 
-export const useChatSocket = (userId: string) => {
+export const useChatSocket = (chatId: string) => {
   const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     ENDPOINT,
     { transports: ["websocket"] }
@@ -16,17 +16,17 @@ export const useChatSocket = (userId: string) => {
   const [connected, setConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    socket.emit("setup", userId);
-
     socket.on("connected", () => {
       setConnected(true);
     });
+
+    socket.emit("joinChat", chatId);
 
     return () => {
       socket.off("connected");
       socket.off("messageReceived");
     };
-  }, [socket, userId]);
+  }, [socket, chatId]);
 
   const sendMessage = (message: Message) => {
     socket.emit("sendMessage", message);

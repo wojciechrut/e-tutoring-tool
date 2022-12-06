@@ -29,19 +29,14 @@ export const setupSocket = (server: http.Server) => {
       socket.emit("connected");
     });
 
-    //todo - look into it instead of sending to users
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
     });
 
     socket.on("sendMessage", (message) => {
-      const { users } = message.chat;
+      const { chat } = message;
 
-      users.forEach((user) => {
-        if (!(user._id === message.sender._id)) {
-          socket.in(user._id.toString()).emit("messageReceived", message);
-        }
-      });
+      socket.to(chat._id.toString()).emit("messageReceived", message);
     });
 
     socket.on("joinWhiteboard", (whiteboardId) => {

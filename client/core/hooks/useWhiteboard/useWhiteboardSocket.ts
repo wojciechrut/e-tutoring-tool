@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { ClientToServerEvents, ServerToClientEvents } from "@types";
 import { fabric } from "fabric";
-import { useAuth } from "contexts/auth";
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -11,7 +10,6 @@ export const useWhiteboardSocket = (whiteboardId: string) => {
     ENDPOINT,
     { transports: ["websocket"] }
   );
-  const { user } = useAuth();
   const [connected, setConnected] = useState<boolean>(false);
 
   useEffect(() => {
