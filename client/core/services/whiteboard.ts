@@ -6,7 +6,8 @@ enum Paths {
 }
 
 const addObject = async (whiteboardId: string, object: Object) => {
-  await api.put(`${Paths.ADD_OBJECT}/${whiteboardId}`, { object });
+  const parsed = object.toJSON(["data"]);
+  await api.put(`${Paths.ADD_OBJECT}/${whiteboardId}`, { object: parsed });
 };
 
 const WhiteboardService = { addObject };

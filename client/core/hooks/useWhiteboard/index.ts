@@ -5,12 +5,12 @@ import {
   createRectangle,
   defaultOptions,
   enlivenObjects,
+  handlePathAdded,
   initCanvas,
   Options,
 } from "hooks/useWhiteboard/fabric-helpers";
 import { fabric } from "fabric";
 import { WhiteboardResponse } from "@types";
-import { useAuth } from "contexts/auth";
 import { useWhiteboardSocket } from "hooks/useWhiteboard/useWhiteboardSocket";
 import WhiteboardService from "services/whiteboard";
 
@@ -19,7 +19,6 @@ export const useWhiteboard = ({
   _id: whiteboardId,
   objects: initialObjects,
 }: WhiteboardResponse) => {
-  const { user } = useAuth();
   const { handleObjectReceived, sendObject } = useWhiteboardSocket(
     whiteboardId.toString()
   );
@@ -29,10 +28,13 @@ export const useWhiteboard = ({
 
   //initialization
   useEffect(() => {
-    canvas = initCanvas(initialObjects as fabric.Object[]);
+    canvas = initCanvas(initialObjects);
 
     return () => {
-      canvas && canvas.dispose();
+      if (canvas) {
+        canvas.dispose();
+        canvas.removeListeners();
+      }
       canvas = null;
     };
   }, [initialObjects]);
@@ -41,15 +43,26 @@ export const useWhiteboard = ({
   useEffect(() => {
     if (canvas) {
       canvas.isDrawingMode = drawing;
+      drawing && canvas.off();
+      if (drawing) {
+        handlePathAdded(canvas, (object) => {
+          sendObject(object);
+          WhiteboardService.addObject(whiteboardId.toString(), object);
+        });
+      } else {
+        canvas.off("object:added");
+      }
     }
-  }, [drawing]);
+  }, [drawing, sendObject]);
 
   //object received
   useEffect(() => {
     handleObjectReceived((object: fabric.Object) => {
+      //@ts-ignore
+      object.noEmit = true;
       canvas && enlivenObjects(canvas, [object]);
     });
-  }, [handleObjectReceived, user]);
+  }, [handleObjectReceived]);
 
   const toggleDrawing = () => {
     setDrawing((prev) => !prev);
@@ -61,9 +74,7 @@ export const useWhiteboard = ({
     canvas?.add(object);
     setDrawing(false);
     canvas?.renderAll();
-    WhiteboardService.addObject(whiteboardId.toString(), object).then(
-      console.log
-    );
+    WhiteboardService.addObject(whiteboardId.toString(), object);
   };
 
   const addRectangle = () => {

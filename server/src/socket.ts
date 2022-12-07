@@ -56,7 +56,6 @@ export const setupSocket = (server: http.Server) => {
     });
 
     socket.on("addObject", (whiteboardId, object) => {
-      console.log("object added ");
       socket.to(whiteboardId).emit("objectReceived", object);
     });
 

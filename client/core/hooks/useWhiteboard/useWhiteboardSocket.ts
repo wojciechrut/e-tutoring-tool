@@ -27,7 +27,8 @@ export const useWhiteboardSocket = (whiteboardId: string) => {
   }, [socket, whiteboardId]);
 
   const sendObject = (object: fabric.Object) => {
-    socket.emit("addObject", whiteboardId, object);
+    const parsed = object.toJSON(["data", "noEmit"]);
+    socket.emit("addObject", whiteboardId, parsed);
   };
 
   const handleObjectReceived = (callback: (object: fabric.Object) => void) => {

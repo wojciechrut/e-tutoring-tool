@@ -3,7 +3,7 @@ import { Canvas, IRectOptions, ITextOptions } from "fabric/fabric-impl";
 import { v1 as uuid } from "uuid";
 
 const CANVAS_ID = "fabricCanvas";
-export const initCanvas = (objects: fabric.Object[]) => {
+export const initCanvas = (objects: Object[]) => {
   const canvas = new fabric.Canvas(CANVAS_ID, {
     height: 900,
     width: 1600,
@@ -11,9 +11,28 @@ export const initCanvas = (objects: fabric.Object[]) => {
     stopContextMenu: true,
   });
 
-  enlivenObjects(canvas, objects);
+  enlivenObjects(canvas, objects as fabric.Object[]);
 
   return canvas;
+};
+
+const isRenderablePath = (object: any) => {
+  return !object.data?.id && object.type === "path" && !object.noEmit;
+};
+export const handlePathAdded = (
+  canvas: Canvas,
+  cb: (obj: fabric.Object) => void
+) => {
+  canvas.off("object:added");
+  canvas.on("object:added", (event) => {
+    const { target } = event;
+    if (!target || !isRenderablePath(target)) {
+      return;
+    }
+    const object = target;
+    assignId(object);
+    cb(object);
+  });
 };
 
 export const enlivenObjects = (canvas: Canvas, objects: fabric.Object[]) => {
@@ -71,7 +90,5 @@ export const assignId = (object: fabric.Object) => {
 };
 
 export const createRectangle = (options: IRectOptions) => {
-  const rect = new fabric.Rect(setOptions(options, "figure"));
-  console.log(rect);
-  return rect;
+  return new fabric.Rect(setOptions(options, "figure"));
 };
