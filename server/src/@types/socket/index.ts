@@ -8,6 +8,7 @@ export interface ServerToClientEvents {
   objectReceived: ((object: any) => void) | undefined;
   //voicecall
   voicecallNewUser: ((userId: string) => void) | undefined;
+  voicecallUserLeft: ((userId: string) => void) | undefined;
 }
 
 export interface ClientToServerEvents {
@@ -16,7 +17,7 @@ export interface ClientToServerEvents {
   sendMessage: (message: Message) => void;
   joinWhiteboard: (whiteboardId: string) => void;
   leaveWhiteboard: (whiteboardId: string) => void;
-  joinVoicecall: (meetingId: string) => void;
-  leaveVoicecall: (meetingId: string) => void;
+  joinVoicecall: (meetingId: string, userId: string) => void;
+  leaveVoicecall: (meetingId: string, userId: string) => void;
   addObject: (whiteboardId: string, object: any) => void;
 }

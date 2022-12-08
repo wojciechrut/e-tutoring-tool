@@ -4,6 +4,7 @@ import { WhiteboardBox } from "components/whiteboard-box";
 import MeetingService from "services/meeting";
 import { parseError } from "helpers/parse-error";
 import styles from "./meeting.module.scss";
+import { MeetingControls } from "components/meeting-controls";
 
 type MeetingProps = {
   meetingId: string;
@@ -35,6 +36,7 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
         Please change device orientation. Whiteboard feature is only available
         for landscape mode
       </div>
+      <MeetingControls meeting={meeting} className={styles.meetingControls} />
       <div className={styles.container}>
         <WhiteboardBox whiteboard={whiteboard} meetingId={_id} />
       </div>

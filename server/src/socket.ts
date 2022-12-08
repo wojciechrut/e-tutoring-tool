@@ -47,12 +47,14 @@ export const setupSocket = (server: http.Server) => {
       socket.leave(whiteboardId);
     });
 
-    socket.on("joinVoicecall", (meetingId) => {
+    socket.on("joinVoicecall", (meetingId, userId) => {
       socket.join(meetingId);
+      socket.to(meetingId).emit("voicecallNewUser", userId);
     });
 
-    socket.on("leaveVoicecall", (meetingId) => {
+    socket.on("leaveVoicecall", (meetingId, userId) => {
       socket.leave(meetingId);
+      socket.to(meetingId).emit("voicecallUserLeft", userId);
     });
 
     socket.on("addObject", (whiteboardId, object) => {
