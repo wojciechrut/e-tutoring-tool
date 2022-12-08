@@ -4,11 +4,11 @@ import { ModelId } from "../../models/types/_id";
 export type ChatFetchQuery =
   | {
       userId: string;
-      meetingId: undefined;
+      chatId: undefined;
     }
   | {
       userId: undefined;
-      meetingId: string;
+      chatId: string;
     };
 
 export type ChatAccessQuery = {

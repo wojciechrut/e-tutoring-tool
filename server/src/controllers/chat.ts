@@ -17,19 +17,21 @@ const get: RequestHandler<
   ChatFetchQuery,
   MeResponseLocals
 > = async (request, response, next) => {
-  const { userId } = request.query;
+  const { userId, chatId } = request.query;
   const { _id: requesterId } = response.locals;
-
-  // if (meetingId) {
-  //   //meeting chats z obiektu meeting
-  //   console.log("chats by meeting todo");
-  //   return;
-  // }
+  let chat: Awaited<ReturnType<typeof ChatRepository.findOrCreate>>;
 
   if (userId) {
-    const chat = await ChatRepository.findOrCreate({
+    chat = await ChatRepository.findOrCreate({
       users: [userId, id(requesterId)],
+      isMeetingChat: false,
     });
+
+    if (chatId) {
+      chat = await ChatRepository.findOrCreate({
+        _id: chatId,
+      });
+    }
 
     if (!chat) {
       next(createError(ErrorStatus.SERVER, "Could not access this chat."));
@@ -49,7 +51,10 @@ const mine: RequestHandler<
 > = async (_request, response, _next) => {
   const { _id: requesterId } = response.locals;
 
-  const chats = await ChatRepository.findAll({ users: requesterId });
+  const chats = await ChatRepository.findAll({
+    users: requesterId,
+    isMeetingChat: false,
+  });
 
   response.send(chats);
 };

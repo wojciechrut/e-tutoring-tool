@@ -6,10 +6,12 @@ import { FileSelector } from "./file";
 type SingleChatQuery = {
   users?: Array<string>;
   _id?: ModelId;
+  isMeetingChat?: boolean;
 };
 
 type ManyChatsQuery = {
   users?: ModelId;
+  isMeetingChat?: boolean;
 };
 
 type AddMessageQuery = {
@@ -51,10 +53,8 @@ const findOrCreate = async (query: SingleChatQuery) => {
   return findOne(query);
 };
 
-const create = async ({ users }: SingleChatQuery) => {
-  const { _id } = await Model.create({
-    users,
-  });
+const create = async (query: SingleChatQuery) => {
+  const { _id } = await Model.create(query);
 
   return Model.findOne({ _id });
 };

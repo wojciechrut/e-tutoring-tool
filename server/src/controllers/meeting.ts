@@ -70,6 +70,7 @@ const create: RequestHandler<
 
   const chat = await ChatRepository.create({
     users: [organiser.toString(), ...invited],
+    isMeetingChat: true,
   });
 
   const whiteboard = await WhiteboardRepository.create();

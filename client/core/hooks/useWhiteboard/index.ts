@@ -53,7 +53,7 @@ export const useWhiteboard = ({
         canvas.off("object:added");
       }
     }
-  }, [drawing, sendObject]);
+  }, [drawing, sendObject, whiteboardId]);
 
   //object received
   useEffect(() => {

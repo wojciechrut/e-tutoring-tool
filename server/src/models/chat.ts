@@ -9,6 +9,7 @@ export interface Chat {
   users: Array<User>;
   messages: Array<Message>;
   lastMessage?: Message;
+  isMeetingChat: boolean;
 }
 
 const chatSchema = new Schema<Chat>(
@@ -16,6 +17,7 @@ const chatSchema = new Schema<Chat>(
     users: [{ type: Types.ObjectId, required: true, ref: "User" }],
     messages: [{ type: Types.ObjectId, default: [], ref: "Message" }],
     lastMessage: { type: Types.ObjectId, required: false, ref: "Message" },
+    isMeetingChat: { type: Boolean, default: false },
   },
   commonSchemaOptions
 );
