@@ -49,6 +49,7 @@ export const setupSocket = (server: http.Server) => {
 
     socket.on("joinVoicecall", (meetingId, userId) => {
       socket.join(meetingId);
+      console.log("join voicecall - " + userId);
       socket.to(meetingId).emit("voicecallNewUser", userId);
     });
 

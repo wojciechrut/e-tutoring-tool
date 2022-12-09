@@ -23,21 +23,18 @@ export const MeetingControls: FC<MeetingControlsProps> = ({
     otherUsers.map((u) => u._id.toString())
   );
 
-  console.log(audioRefs);
   return (
     <div className={clsx(styles.container, className)}>
       {otherUsers.map((user, i) => (
-        <>
-          <audio
-            key={user._id.toString()}
-            ref={(element) => {
-              audioRefs.current[i] = element;
-            }}
-            autoPlay
-          />
-          {`audio ${i} --- `}
-        </>
+        <audio
+          key={user._id.toString()}
+          ref={(element) => {
+            audioRefs.current[i] = element;
+          }}
+          autoPlay
+        />
       ))}
+      {`${user?._id.toString()}`}
     </div>
   );
 };
