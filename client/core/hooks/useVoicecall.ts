@@ -59,46 +59,50 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
     if (!myPeer) {
       return;
     }
+    console.log("use effect - has peer");
 
-    const setupAudio = (
-      callerId: string,
-      peer: Peer,
-      myStream: MediaStream
-    ) => {
+    const setupAudioStream = (callerId: string, callerStream: MediaStream) => {
+      console.log("setup audio - caller - " + callerId);
       const callerIndex = userIds.indexOf(callerId);
       const callerAudio = audioRefs.current[callerIndex];
       if (!callerAudio) return;
+
+      applySoundProcessing(callerAudio);
+      callerAudio.srcObject = callerStream;
       callerAudio.addEventListener("loadedmetadata", () => {
         callerAudio.play();
       });
+    };
 
-      const call = peer.call(callerId, myStream, { metadata: userId });
+    const call = (callerId: string, myStream: MediaStream) => {
+      console.log("call - " + callerId + "from " + userId);
+      const call = myPeer.call(callerId, myStream, { metadata: userId });
       call.on("stream", (callerStream) => {
-        console.log("stream", callerStream);
-        applySoundProcessing(callerAudio);
-        callerAudio.srcObject = callerStream;
+        setupAudioStream(callerId, callerStream);
       });
       call.on("close", () => {
         console.log("call close");
-        callerAudio.srcObject = null;
       });
     };
 
     getUserMedia()
       .then((myStream) => {
-        myPeer.on("open", (id: string) => {
-          console.log("peer open - " + id);
-          socket.on("voicecallNewUser", (callerId) => {
-            console.log("new user socket listener");
-            setupAudio(callerId, myPeer, myStream);
-          });
-          socket.emit("joinVoicecall", meetingId, id);
+        socket.on("voicecallNewUser", (callerId) => {
+          console.log(123);
+          call(callerId, myStream);
         });
 
-        myPeer.on("call", (call) => {
-          const callerId: string = call.metadata;
-          console.log("call " + callerId);
-          setupAudio(callerId, myPeer, myStream);
+        myPeer.on("open", (id: string) => {
+          console.log("peer open - " + id);
+          socket.emit("joinVoicecall", meetingId, id);
+
+          myPeer.on("call", (call) => {
+            const callerId: string = call.metadata;
+            call.answer(myStream);
+            call.on("stream", (stream) => {
+              setupAudioStream(callerId, stream);
+            });
+          });
         });
       })
       .catch(console.log);
