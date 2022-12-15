@@ -1,5 +1,5 @@
 .wrapper {
-  background-color: var(--col-white);
+  background-color: var(--col-main-100);
   position: fixed;
   inset: 0;
   height: 100%;
@@ -35,8 +35,7 @@
 
 .meeting-controls {
   position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10px;
+  right: 0;
   z-index: 1000;
 }

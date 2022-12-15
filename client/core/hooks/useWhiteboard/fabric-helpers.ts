@@ -9,6 +9,7 @@ export const initCanvas = (objects: Object[]) => {
     width: 1600,
     isDrawingMode: true,
     stopContextMenu: true,
+    backgroundColor: "#ffffff",
   });
 
   enlivenObjects(canvas, objects as fabric.Object[]);

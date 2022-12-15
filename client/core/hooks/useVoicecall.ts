@@ -93,7 +93,6 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
     getUserMedia()
       .then((myStream) => {
         myPeer.on("open", () => {
-          console.log("my stream = " + myStream.id);
           myPeer.on("call", (call) => {
             const callerId: string = call.metadata;
             console.log("on call");

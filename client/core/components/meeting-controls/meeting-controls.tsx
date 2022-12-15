@@ -1,9 +1,11 @@
 import { SingleMeetingResponseBody } from "@types";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./meeting-controls.module.scss";
 import clsx from "clsx";
 import { useVoicecall } from "hooks/useVoicecall";
 import { useAuth } from "contexts/auth";
+import { UserAvatar } from "components/common/user-avatar";
+import { getOtherUsersFromMeeting, getUsersIds } from "helpers/users";
 
 type MeetingControlsProps = {
   meeting: SingleMeetingResponseBody;
@@ -15,40 +17,82 @@ export const MeetingControls: FC<MeetingControlsProps> = ({
   className,
 }) => {
   const { user } = useAuth();
-  const otherUsers = [...meeting.invited, meeting.organiser].filter(
-    ({ _id }) => _id !== user?._id
+  const otherUsers = getOtherUsersFromMeeting(user!!._id.toString(), meeting);
+  const { audioRefs } = useVoicecall(meeting._id, getUsersIds(otherUsers));
+  const [muted, setMuted] = useState<Array<boolean>>(
+    otherUsers.map(() => false)
   );
-  const { audioRefs } = useVoicecall(
-    meeting._id,
-    otherUsers.map((u) => u._id.toString())
-  );
+  const [showMobile, setShowMobile] = useState<boolean>(false);
+
+  const toggleMute = (userIndex: number) => {
+    setMuted((previous) => {
+      const newValue = [...previous];
+      newValue[userIndex] = !newValue[userIndex];
+      return newValue;
+    });
+  };
+
+  useEffect(() => {
+    muted.map((singleMutedState, i) => {
+      const audioElement = audioRefs.current[i];
+      if (audioElement) {
+        audioElement.muted = singleMutedState;
+      }
+    });
+  }, [muted, audioRefs]);
 
   return (
-    <div className={clsx(styles.container, className)}>
-      {otherUsers.map((user, i) => (
-        <>
-          <audio
+    <div
+      className={clsx(
+        styles.container,
+        className,
+        showMobile && styles.containerWithBackground
+      )}
+    >
+      {otherUsers.map((user, i) => {
+        return (
+          <div
+            className={clsx(
+              styles.userAudio,
+              showMobile && styles.userAudioShow
+            )}
             key={user._id.toString()}
-            ref={(element) => {
-              audioRefs.current[i] = element;
-            }}
-            autoPlay
-          />
-          <button
-            onClick={() => {
-              console.log(audioRefs.current[i]);
-              if (audioRefs.current[i]) {
-                const x = audioRefs.current[i];
-                console.log(x?.srcObject);
-                audioRefs.current[i]?.play();
-              }
-            }}
           >
-            lol
-          </button>
-        </>
-      ))}
-      {`${user?._id.toString()}`}
+            <audio
+              ref={(element) => {
+                audioRefs.current[i] = element;
+              }}
+              autoPlay
+            />
+            <div className={styles.userAudioControl}>
+              <UserAvatar
+                avatar={user.avatar}
+                size={40}
+                className={styles.userAudioAvatar}
+              />
+              <div className={styles.userAudioNickname}>{user.nickname}</div>
+              <button
+                onClick={() => toggleMute(i)}
+                className={styles.userAudioButton}
+              >
+                {muted[i] ? (
+                  <i className="fa-solid fa-microphone-slash" />
+                ) : (
+                  <i className="fa-solid fa-microphone" />
+                )}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+      <button
+        className={styles.toggleButton}
+        onClick={() => {
+          setShowMobile((prev) => !prev);
+        }}
+      >
+        <i className="fa-solid fa-users" />
+      </button>
     </div>
   );
 };

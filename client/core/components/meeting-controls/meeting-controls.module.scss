@@ -1,3 +1,77 @@
 .container {
+  padding: 10px 15px 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
+
+  @include lg {
+    background-color: var(--col-main-300-opacity);
+  }
+
+  &--with-background {
+    background-color: var(--col-main-300-opacity);
+  }
+}
+
+.user-audio {
+  position: relative;
+  display: flex;
+  padding: 2px;
+  visibility: hidden;
+
+  &--show {
+    visibility: visible;
+  }
+
+  @include lg {
+    visibility: visible;
+  }
+
+  &__control {
+    @include flex-center();
+    flex-direction: column;
+  }
+
+  &__avatar {
+    border: 1px solid var(--col-main-700);
+  }
+
+  &__nickname {
+    color: var(--col-white);
+    font-weight: 500;
+    font-size: var(--font-size-100);
+  }
+
+  &__button {
+    z-index: 100;
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: var(--font-size-200);
+    @include flex-center();
+    border: 1px solid var(--col-accent-500);
+    background-color: var(--col-accent-500);
+    color: var(--col-white);
+    padding: 0;
+  }
+}
+.toggle-button {
+  margin-left: auto;
+  @include flex-center;
+  background-color: var(--col-main-600);
+  border-radius: 50%;
+  border: none;
+  font-size: var(--font-size-700);
+  width: 56px;
+  height: 56px;
+  color: var(--col-white);
+
+  @include lg {
+    display: none;
+  }
 }
