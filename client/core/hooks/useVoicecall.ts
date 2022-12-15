@@ -2,16 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { ClientToServerEvents, ServerToClientEvents } from "@types";
 import { useAuth } from "contexts/auth";
-import { applySoundProcessing } from "helpers/audio";
 import Peer from "peerjs";
+import { applySoundProcessing } from "helpers/audio";
 
 const ENDPOINT = "http://localhost:5000";
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+  ENDPOINT,
+  { transports: ["websocket"] }
+);
 
 export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
-  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-    ENDPOINT,
-    { transports: ["websocket"] }
-  );
   const { user } = useAuth();
   const audioRefs = useRef<Array<HTMLAudioElement | null>>([]);
   const [myPeer, setMyPeer] = useState<Peer>();
@@ -23,85 +23,92 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
       .getUserMedia({
         video: false,
         audio: true,
+        //@ts-ignore
+        noiseSuppression: true,
       })
       .then((stream) => stream);
   };
 
   useEffect(() => {
-    //nextjs-peerjs weird bug
     const PeerConstructor = require("peerjs").default;
-
-    console.log("con peer obj");
     const peer: Peer = new PeerConstructor(userId, {
-      config: {
-        iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
-          {
-            urls: "turn:0.peerjs.com:3478",
-            username: "peerjs",
-            credential: "peerjs",
-          },
-        ],
-        sdpSemantics: "unified-plan",
-        iceTransportPolicy: "relay",
-      },
+      secure: false,
+      iceServers: [
+        {
+          urls: "stun:relay.metered.ca:80",
+        },
+        {
+          urls: "turn:relay.metered.ca:80",
+          username: "423881fae526653378ea758c",
+          credential: "ETvrslw6OSwm6vea",
+        },
+        {
+          urls: "turn:relay.metered.ca:443",
+          username: "423881fae526653378ea758c",
+          credential: "ETvrslw6OSwm6vea",
+        },
+        {
+          urls: "turn:relay.metered.ca:443?transport=tcp",
+          username: "423881fae526653378ea758c",
+          credential: "ETvrslw6OSwm6vea",
+        },
+      ],
     });
-
     setMyPeer(peer);
 
     return () => {
-      console.log("dc peer obj");
       peer.disconnect();
+      peer.destroy();
     };
   }, [userId]);
 
   useEffect(() => {
-    if (!myPeer) {
-      return;
-    }
-    console.log("use effect - has peer");
+    if (!myPeer) return;
 
     const setupAudioStream = (callerId: string, callerStream: MediaStream) => {
-      console.log("setup audio - caller - " + callerId);
       const callerIndex = userIds.indexOf(callerId);
       const callerAudio = audioRefs.current[callerIndex];
       if (!callerAudio) return;
-
-      applySoundProcessing(callerAudio);
       callerAudio.srcObject = callerStream;
+      applySoundProcessing(callerAudio);
       callerAudio.addEventListener("loadedmetadata", () => {
-        callerAudio.play();
+        callerAudio.play().then(() => {});
       });
     };
 
     const call = (callerId: string, myStream: MediaStream) => {
-      console.log("call - " + callerId + "from " + userId);
-      const call = myPeer.call(callerId, myStream, { metadata: userId });
-      call.on("stream", (callerStream) => {
-        setupAudioStream(callerId, callerStream);
-      });
-      call.on("close", () => {
-        console.log("call close");
-      });
+      setTimeout(() => {
+        const call = myPeer.call(callerId, myStream, { metadata: userId });
+        call.on("stream", (callerStream) => {
+          console.log("call on stream");
+          setupAudioStream(callerId, callerStream);
+        });
+
+        call.on("close", () => {
+          console.log("call on close");
+        });
+      }, 1000);
     };
 
     getUserMedia()
       .then((myStream) => {
-        socket.on("voicecallNewUser", (callerId) => {
-          console.log(123);
-          call(callerId, myStream);
-        });
-
-        myPeer.on("open", (id: string) => {
-          console.log("peer open - " + id);
-          socket.emit("joinVoicecall", meetingId, id);
-
+        myPeer.on("open", () => {
+          console.log("my stream = " + myStream.id);
           myPeer.on("call", (call) => {
             const callerId: string = call.metadata;
-            call.answer(myStream);
+            console.log("on call");
             call.on("stream", (stream) => {
+              console.log("got called with stream - " + stream.id);
               setupAudioStream(callerId, stream);
             });
+            call.answer(myStream);
+          });
+          socket.emit("joinVoicecall", meetingId, userId);
+
+          socket.on("voicecallNewUser", (callerId) => {
+            console.log("new user = " + callerId);
+            console.log("calling with stream - " + myStream.id);
+            call(callerId, myStream);
           });
         });
       })
@@ -114,9 +121,8 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
     return () => {
       socket.emit("leaveVoicecall", meetingId, userId);
       socket.off("voicecallNewUser");
-      myPeer.disconnect();
     };
-  }, [myPeer, socket, meetingId, userId, userIds]);
+  }, [myPeer, meetingId, userId, userIds]);
 
   return { audioRefs };
 };
