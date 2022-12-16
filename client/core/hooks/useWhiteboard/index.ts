@@ -30,20 +30,11 @@ export const useWhiteboard = ({
     sendRemovedObjects,
     handleObjectsRemoved,
   } = useWhiteboardSocket(whiteboardId.toString());
-  const { options, setStroke, setStrokeWidth } = useWhiteboardOptions();
+  const { options, setStroke, setStrokeWidth } = useWhiteboardOptions(canvas);
 
   //initialization
   useEffect(() => {
     canvas = initCanvas(initialObjects);
-    onObjectModified(canvas, (object) => {
-      WhiteboardService.modifyObject(whiteboardId.toString(), object);
-      sendModifiedObject(object);
-    });
-    // handlePathAdded(canvas, (object) => {
-    //   sendObject(object);
-    //   WhiteboardService.addObject(whiteboardId.toString(), object);
-    // });
-
     return () => {
       if (canvas) {
         canvas.dispose();
@@ -51,7 +42,16 @@ export const useWhiteboard = ({
       }
       canvas = null;
     };
-  }, [initialObjects, sendModifiedObject, whiteboardId, sendObject]);
+  }, [initialObjects, whiteboardId]);
+
+  //handle local object modified
+  useEffect(() => {
+    if (!canvas) return;
+    onObjectModified(canvas, (object) => {
+      WhiteboardService.modifyObject(whiteboardId.toString(), object);
+      sendModifiedObject(object);
+    });
+  }, [sendModifiedObject, whiteboardId]);
 
   //drawing mode
   useEffect(() => {

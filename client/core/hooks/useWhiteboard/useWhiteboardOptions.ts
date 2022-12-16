@@ -1,5 +1,10 @@
-import { defaultOptions, Options } from "./fabric-helpers";
-import { useReducer } from "react";
+import {
+  adjustBrushToOptions,
+  defaultOptions,
+  Options,
+} from "./fabric-helpers";
+import { useEffect, useReducer } from "react";
+import { Canvas } from "fabric/fabric-impl";
 
 enum ActionKind {
   SET_STROKE,
@@ -37,14 +42,22 @@ const reducer = (state: Options, action: Action): Options => {
   }
 };
 
-export const useWhiteboardOptions = () => {
+export const useWhiteboardOptions = (canvas: Canvas | null) => {
   const [options, dispatch] = useReducer(reducer, defaultOptions);
 
-  const setStroke = (color: string) =>
+  const setStroke = (color: string) => {
     dispatch({ type: ActionKind.SET_STROKE, payload: color });
+  };
 
-  const setStrokeWidth = (width: number) =>
+  const setStrokeWidth = (width: number) => {
     dispatch({ type: ActionKind.SET_STROKE_WIDTH, payload: width });
+  };
+
+  useEffect(() => {
+    if (canvas) {
+      adjustBrushToOptions(canvas, options);
+    }
+  }, [options, canvas]);
 
   return { options, setStroke, setStrokeWidth };
 };

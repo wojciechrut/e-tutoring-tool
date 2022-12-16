@@ -93,7 +93,7 @@ export const enlivenObjects = (canvas: Canvas, objects: fabric.Object[]) => {
 
 export type Options = IRectOptions & ITextOptions;
 
-export const defaultOptions: Options = {
+export const defaultOptions = {
   width: 200,
   height: 150,
   stroke: "#000000",
@@ -123,6 +123,12 @@ const setOptions = (options: Options, objectType: CanvasObjectType) => {
       strokeUniform,
     };
   }
+};
+
+export const adjustBrushToOptions = (canvas: Canvas, options: Options) => {
+  const { stroke, strokeWidth } = options;
+  if (stroke) canvas.freeDrawingBrush.color = stroke;
+  if (strokeWidth) canvas.freeDrawingBrush.width = strokeWidth;
 };
 
 export const assignId = (object: fabric.Object) => {
