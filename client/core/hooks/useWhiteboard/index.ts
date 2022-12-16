@@ -82,6 +82,7 @@ export const useWhiteboard = ({
     handleObjectModified((object: fabric.Object) => {
       //@ts-ignore
       object.noEmit = true;
+      if (!object.data) return;
       canvas?.getObjects().forEach((canvasObject) => {
         if (object.data.id === canvasObject.data.id) {
           canvasObject.set(object);

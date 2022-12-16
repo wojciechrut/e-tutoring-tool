@@ -32,7 +32,7 @@ export const useWhiteboardSocket = (whiteboardId: string) => {
   };
 
   const sendModifiedObject = (object: fabric.Object) => {
-    const parsed = object.toJSON(["data", "noEmit"]);
+    const parsed = object.toJSON ? object.toJSON(["data", "noEmit"]) : object;
     socket.emit("modifyObject", whiteboardId, parsed);
   };
 

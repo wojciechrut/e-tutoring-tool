@@ -13,7 +13,7 @@ const addObject = async (whiteboardId: string, object: Object) => {
 };
 
 const modifyObject = async (whiteboardId: string, object: Object) => {
-  const parsed = object.toJSON(["data"]);
+  const parsed = object.toJSON ? object.toJSON(["data"]) : object;
   await api.patch(`${Paths.MODIFY_OBJECT}/${whiteboardId}`, { object: parsed });
 };
 

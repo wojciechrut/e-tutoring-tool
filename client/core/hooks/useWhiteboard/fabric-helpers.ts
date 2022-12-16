@@ -50,9 +50,24 @@ export const onObjectModified = (
     if (!target) {
       return;
     }
-    const object = target;
-    if (!object.data.id) assignId(object);
-    cb(object);
+
+    if (canvas.getActiveObjects().length > 1) {
+      canvas.getActiveObjects().forEach((object) => {
+        const group = object.group;
+        if (group && object) {
+          const absolutelyPositioned = object.toJSON(["data"]);
+          absolutelyPositioned.left =
+            //@ts-ignore
+            object.left + group.left + group.width / 2;
+          absolutelyPositioned.top =
+            //@ts-ignore
+            object.top + group.top + group.height / 2;
+          cb(absolutelyPositioned);
+        }
+      });
+    } else {
+      cb(target);
+    }
   });
 };
 
