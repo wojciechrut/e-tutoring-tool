@@ -9,8 +9,14 @@ type WhiteboardToolsProps = {
 };
 
 export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
-  const { toggleDrawing, addRectangle, drawing, removeSelectedObjects } =
-    useWhiteboard(whiteboard);
+  const {
+    toggleDrawing,
+    addRectangle,
+    drawing,
+    removeSelectedObjects,
+    setStroke,
+    setStrokeWidth,
+  } = useWhiteboard(whiteboard);
 
   return (
     <div className={styles.container}>
@@ -26,6 +32,9 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
       </button>
       <button className={styles.button} onClick={addRectangle}>
         <Rectangle />
+      </button>
+      <button className={styles.button} onClick={() => setStroke("#ff0000")}>
+        test
       </button>
     </div>
   );

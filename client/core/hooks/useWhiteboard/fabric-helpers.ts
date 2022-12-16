@@ -33,6 +33,7 @@ export const handlePathAdded = (
     }
     const object = target;
     assignId(object);
+    object.setCoords();
     //@ts-ignore
     if (object.noEmit) return;
     cb(object);

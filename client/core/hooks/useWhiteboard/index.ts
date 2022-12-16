@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import {
   assignId,
   createRectangle,
-  defaultOptions,
   enlivenObjects,
   handlePathAdded,
   initCanvas,
   onObjectModified,
-  Options,
   removeObjectsByIds,
   removeSelected,
 } from "hooks/useWhiteboard/fabric-helpers";
@@ -16,6 +14,7 @@ import { fabric } from "fabric";
 import { WhiteboardResponse } from "@types";
 import { useWhiteboardSocket } from "hooks/useWhiteboard/useWhiteboardSocket";
 import WhiteboardService from "services/whiteboard";
+import { useWhiteboardOptions } from "hooks/useWhiteboard/useWhiteboardOptions";
 
 let canvas: Canvas | null;
 export const useWhiteboard = ({
@@ -31,8 +30,7 @@ export const useWhiteboard = ({
     sendRemovedObjects,
     handleObjectsRemoved,
   } = useWhiteboardSocket(whiteboardId.toString());
-  //todo - separate hook
-  const [options, setOptions] = useState<Options>(defaultOptions);
+  const { options, setStroke, setStrokeWidth } = useWhiteboardOptions();
 
   //initialization
   useEffect(() => {
@@ -41,6 +39,10 @@ export const useWhiteboard = ({
       WhiteboardService.modifyObject(whiteboardId.toString(), object);
       sendModifiedObject(object);
     });
+    // handlePathAdded(canvas, (object) => {
+    //   sendObject(object);
+    //   WhiteboardService.addObject(whiteboardId.toString(), object);
+    // });
 
     return () => {
       if (canvas) {
@@ -49,7 +51,7 @@ export const useWhiteboard = ({
       }
       canvas = null;
     };
-  }, [initialObjects, sendModifiedObject, whiteboardId]);
+  }, [initialObjects, sendModifiedObject, whiteboardId, sendObject]);
 
   //drawing mode
   useEffect(() => {
@@ -64,7 +66,7 @@ export const useWhiteboard = ({
         canvas.off("object:added");
       }
     }
-  }, [drawing, sendObject, whiteboardId]);
+  }, [drawing, whiteboardId, sendObject]);
 
   //object received
   useEffect(() => {
@@ -109,8 +111,8 @@ export const useWhiteboard = ({
     assignId(object);
     sendObject(object);
     canvas?.add(object);
-    setDrawing(false);
     canvas?.renderAll();
+    setDrawing(false);
     WhiteboardService.addObject(whiteboardId.toString(), object);
   };
 
@@ -138,5 +140,7 @@ export const useWhiteboard = ({
     removeSelectedObjects,
     options,
     drawing,
+    setStrokeWidth,
+    setStroke,
   };
 };
