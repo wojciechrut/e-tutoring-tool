@@ -2,20 +2,31 @@ import styles from "./whiteboard-tools.module.scss";
 import { FC } from "react";
 import { useWhiteboard } from "hooks/useWhiteboard";
 import { WhiteboardResponse } from "@types";
+import Rectangle from "assets/icons/rectangle.svg";
 
 type WhiteboardToolsProps = {
   whiteboard: WhiteboardResponse;
 };
 
 export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
-  const { toggleDrawing, addRectangle } = useWhiteboard(whiteboard);
+  const { toggleDrawing, addRectangle, drawing, removeSelectedObjects } =
+    useWhiteboard(whiteboard);
 
   return (
     <div className={styles.container}>
-      <div>
-        <button onClick={addRectangle}>add</button>
-        <button onClick={toggleDrawing}>toggle</button>
-      </div>
+      <button className={styles.button} onClick={toggleDrawing}>
+        {drawing ? (
+          <i className="fa-solid fa-pencil"></i>
+        ) : (
+          <i className="fa-solid fa-arrow-pointer"></i>
+        )}
+      </button>
+      <button className={styles.button} onClick={removeSelectedObjects}>
+        <i className="fa-solid fa-xmark"></i>
+      </button>
+      <button className={styles.button} onClick={addRectangle}>
+        <Rectangle />
+      </button>
     </div>
   );
 };

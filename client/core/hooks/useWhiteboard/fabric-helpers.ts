@@ -20,6 +20,7 @@ export const initCanvas = (objects: Object[]) => {
 const isRenderablePath = (object: any) => {
   return !object.data?.id && object.type === "path" && !object.noEmit;
 };
+
 export const handlePathAdded = (
   canvas: Canvas,
   cb: (obj: fabric.Object) => void
@@ -32,8 +33,48 @@ export const handlePathAdded = (
     }
     const object = target;
     assignId(object);
+    //@ts-ignore
+    if (object.noEmit) return;
     cb(object);
   });
+};
+
+export const onObjectModified = (
+  canvas: Canvas,
+  cb: (obj: fabric.Object) => void
+) => {
+  canvas.off("object:modified");
+  canvas.on("object:modified", (event) => {
+    const { target } = event;
+    if (!target) {
+      return;
+    }
+    const object = target;
+    if (!object.data.id) assignId(object);
+    cb(object);
+  });
+};
+
+export const removeSelected = (canvas: Canvas) => {
+  const selected = canvas.getActiveObjects();
+  selected.forEach((object) => {
+    if (!object.data.id) return;
+    canvas.remove(object);
+  });
+
+  canvas.renderAll();
+  return selected;
+};
+
+export const removeObjectsByIds = (canvas: Canvas, ids: Array<string>) => {
+  const objectsToRemove = canvas
+    .getObjects()
+    .filter((object) => object.data.id && ids.includes(object.data.id));
+
+  objectsToRemove.forEach((object) => {
+    canvas.remove(object);
+  });
+  canvas.renderAll();
 };
 
 export const enlivenObjects = (canvas: Canvas, objects: fabric.Object[]) => {

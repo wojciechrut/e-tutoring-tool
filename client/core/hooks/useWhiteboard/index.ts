@@ -7,7 +7,10 @@ import {
   enlivenObjects,
   handlePathAdded,
   initCanvas,
+  onObjectModified,
   Options,
+  removeObjectsByIds,
+  removeSelected,
 } from "hooks/useWhiteboard/fabric-helpers";
 import { fabric } from "fabric";
 import { WhiteboardResponse } from "@types";
@@ -19,16 +22,25 @@ export const useWhiteboard = ({
   _id: whiteboardId,
   objects: initialObjects,
 }: WhiteboardResponse) => {
-  const { handleObjectReceived, sendObject } = useWhiteboardSocket(
-    whiteboardId.toString()
-  );
-  const [drawing, setDrawing] = useState(true);
+  const [drawing, setDrawing] = useState(false);
+  const {
+    handleObjectReceived,
+    sendObject,
+    handleObjectModified,
+    sendModifiedObject,
+    sendRemovedObjects,
+    handleObjectsRemoved,
+  } = useWhiteboardSocket(whiteboardId.toString());
   //todo - separate hook
   const [options, setOptions] = useState<Options>(defaultOptions);
 
   //initialization
   useEffect(() => {
     canvas = initCanvas(initialObjects);
+    onObjectModified(canvas, (object) => {
+      WhiteboardService.modifyObject(whiteboardId.toString(), object);
+      sendModifiedObject(object);
+    });
 
     return () => {
       if (canvas) {
@@ -37,13 +49,12 @@ export const useWhiteboard = ({
       }
       canvas = null;
     };
-  }, [initialObjects]);
+  }, [initialObjects, sendModifiedObject, whiteboardId]);
 
   //drawing mode
   useEffect(() => {
     if (canvas) {
       canvas.isDrawingMode = drawing;
-      drawing && canvas.off();
       if (drawing) {
         handlePathAdded(canvas, (object) => {
           sendObject(object);
@@ -64,6 +75,32 @@ export const useWhiteboard = ({
     });
   }, [handleObjectReceived]);
 
+  //modified object received
+  useEffect(() => {
+    handleObjectModified((object: fabric.Object) => {
+      //@ts-ignore
+      object.noEmit = true;
+      canvas?.getObjects().forEach((canvasObject) => {
+        if (object.data.id === canvasObject.data.id) {
+          canvasObject.set(object);
+          canvasObject.setCoords();
+          canvas?.renderAll();
+        }
+      });
+    });
+  }, [handleObjectModified]);
+
+  //removed objects received
+  useEffect(() => {
+    handleObjectsRemoved((objects) => {
+      canvas &&
+        removeObjectsByIds(
+          canvas,
+          objects.map(({ data }) => data && data.id)
+        );
+    });
+  }, [handleObjectsRemoved]);
+
   const toggleDrawing = () => {
     setDrawing((prev) => !prev);
   };
@@ -77,10 +114,29 @@ export const useWhiteboard = ({
     WhiteboardService.addObject(whiteboardId.toString(), object);
   };
 
+  const removeSelectedObjects = () => {
+    if (!canvas) return;
+    const removed = removeSelected(canvas).map((object) =>
+      object.toJSON(["data"])
+    );
+    sendRemovedObjects(removed);
+    WhiteboardService.removeObjects(
+      whiteboardId.toString(),
+      removed.map(({ data }) => data && data.id)
+    );
+  };
+
   const addRectangle = () => {
     const rectangle = createRectangle(options);
     addObject(rectangle);
   };
 
-  return { canvas, toggleDrawing, addRectangle, options };
+  return {
+    canvas,
+    toggleDrawing,
+    addRectangle,
+    removeSelectedObjects,
+    options,
+    drawing,
+  };
 };

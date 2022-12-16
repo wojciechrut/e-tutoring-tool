@@ -80,7 +80,6 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
       setTimeout(() => {
         const call = myPeer.call(callerId, myStream, { metadata: userId });
         call.on("stream", (callerStream) => {
-          console.log("call on stream");
           setupAudioStream(callerId, callerStream);
         });
 

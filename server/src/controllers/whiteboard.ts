@@ -20,4 +20,38 @@ const addObject: RequestHandler<
   response.send("Object added");
 };
 
-export default { addObject };
+const modifyObject: RequestHandler<
+  { id: string },
+  {},
+  { object: Object & { data: { id: string } } }
+> = async (request, response, next) => {
+  const { id } = request.params;
+  const { object } = request.body;
+  try {
+    await WhiteboardRepository.modifyObject(id, object);
+  } catch {
+    next(createError(ErrorStatus.SERVER));
+    return;
+  }
+
+  response.send("Object added");
+};
+
+const removeObjects: RequestHandler<
+  { id: string },
+  {},
+  { objectIds: Array<string> }
+> = async (request, response, next) => {
+  const { id } = request.params;
+  const { objectIds } = request.body;
+  try {
+    await WhiteboardRepository.removeObjects(id, objectIds);
+  } catch {
+    next(createError(ErrorStatus.SERVER));
+    return;
+  }
+
+  response.send("Object added");
+};
+
+export default { addObject, modifyObject, removeObjects };

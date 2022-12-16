@@ -29,6 +29,7 @@ export const setupSocket = (server: http.Server) => {
       socket.emit("connected");
     });
 
+    //chat
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
     });
@@ -39,6 +40,7 @@ export const setupSocket = (server: http.Server) => {
       socket.to(chat._id.toString()).emit("messageReceived", message);
     });
 
+    //whiteboard
     socket.on("joinWhiteboard", (whiteboardId) => {
       socket.join(whiteboardId);
     });
@@ -47,6 +49,19 @@ export const setupSocket = (server: http.Server) => {
       socket.leave(whiteboardId);
     });
 
+    socket.on("addObject", (whiteboardId, object) => {
+      socket.to(whiteboardId).emit("objectReceived", object);
+    });
+
+    socket.on("modifyObject", (whiteboardId, object) => {
+      socket.to(whiteboardId).emit("objectModified", object);
+    });
+
+    socket.on("removeObjects", (whiteboardId, objects) => {
+      socket.to(whiteboardId).emit("objectsRemoved", objects);
+    });
+
+    //voicecall
     socket.on("joinVoicecall", (meetingId, userId) => {
       socket.join(meetingId);
       console.log("join voicecall - " + userId);
@@ -56,10 +71,6 @@ export const setupSocket = (server: http.Server) => {
     socket.on("leaveVoicecall", (meetingId, userId) => {
       socket.leave(meetingId);
       socket.to(meetingId).emit("voicecallUserLeft", userId);
-    });
-
-    socket.on("addObject", (whiteboardId, object) => {
-      socket.to(whiteboardId).emit("objectReceived", object);
     });
 
     socket.off("setup", (userId) => {

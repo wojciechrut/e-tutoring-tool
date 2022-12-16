@@ -31,9 +31,36 @@ export const useWhiteboardSocket = (whiteboardId: string) => {
     socket.emit("addObject", whiteboardId, parsed);
   };
 
+  const sendModifiedObject = (object: fabric.Object) => {
+    const parsed = object.toJSON(["data", "noEmit"]);
+    socket.emit("modifyObject", whiteboardId, parsed);
+  };
+
+  const sendRemovedObjects = (objects: fabric.Object[]) => {
+    socket.emit("removeObjects", whiteboardId, objects);
+  };
+
   const handleObjectReceived = (callback: (object: fabric.Object) => void) => {
     socket.on("objectReceived", callback);
   };
 
-  return { connected, handleObjectReceived, sendObject };
+  const handleObjectModified = (callback: (object: fabric.Object) => void) => {
+    socket.on("objectModified", callback);
+  };
+
+  const handleObjectsRemoved = (
+    callback: (objects: Array<fabric.Object>) => void
+  ) => {
+    socket.on("objectsRemoved", callback);
+  };
+
+  return {
+    connected,
+    handleObjectReceived,
+    sendObject,
+    sendModifiedObject,
+    handleObjectModified,
+    sendRemovedObjects,
+    handleObjectsRemoved,
+  };
 };

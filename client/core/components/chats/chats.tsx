@@ -33,7 +33,7 @@ export const Chats: FC = () => {
       setLoadingCurrentChat(true);
       ChatService.accessChat({
         userId: currentUserId,
-        meetingId: undefined,
+        chatId: undefined,
       }).then((chat) => {
         setCurrentChat(chat);
         setLoadingCurrentChat(false);

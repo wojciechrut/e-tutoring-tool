@@ -90,7 +90,7 @@ $breakpoint-xl: 1280px;
     @media (min-width: #{$i * 25px}) {
       $width: $i * 25px - 150px;
       height: $width * 9 / 16;
-      min-width: $width;
+      min-width: $width - 10px;
     }
   }
 }
