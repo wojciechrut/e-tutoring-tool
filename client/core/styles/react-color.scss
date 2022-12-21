@@ -1,0 +1,11 @@
+.compact-picker {
+  &:defined {
+    height: 100% !important;
+  }
+
+  .flexbox-fix {
+    &:defined {
+      display: none !important;
+    }
+  }
+}

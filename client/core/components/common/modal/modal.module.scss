@@ -1,0 +1,17 @@
+.container {
+  visibility: hidden;
+
+  &--open {
+    visibility: visible;
+  }
+}
+
+.content {
+  z-index: 10001;
+}
+
+.blanket {
+  z-index: 10000;
+  position: fixed;
+  inset: 0;
+}
