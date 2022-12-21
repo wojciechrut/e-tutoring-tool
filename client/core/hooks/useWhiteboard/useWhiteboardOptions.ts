@@ -37,6 +37,11 @@ const reducer = (state: Options, action: Action): Options => {
         ...state,
         strokeWidth: payload,
       };
+    case ActionKind.SET_FILL:
+      return {
+        ...state,
+        fill: payload,
+      };
     default:
       return state;
   }
@@ -53,11 +58,18 @@ export const useWhiteboardOptions = (canvas: Canvas | null) => {
     dispatch({ type: ActionKind.SET_STROKE_WIDTH, payload: width });
   };
 
+  const setFill = (fillColor: string | false) => {
+    dispatch({
+      type: ActionKind.SET_FILL,
+      payload: fillColor || "transparent",
+    });
+  };
+
   useEffect(() => {
     if (canvas) {
       adjustBrushToOptions(canvas, options);
     }
   }, [options, canvas]);
 
-  return { options, setStroke, setStrokeWidth };
+  return { options, setStroke, setStrokeWidth, setFill };
 };

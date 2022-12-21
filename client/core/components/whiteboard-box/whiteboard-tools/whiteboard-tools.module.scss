@@ -17,6 +17,7 @@
   color: var(--col-white);
   background-color: var(--col-main-700);
   border: none;
+  font-weight: 600;
 
   &--open-settings {
     position: relative;
@@ -46,5 +47,9 @@
     padding: 5px;
     background-color: #fff;
     color: var(--col-black);
+  }
+
+  &__stroke-width-input {
+    width: 120px;
   }
 }

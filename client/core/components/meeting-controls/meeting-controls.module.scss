@@ -5,9 +5,12 @@
   justify-content: center;
   gap: 10px;
   width: 100%;
+  z-index: 100;
+  pointer-events: none;
 
   &--with-background {
     background-color: var(--col-main-300-opacity);
+    pointer-events: initial;
   }
 }
 
@@ -67,4 +70,5 @@
   height: 56px;
   color: var(--col-white);
   margin-bottom: 2px;
+  pointer-events: initial;
 }

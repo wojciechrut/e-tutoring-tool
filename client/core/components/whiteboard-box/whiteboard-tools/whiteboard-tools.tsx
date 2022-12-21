@@ -1,11 +1,15 @@
 import styles from "./whiteboard-tools.module.scss";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useWhiteboard } from "hooks/useWhiteboard";
 import { WhiteboardResponse } from "@types";
 import Rectangle from "assets/icons/rectangle.svg";
+import RectangleFill from "assets/icons/rectangle-fill.svg";
+import Triangle from "assets/icons/triangle.svg";
+import Circle from "assets/icons/circle.svg";
 import clsx from "clsx";
 import { Modal } from "components/common/modal";
 import { CompactPicker } from "react-color";
+import { defaultOptions } from "hooks/useWhiteboard/fabric-helpers";
 
 type WhiteboardToolsProps = {
   whiteboard: WhiteboardResponse;
@@ -19,8 +23,18 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
     removeSelectedObjects,
     setStroke,
     setStrokeWidth,
+    setFill,
+    addCircle,
+    addTriangle,
+    addText,
   } = useWhiteboard(whiteboard);
   const [areSettingsOpen, setSettingsOpen] = useState(false);
+  const [isFill, setIsFill] = useState(false);
+  console.log("render");
+
+  useEffect(() => {
+    if (!isFill) setFill(false);
+  }, [isFill]);
 
   return (
     <div className={styles.container}>
@@ -37,6 +51,15 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
       <button className={styles.button} onClick={addRectangle}>
         <Rectangle />
       </button>
+      <button className={styles.button} onClick={addCircle}>
+        <Circle />
+      </button>
+      <button className={styles.button} onClick={addTriangle}>
+        <Triangle />
+      </button>
+      <button className={styles.button} onClick={addText}>
+        T
+      </button>
       <button
         className={clsx(styles.button, styles.buttonOpenSettings)}
         onClick={() => setSettingsOpen((prev) => !prev)}
@@ -48,15 +71,46 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
         setOpen={setSettingsOpen}
         className={styles.settings}
       >
-        <CompactPicker
-          colors={availableColors}
-          onChangeComplete={(color) => {
-            setStroke(color.hex);
-          }}
-        />
+        <div>
+          Stroke color:
+          <CompactPicker
+            colors={availableColors}
+            onChangeComplete={(color) => {
+              setStroke(color.hex);
+            }}
+          />
+        </div>
         <div className={styles.settingsRow}>
           <span>Stroke width:</span>
+          <input
+            className={styles.settingsStrokeWidthInput}
+            type="range"
+            defaultValue={defaultOptions.strokeWidth}
+            min={1}
+            max={20}
+            onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+          />
         </div>
+        <div className={styles.settingsRow}>
+          <span>Fill figures: </span>
+          <button
+            className={styles.button}
+            onClick={() => setIsFill((prev) => !prev)}
+          >
+            {isFill ? <RectangleFill /> : <Rectangle />}
+          </button>
+        </div>
+        {isFill && (
+          <div>
+            Fill color:
+            <CompactPicker
+              colors={availableColors}
+              onChangeComplete={(color) => {
+                setFill(color.hex);
+              }}
+            />
+          </div>
+        )}
       </Modal>
     </div>
   );

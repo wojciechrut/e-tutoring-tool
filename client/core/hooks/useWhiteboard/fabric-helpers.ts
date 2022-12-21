@@ -1,5 +1,11 @@
 import { fabric } from "fabric";
-import { Canvas, IRectOptions, ITextOptions } from "fabric/fabric-impl";
+import {
+  Canvas,
+  ICircleOptions,
+  IRectOptions,
+  ITextOptions,
+  ITriangleOptions,
+} from "fabric/fabric-impl";
 import { v1 as uuid } from "uuid";
 
 const CANVAS_ID = "fabricCanvas";
@@ -13,6 +19,31 @@ export const initCanvas = (objects: Object[]) => {
   });
 
   enlivenObjects(canvas, objects as fabric.Object[]);
+
+  //handling selection with double click
+  let previousActive: fabric.Object[] | fabric.Object;
+  let layer: number;
+  canvas.on("mouse:dblclick", (event) => {
+    const { x, y } = canvas.getPointer(event as unknown as Event);
+    const mousePoint = new fabric.Point(x, y);
+    const activeObjects = canvas.getActiveObjects();
+    const targets = canvas
+      .getObjects()
+      .filter((obj) => obj.containsPoint(mousePoint));
+
+    if (previousActive !== activeObjects) {
+      layer = Math.max(targets.length - 2, 0);
+    } else {
+      layer = --layer < 0 ? Math.max(targets.length - 2, 0) : layer;
+    }
+
+    const foundObject = targets[layer];
+    if (foundObject) {
+      previousActive = foundObject;
+      foundObject.bringToFront();
+      canvas.setActiveObject(foundObject).renderAll();
+    }
+  });
 
   return canvas;
 };
@@ -34,6 +65,7 @@ export const handlePathAdded = (
     const object = target;
     assignId(object);
     object.setCoords();
+    object.set("strokeUniform", true);
     //@ts-ignore
     if (object.noEmit) return;
     cb(object);
@@ -55,7 +87,7 @@ export const onObjectModified = (
       canvas.getActiveObjects().forEach((object) => {
         const group = object.group;
         if (group && object) {
-          const absolutelyPositioned = object.toJSON(["data"]);
+          const absolutelyPositioned = object.toJSON(["data", "strokeUniform"]);
           absolutelyPositioned.left =
             //@ts-ignore
             object.left + group.left + group.width / 2;
@@ -106,7 +138,10 @@ export const enlivenObjects = (canvas: Canvas, objects: fabric.Object[]) => {
   );
 };
 
-export type Options = IRectOptions & ITextOptions;
+export type Options = IRectOptions &
+  ITriangleOptions &
+  ICircleOptions &
+  ITextOptions;
 
 export const defaultOptions = {
   width: 200,
@@ -114,28 +149,60 @@ export const defaultOptions = {
   stroke: "#000000",
   strokeWidth: 3,
   fill: "transparent",
-  top: 0,
-  left: 0,
+  top: 10,
+  left: 10,
   strokeUniform: true,
+  fontSize: 48,
+  text: "",
+  fontFamily: "Times New Roman",
 };
 
-type CanvasObjectType = "figure" | "text";
+type CanvasObjectType = "rectangle" | "triangle" | "circle" | "text";
 
 const setOptions = (options: Options, objectType: CanvasObjectType) => {
   const withDefault = Object.assign(defaultOptions, options);
-  const { width, height, stroke, fill, strokeWidth, top, left, strokeUniform } =
-    withDefault;
+  const {
+    width,
+    height,
+    stroke,
+    fill,
+    strokeWidth,
+    top,
+    left,
+    strokeUniform,
+    fontSize,
+    text,
+    fontFamily,
+  } = withDefault;
+  const commonFigureOptions = {
+    stroke,
+    strokeWidth,
+    fill,
+    top,
+    left,
+    strokeUniform,
+  };
 
-  if (objectType === "figure") {
+  if (objectType === "rectangle" || objectType === "triangle") {
     return {
       width,
       height,
-      stroke,
-      fill,
-      strokeWidth,
+      ...commonFigureOptions,
+    };
+  } else if (objectType === "circle") {
+    return {
+      radius: width,
+      ...commonFigureOptions,
+    };
+  } else if (objectType === "text") {
+    return {
+      fontSize,
+      fontFamily,
+      width: 200,
       top,
       left,
-      strokeUniform,
+      text,
+      editingBorderColor: "#000033",
     };
   }
 };
@@ -154,5 +221,18 @@ export const assignId = (object: fabric.Object) => {
 };
 
 export const createRectangle = (options: IRectOptions) => {
-  return new fabric.Rect(setOptions(options, "figure"));
+  return new fabric.Rect(setOptions(options, "rectangle"));
+};
+
+export const createTriangle = (options: ITriangleOptions) => {
+  return new fabric.Triangle(setOptions(options, "triangle"));
+};
+
+export const createCircle = (options: ICircleOptions) => {
+  return new fabric.Circle(setOptions(options, "circle"));
+};
+
+export const createText = (options: ITextOptions) => {
+  const { text, ...rest } = setOptions(options, "text") as ITextOptions;
+  return new fabric.IText(text || "", rest);
 };

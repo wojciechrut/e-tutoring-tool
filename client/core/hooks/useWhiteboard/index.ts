@@ -2,7 +2,10 @@ import { Canvas } from "fabric/fabric-impl";
 import { useEffect, useState } from "react";
 import {
   assignId,
+  createCircle,
   createRectangle,
+  createText,
+  createTriangle,
   enlivenObjects,
   handlePathAdded,
   initCanvas,
@@ -30,7 +33,8 @@ export const useWhiteboard = ({
     sendRemovedObjects,
     handleObjectsRemoved,
   } = useWhiteboardSocket(whiteboardId.toString());
-  const { options, setStroke, setStrokeWidth } = useWhiteboardOptions(canvas);
+  const { options, setStroke, setStrokeWidth, setFill } =
+    useWhiteboardOptions(canvas);
 
   //initialization
   useEffect(() => {
@@ -112,6 +116,7 @@ export const useWhiteboard = ({
     assignId(object);
     sendObject(object);
     canvas?.add(object);
+    canvas?.setActiveObject(object);
     canvas?.renderAll();
     setDrawing(false);
     WhiteboardService.addObject(whiteboardId.toString(), object);
@@ -134,6 +139,29 @@ export const useWhiteboard = ({
     addObject(rectangle);
   };
 
+  const addCircle = () => {
+    const circle = createCircle(options);
+    addObject(circle);
+  };
+
+  const addTriangle = () => {
+    const triangle = createTriangle(options);
+    addObject(triangle);
+  };
+
+  const addText = () => {
+    const text = createText(options);
+    addObject(text);
+    canvas?.setActiveObject(text);
+    text.enterEditing();
+    text.hiddenTextarea?.focus();
+    text.on("selection:changed", (e) => {
+      if (!text.selected && text.isEditing) {
+        text.exitEditing();
+      }
+    });
+  };
+
   return {
     canvas,
     toggleDrawing,
@@ -143,5 +171,9 @@ export const useWhiteboard = ({
     drawing,
     setStrokeWidth,
     setStroke,
+    setFill,
+    addCircle,
+    addTriangle,
+    addText,
   };
 };
