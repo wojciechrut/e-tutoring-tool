@@ -10,6 +10,7 @@ enum ActionKind {
   SET_STROKE,
   SET_FILL,
   SET_STROKE_WIDTH,
+  SET_FONT_SIZE,
 }
 
 type StringPayloadAction = {
@@ -18,7 +19,7 @@ type StringPayloadAction = {
 };
 
 type NumberPayloadAction = {
-  type: ActionKind.SET_STROKE_WIDTH;
+  type: ActionKind.SET_STROKE_WIDTH | ActionKind.SET_FONT_SIZE;
   payload: number;
 };
 
@@ -41,6 +42,11 @@ const reducer = (state: Options, action: Action): Options => {
       return {
         ...state,
         fill: payload,
+      };
+    case ActionKind.SET_FONT_SIZE:
+      return {
+        ...state,
+        fontSize: payload,
       };
     default:
       return state;
@@ -65,11 +71,15 @@ export const useWhiteboardOptions = (canvas: Canvas | null) => {
     });
   };
 
+  const setFontSize = (fontSize: number) => {
+    dispatch({ type: ActionKind.SET_FONT_SIZE, payload: fontSize });
+  };
+
   useEffect(() => {
     if (canvas) {
       adjustBrushToOptions(canvas, options);
     }
   }, [options, canvas]);
 
-  return { options, setStroke, setStrokeWidth, setFill };
+  return { options, setStroke, setStrokeWidth, setFill, setFontSize };
 };

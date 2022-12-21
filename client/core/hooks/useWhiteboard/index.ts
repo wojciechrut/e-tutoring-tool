@@ -33,7 +33,7 @@ export const useWhiteboard = ({
     sendRemovedObjects,
     handleObjectsRemoved,
   } = useWhiteboardSocket(whiteboardId.toString());
-  const { options, setStroke, setStrokeWidth, setFill } =
+  const { options, setStroke, setStrokeWidth, setFill, setFontSize } =
     useWhiteboardOptions(canvas);
 
   //initialization
@@ -175,5 +175,6 @@ export const useWhiteboard = ({
     addCircle,
     addTriangle,
     addText,
+    setFontSize,
   };
 };

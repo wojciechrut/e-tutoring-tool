@@ -27,6 +27,7 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
     addCircle,
     addTriangle,
     addText,
+    setFontSize,
   } = useWhiteboard(whiteboard);
   const [areSettingsOpen, setSettingsOpen] = useState(false);
   const [isFill, setIsFill] = useState(false);
@@ -89,6 +90,18 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
             min={1}
             max={20}
             onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+          />
+        </div>
+        <div className={styles.settingsRow}>
+          <span>Font size:</span>
+          <input
+            className={styles.settingsStrokeWidthInput}
+            type="range"
+            defaultValue={defaultOptions.fontSize}
+            min={16}
+            step={8}
+            max={120}
+            onChange={(event) => setFontSize(parseInt(event.target.value))}
           />
         </div>
         <div className={styles.settingsRow}>
