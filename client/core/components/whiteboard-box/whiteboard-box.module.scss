@@ -6,7 +6,7 @@
   inset: 0;
   height: 100vh;
   overflow: hidden;
-  padding: 0 10px;
+  padding: 0 max(10px, calc(100vw - 1780px));
 }
 
 .canvas-container {

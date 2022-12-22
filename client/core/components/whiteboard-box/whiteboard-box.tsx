@@ -1,17 +1,18 @@
-import { WhiteboardResponse } from "@types";
+import { SingleMeetingResponseBody, WhiteboardResponse } from "@types";
 import { FC } from "react";
 import styles from "./whiteboard-box.module.scss";
 import clsx from "clsx";
 import { WhiteboardTools } from "components/whiteboard-box/whiteboard-tools";
+import { MeetingTools } from "components/meeting-tools";
 
 type WhiteboardBoxProps = {
-  meetingId: string;
+  meeting: SingleMeetingResponseBody;
   whiteboard: WhiteboardResponse;
   className?: string;
 };
 
 export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
-  meetingId,
+  meeting,
   whiteboard,
   className,
 }) => {
@@ -25,7 +26,9 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
           <canvas id="fabricCanvas" className={styles.canvas} />
         </div>
       </div>
-      <div className={styles.toolBox}>users and chat</div>
+      <div className={styles.toolBox}>
+        <MeetingTools meeting={meeting} />
+      </div>
     </div>
   );
 };

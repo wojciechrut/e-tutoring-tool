@@ -19,27 +19,30 @@ const get: RequestHandler<
 > = async (request, response, next) => {
   const { userId, chatId } = request.query;
   const { _id: requesterId } = response.locals;
-  let chat: Awaited<ReturnType<typeof ChatRepository.findOrCreate>>;
+  let chat:
+    | Awaited<ReturnType<typeof ChatRepository.findOrCreate>>
+    | undefined = undefined;
 
   if (userId) {
     chat = await ChatRepository.findOrCreate({
       users: [userId, id(requesterId)],
       isMeetingChat: false,
     });
-
-    if (chatId) {
-      chat = await ChatRepository.findOrCreate({
-        _id: chatId,
-      });
-    }
-
-    if (!chat) {
-      next(createError(ErrorStatus.SERVER, "Could not access this chat."));
-      return;
-    }
-
-    response.send(chat);
   }
+
+  if (chatId) {
+    console.log("fired");
+    chat = await ChatRepository.findOrCreate({
+      _id: chatId,
+    });
+    console.log("tutaj");
+  }
+
+  if (!chat) {
+    next(createError(ErrorStatus.SERVER, "Could not access this chat."));
+    return;
+  }
+  response.send(chat);
 };
 
 const mine: RequestHandler<

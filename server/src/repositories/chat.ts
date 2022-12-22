@@ -60,35 +60,45 @@ const create = async (query: SingleChatQuery) => {
 };
 
 const exists = async ({ users, ...rest }: SingleChatQuery) => {
-  return Model.exists({
-    $and:
-      users &&
-      users.map((user) => ({
+  if (users) {
+    return Model.exists({
+      $and: users.map((user) => ({
         users: {
           $elemMatch: {
             $eq: user,
           },
         },
       })),
-    ...rest,
-  });
+      ...rest,
+    });
+  } else {
+    return Model.exists({ ...rest });
+  }
 };
 
 const findOne = async ({ users, ...rest }: SingleChatQuery) => {
-  return Model.findOne({
-    $and:
-      users &&
-      users.map((user) => ({
-        users: {
-          $elemMatch: {
-            $eq: user,
+  if (users) {
+    return Model.findOne({
+      $and:
+        users &&
+        users.map((user) => ({
+          users: {
+            $elemMatch: {
+              $eq: user,
+            },
           },
-        },
-      })),
-    ...rest,
-  })
-    .populate(populator)
-    .select(ChatSelector.STANDARD);
+        })),
+      ...rest,
+    })
+      .populate(populator)
+      .select(ChatSelector.STANDARD);
+  } else {
+    return Model.findOne({
+      ...rest,
+    })
+      .populate(populator)
+      .select(ChatSelector.STANDARD);
+  }
 };
 
 const findAll = async (query: ManyChatsQuery) => {

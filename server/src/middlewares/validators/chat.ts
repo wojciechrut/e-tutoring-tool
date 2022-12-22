@@ -3,22 +3,22 @@ import { RequestHandler } from "express";
 import { ChatFetchQuery, ErrorStatus, UserResponseBody } from "../../@types";
 import UserRepository from "../../repositories/user";
 import { _id } from "../../utils/helpers/mongo";
+import ChatRepository from "../../repositories/chat";
 
 const get: RequestHandler<{}, {}, UserResponseBody, ChatFetchQuery> = async (
   request,
   _response,
   next
 ) => {
-  const { userId, meetingId } = request.query;
-
-  if (!(userId || meetingId)) {
+  const { userId, chatId } = request.query;
+  if (!(userId || chatId)) {
     next(
       createError(ErrorStatus.BAD_REQUEST, "Missing id of user or meeting.")
     );
     return;
   }
 
-  if (userId && meetingId) {
+  if (userId && chatId) {
     next(
       createError(
         ErrorStatus.BAD_REQUEST,
@@ -28,8 +28,12 @@ const get: RequestHandler<{}, {}, UserResponseBody, ChatFetchQuery> = async (
     return;
   }
 
-  if (meetingId) {
-    console.log("chats by meeting id todo");
+  if (chatId) {
+    console.log({ chatId });
+    if (!(await ChatRepository.exists({ _id: chatId }))) {
+      next(createError(ErrorStatus.BAD_REQUEST, "Chat does not exist."));
+      return;
+    }
   }
 
   if (userId) {

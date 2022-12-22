@@ -25,18 +25,13 @@ const getMyChats = async () => {
 
 const accessChat = async ({ userId, chatId }: ChatFetchQuery) => {
   UserService.setAuthFromStorage();
-  if (chatId) {
-    console.log("todo");
-    return;
-  } else if (userId) {
-    const { data: chat }: AxiosResponse<ChatResponseBody> = await api.get(
-      Paths.ACCESS,
-      {
-        params: { userId },
-      }
-    );
-    return chat;
-  }
+  const { data: chat }: AxiosResponse<ChatResponseBody> = await api.get(
+    Paths.ACCESS,
+    {
+      params: { userId, chatId },
+    }
+  );
+  return chat;
 };
 
 const sendMessage = async ({

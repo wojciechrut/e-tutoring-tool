@@ -38,7 +38,7 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
       </div>
       <MeetingControls meeting={meeting} className={styles.meetingControls} />
       <div className={styles.container}>
-        <WhiteboardBox whiteboard={whiteboard} meetingId={_id} />
+        <WhiteboardBox whiteboard={whiteboard} meeting={meeting} />
       </div>
     </div>
   );

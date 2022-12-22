@@ -151,6 +151,7 @@ export const useWhiteboard = ({
 
   const addText = () => {
     const text = createText(options);
+    text.set({ fill: options.stroke });
     addObject(text);
     canvas?.setActiveObject(text);
     text.enterEditing();
