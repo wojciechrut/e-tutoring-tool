@@ -1,6 +1,6 @@
 import api from "./api";
 import { AxiosResponse } from "axios";
-import { InviteStatusResponseBody, MessageSendResponseBody } from "@types";
+import { InviteStatusResponseBody } from "@types";
 import UserService from "services/user";
 
 enum Paths {
@@ -23,7 +23,7 @@ const getStatus = async (userId: string) => {
 
 const send = async (userId: string) => {
   UserService.setAuthFromStorage();
-  const { data }: AxiosResponse<MessageSendResponseBody> = await api.post(
+  const { data }: AxiosResponse<string> = await api.post(
     Paths.SEND,
     {},
     { params: { userId } }

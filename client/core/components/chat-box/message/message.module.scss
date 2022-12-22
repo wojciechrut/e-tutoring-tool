@@ -34,7 +34,9 @@
 }
 
 .avatar {
-  position: absolute;
+  &:defined {
+    position: absolute;
+  }
   bottom: 0;
   width: 25px;
   inset: var(--avatar-position);

@@ -34,14 +34,27 @@
 
 .chat-container {
   position: absolute;
-  width: 350px;
+  width: 500px;
   z-index: 1000;
   bottom: 50%;
   transform: translate(-100%, 50%);
   left: -8px;
-  background-color: var(--col-main-700);
+  outline: 2px solid var(--col-main-700);
+  box-shadow: var(--bs-strong);
+  background-color: var(--col-white);
+  visibility: hidden;
+
+  &--show {
+    visibility: initial;
+  }
+
+  &--background {
+    display: flex;
+    align-items: center;
+    background-color: var(--col-main-700);
+  }
 }
 
 .chat {
-  max-height: calc(100vh - 20px);
+  max-height: min(calc(100vh - 20px), 500px);
 }

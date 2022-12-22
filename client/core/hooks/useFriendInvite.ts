@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import InviteService, { InviteStatus } from "services/invite";
 import { parseError } from "helpers/parse-error";
+import { Simulate } from "react-dom/test-utils";
 
 export const useFriendInvite = (userId: string) => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,7 @@ export const useFriendInvite = (userId: string) => {
         const { status, inviteId } = response;
         setStatus(status);
         inviteId && setInviteId(inviteId);
+        console.log(status);
         setLoading(false);
       })
       .catch((error) => setError(parseError(error)?.messages[0]));

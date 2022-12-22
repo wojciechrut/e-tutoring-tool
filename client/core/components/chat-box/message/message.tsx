@@ -47,13 +47,7 @@ export const Message: FC<MessageProps> = ({
         </div>
       )}
       {lastOfSender && (
-        <>
-          <UserAvatar
-            className={styles.avatar}
-            avatar={senderAvatar}
-            size={25}
-          />
-        </>
+        <UserAvatar className={styles.avatar} avatar={senderAvatar} size={25} />
       )}
     </div>
   );

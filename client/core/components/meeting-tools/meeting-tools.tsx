@@ -4,9 +4,9 @@ import { ChatResponseBody, SingleMeetingResponseBody } from "@types";
 import { useRouter } from "next/router";
 import { useAuth } from "contexts/auth";
 import clsx from "clsx";
-import { ChatBox } from "components/chat-box";
 import ChatService from "services/chat";
 import Spinner from "assets/spinner.svg";
+import { ChatBox } from "components/chat-box";
 
 type MeetingToolsProps = {
   meeting: SingleMeetingResponseBody;
@@ -19,16 +19,15 @@ export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
   const [chat, setChat] = useState<ChatResponseBody | null>();
 
   useEffect(() => {
-    if (user && isChatOpen) {
+    if (user) {
       ChatService.accessChat({
         chatId: meeting.chat._id.toString(),
         userId: undefined,
       }).then((chat) => {
-        console.log("chat");
         setChat(chat);
       });
     }
-  }, [user, meeting, isChatOpen]);
+  }, [user, meeting]);
 
   const isOrganiser = user?._id === meeting.organiser._id;
   return (
@@ -52,16 +51,15 @@ export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
       >
         <i className="fa-regular fa-comments"></i>
       </button>
-      <button onClick={() => console.log(chat)}>asdf</button>
-      {isChatOpen && (
-        <div className={styles.chatContainer}>
-          {!!chat ? (
-            <ChatBox chat={chat} className={styles.chat} />
-          ) : (
-            <Spinner />
-          )}
-        </div>
-      )}
+      <div
+        className={clsx(
+          styles.chatContainer,
+          isChatOpen && styles.chatContainerShow
+        )}
+        draggable={true}
+      >
+        {!!chat ? <ChatBox chat={chat} className={styles.chat} /> : <Spinner />}
+      </div>
     </div>
   );
 };

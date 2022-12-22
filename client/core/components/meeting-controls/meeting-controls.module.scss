@@ -73,4 +73,8 @@
   color: var(--col-white);
   margin-bottom: 2px;
   pointer-events: initial;
+
+  @include xl {
+    transform: translateX(-12px);
+  }
 }

@@ -28,7 +28,7 @@ const accessChat = async ({ userId, chatId }: ChatFetchQuery) => {
   const { data: chat }: AxiosResponse<ChatResponseBody> = await api.get(
     Paths.ACCESS,
     {
-      params: { userId, chatId },
+      params: { userId, chatId, timestamp: Date.now().toString() },
     }
   );
   return chat;
