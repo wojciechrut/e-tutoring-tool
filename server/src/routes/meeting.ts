@@ -17,5 +17,6 @@ meetingRoutes
     MeetingValidator.create,
     MeetingController.create
   );
+meetingRoutes.route("/:id").patch(auth, MeetingController.finish);
 
 export default meetingRoutes;

@@ -12,12 +12,14 @@ type ChatBoxProps = {
   chat: ChatResponseBody;
   className?: string;
   updateLastMessage?: () => void;
+  disabled?: boolean;
 };
 
 export const ChatBox: FC<ChatBoxProps> = ({
   chat,
   className,
   updateLastMessage,
+  disabled,
 }) => {
   const { user } = useAuth();
   const { sendMessage, handleMessageReceived } = useChatSocket(
@@ -63,7 +65,11 @@ export const ChatBox: FC<ChatBoxProps> = ({
         <div ref={anchorRef} />
       </div>
       <div className={styles.panel}>
-        <Panel chatId={chat._id.toString()} addMessage={addMessage} />
+        {disabled ? (
+          <div>This chat is expired. You cannot write new messages</div>
+        ) : (
+          <Panel chatId={chat._id.toString()} addMessage={addMessage} />
+        )}
       </div>
     </div>
   );

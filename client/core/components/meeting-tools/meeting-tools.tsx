@@ -7,12 +7,17 @@ import clsx from "clsx";
 import ChatService from "services/chat";
 import Spinner from "assets/spinner.svg";
 import { ChatBox } from "components/chat-box";
+import { isMeetingFinished } from "helpers/meetings";
 
 type MeetingToolsProps = {
   meeting: SingleMeetingResponseBody;
+  finishMeeting: () => void;
 };
 
-export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
+export const MeetingTools: FC<MeetingToolsProps> = ({
+  meeting,
+  finishMeeting,
+}) => {
   const { user } = useAuth();
   const router = useRouter();
   const [isChatOpen, setChatOpen] = useState(false);
@@ -30,6 +35,17 @@ export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
   }, [user, meeting]);
 
   const isOrganiser = user?._id === meeting.organiser._id;
+  const finished = isMeetingFinished(meeting);
+
+  const finishHandler = () => {
+    if (isOrganiser) {
+      finishMeeting();
+      setTimeout(() => {
+        router.reload();
+      }, 50);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <button
@@ -40,8 +56,8 @@ export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
       </button>
       <button
         className={clsx(styles.button, styles.buttonText)}
-        onClick={() => router.push("/meetings")}
-        disabled={!isOrganiser}
+        onClick={finishHandler}
+        disabled={!isOrganiser || finished}
       >
         End
       </button>
@@ -56,9 +72,16 @@ export const MeetingTools: FC<MeetingToolsProps> = ({ meeting }) => {
           styles.chatContainer,
           isChatOpen && styles.chatContainerShow
         )}
-        draggable={true}
       >
-        {!!chat ? <ChatBox chat={chat} className={styles.chat} /> : <Spinner />}
+        {!!chat ? (
+          <ChatBox
+            chat={chat}
+            className={styles.chat}
+            disabled={isMeetingFinished(meeting)}
+          />
+        ) : (
+          <Spinner />
+        )}
       </div>
     </div>
   );

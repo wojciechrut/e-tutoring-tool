@@ -19,6 +19,11 @@
   border: none;
   font-weight: 600;
 
+  &:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
+
   &--open-settings {
     position: relative;
   }

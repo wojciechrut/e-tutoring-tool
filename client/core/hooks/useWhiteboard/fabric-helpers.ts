@@ -9,14 +9,19 @@ import {
 import { v1 as uuid } from "uuid";
 
 const CANVAS_ID = "fabricCanvas";
-export const initCanvas = (objects: Object[]) => {
+export const initCanvas = (objects: Object[], disabled = false) => {
   const canvas = new fabric.Canvas(CANVAS_ID, {
     height: 900,
     width: 1600,
-    isDrawingMode: true,
+    isDrawingMode: !disabled,
     stopContextMenu: true,
     backgroundColor: "#ffffff",
+    interactive: !disabled,
   });
+
+  if (disabled) {
+    canvas.removeListeners();
+  }
 
   enlivenObjects(canvas, objects as fabric.Object[]);
 

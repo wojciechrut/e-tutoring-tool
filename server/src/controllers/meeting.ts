@@ -137,4 +137,40 @@ const get: RequestHandler<
   response.send(meeting);
 };
 
-export default { getAll, create, get, getMine };
+const finish: RequestHandler<
+  { id: string },
+  {},
+  {},
+  {},
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { id } = request.params;
+  const { _id: userId } = response.locals;
+
+  const meeting = await MeetingRepository.findOne(id);
+
+  if (!meeting) {
+    next(
+      createError(ErrorStatus.BAD_REQUEST, "Meeting with this id doesn't exist")
+    );
+    return;
+  }
+
+  if (!(meeting.organiser._id.toString() === userId.toString())) {
+    next(
+      createError(
+        ErrorStatus.BAD_REQUEST,
+        "Only organiser can finish a meeting."
+      )
+    );
+    return;
+  }
+
+  if (!meeting.finished) {
+    await MeetingRepository.finish(id);
+  }
+
+  response.send("Meeting finished.");
+};
+
+export default { getAll, create, get, getMine, finish };

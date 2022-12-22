@@ -5,6 +5,8 @@ import MeetingService from "services/meeting";
 import { parseError } from "helpers/parse-error";
 import styles from "./meeting.module.scss";
 import { MeetingControls } from "components/meeting-controls";
+import { isMeetingFinished } from "helpers/meetings";
+import { useMeetingStatusRefresh } from "hooks/useMeetingStatus";
 
 type MeetingProps = {
   meetingId: string;
@@ -13,10 +15,15 @@ type MeetingProps = {
 export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   const [meeting, setMeeting] = useState<SingleMeetingResponseBody | null>();
   const [fetchError, setFetchError] = useState<string | null>();
+  const [finished, setFinished] = useState<boolean>(false);
+  const { finishMeeting } = useMeetingStatusRefresh(meetingId);
 
   useEffect(() => {
     MeetingService.access(meetingId)
-      .then((meeting) => setMeeting(meeting))
+      .then((meeting) => {
+        setMeeting(meeting);
+        setFinished(isMeetingFinished(meeting));
+      })
       .catch((error) => setFetchError(parseError(error)?.messages[0]));
   }, [meetingId]);
 
@@ -28,7 +35,7 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
     return <>Loading...</>;
   }
 
-  const { _id, whiteboard, chat } = meeting;
+  const { whiteboard } = meeting;
 
   return (
     <div className={styles.wrapper}>
@@ -36,9 +43,17 @@ export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
         Please change device orientation. Whiteboard feature is only available
         for landscape mode
       </div>
-      <MeetingControls meeting={meeting} className={styles.meetingControls} />
+      {finished ? (
+        <div className={styles.finishedInfo}>this meeting is finished</div>
+      ) : (
+        <MeetingControls meeting={meeting} className={styles.meetingControls} />
+      )}
       <div className={styles.container}>
-        <WhiteboardBox whiteboard={whiteboard} meeting={meeting} />
+        <WhiteboardBox
+          whiteboard={whiteboard}
+          meeting={meeting}
+          finishMeeting={finishMeeting}
+        />
       </div>
     </div>
   );

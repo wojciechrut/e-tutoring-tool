@@ -13,9 +13,13 @@ import { defaultOptions } from "hooks/useWhiteboard/fabric-helpers";
 
 type WhiteboardToolsProps = {
   whiteboard: WhiteboardResponse;
+  disabled?: boolean;
 };
 
-export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
+export const WhiteboardTools: FC<WhiteboardToolsProps> = ({
+  whiteboard,
+  disabled,
+}) => {
   const {
     toggleDrawing,
     addRectangle,
@@ -28,10 +32,9 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
     addTriangle,
     addText,
     setFontSize,
-  } = useWhiteboard(whiteboard);
+  } = useWhiteboard({ ...whiteboard, disabled });
   const [areSettingsOpen, setSettingsOpen] = useState(false);
   const [isFill, setIsFill] = useState(false);
-  console.log("render");
 
   useEffect(() => {
     if (!isFill) setFill(false);
@@ -39,31 +42,48 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({ whiteboard }) => {
 
   return (
     <div className={styles.container}>
-      <button className={styles.button} onClick={toggleDrawing}>
+      <button
+        className={styles.button}
+        onClick={toggleDrawing}
+        disabled={disabled}
+      >
         {drawing ? (
           <i className="fa-solid fa-pencil"></i>
         ) : (
           <i className="fa-solid fa-arrow-pointer"></i>
         )}
       </button>
-      <button className={styles.button} onClick={removeSelectedObjects}>
+      <button
+        className={styles.button}
+        onClick={removeSelectedObjects}
+        disabled={disabled}
+      >
         <i className="fa-solid fa-trash"></i>
       </button>
-      <button className={styles.button} onClick={addRectangle}>
+      <button
+        className={styles.button}
+        onClick={addRectangle}
+        disabled={disabled}
+      >
         <Rectangle />
       </button>
-      <button className={styles.button} onClick={addCircle}>
+      <button className={styles.button} onClick={addCircle} disabled={disabled}>
         <Circle />
       </button>
-      <button className={styles.button} onClick={addTriangle}>
+      <button
+        className={styles.button}
+        onClick={addTriangle}
+        disabled={disabled}
+      >
         <Triangle />
       </button>
-      <button className={styles.button} onClick={addText}>
+      <button className={styles.button} onClick={addText} disabled={disabled}>
         T
       </button>
       <button
         className={clsx(styles.button, styles.buttonOpenSettings)}
         onClick={() => setSettingsOpen((prev) => !prev)}
+        disabled={disabled}
       >
         <i className="fa-solid fa-gear"></i>
       </button>

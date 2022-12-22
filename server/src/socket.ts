@@ -73,6 +73,19 @@ export const setupSocket = (server: http.Server) => {
       socket.to(meetingId).emit("voicecallUserLeft", userId);
     });
 
+    //meeting status
+    socket.on("joinMeeting", (meetingId) => {
+      socket.join(`status:${meetingId}`);
+    });
+
+    socket.on("leaveMeeting", (meetingId) => {
+      socket.leave(`status:${meetingId}`);
+    });
+
+    socket.on("finishMeeting", (meetingId) => {
+      socket.in(`status:${meetingId}`).emit("meetingFinished");
+    });
+
     socket.off("setup", (userId) => {
       console.log("Socket - user disconnected");
       socket.leave(userId);

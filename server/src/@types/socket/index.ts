@@ -11,6 +11,8 @@ export interface ServerToClientEvents {
   //voicecall
   voicecallNewUser: ((userId: string) => void) | undefined;
   voicecallUserLeft: ((userId: string) => void) | undefined;
+  //meeting
+  meetingFinished: (() => void) | undefined;
 }
 
 export interface ClientToServerEvents {
@@ -27,4 +29,8 @@ export interface ClientToServerEvents {
   //voicecall
   joinVoicecall: (meetingId: string, userId: string) => void;
   leaveVoicecall: (meetingId: string, userId: string) => void;
+  //meeting
+  joinMeeting: ((meetingId: string) => void) | undefined;
+  leaveMeeting: ((meetingId: string) => void) | undefined;
+  finishMeeting: ((meetingId: string) => void) | undefined;
 }

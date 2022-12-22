@@ -31,6 +31,7 @@ const send = async (userId: string) => {
 
   return data;
 };
+
 const setAccepted = async (inviteId: string, accept: boolean) => {
   UserService.setAuthFromStorage();
   return api.post(Paths.SET_ACCEPTED + inviteId, {}, { params: { accept } });

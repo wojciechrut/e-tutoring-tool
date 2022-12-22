@@ -11,6 +11,7 @@ enum Paths {
   CREATE = "meeting",
   GET_MINE = "meeting/mine",
   ACCESS_ONE = "meeting/access",
+  FINISH = "meeting",
 }
 
 const create = async (requestBody: MeetingCreateRequestBody) => {
@@ -31,5 +32,9 @@ const access = async (id: string) => {
   return meeting;
 };
 
-const MeetingService = { create, getMine, access };
+const finish = async (id: string) => {
+  await api.patch(`${Paths.FINISH}/${id}`);
+};
+
+const MeetingService = { create, getMine, access, finish };
 export default MeetingService;

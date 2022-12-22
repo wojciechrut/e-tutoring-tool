@@ -40,5 +40,9 @@ const findAllUsers = async (userId: ModelId) => {
     .sort({ startsAt: -1 });
 };
 
-const MeetingRepository = { findOne, findAll, create, findAllUsers };
+const finish = async (meetingId: string) => {
+  return Model.updateOne({ _id: meetingId }, { finished: true });
+};
+
+const MeetingRepository = { findOne, findAll, create, findAllUsers, finish };
 export default MeetingRepository;

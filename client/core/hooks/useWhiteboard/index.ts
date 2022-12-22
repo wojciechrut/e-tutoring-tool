@@ -23,7 +23,8 @@ let canvas: Canvas | null;
 export const useWhiteboard = ({
   _id: whiteboardId,
   objects: initialObjects,
-}: WhiteboardResponse) => {
+  disabled,
+}: WhiteboardResponse & { disabled?: boolean }) => {
   const [drawing, setDrawing] = useState(false);
   const {
     handleObjectReceived,
@@ -38,7 +39,8 @@ export const useWhiteboard = ({
 
   //initialization
   useEffect(() => {
-    canvas = initCanvas(initialObjects);
+    canvas = initCanvas(initialObjects, disabled);
+    console.log(canvas?.interactive);
     return () => {
       if (canvas) {
         canvas.dispose();
