@@ -3,13 +3,39 @@ import { RequestHandler } from "express";
 import {
   ErrorStatus,
   FileUploadResponseLocals,
+  MeResponseLocals,
   NoteCreateRequestBody,
+  NoteSearchRequestQuery,
+  NoteSearchResponseBody,
   UploadedIdsResponseLocals,
 } from "../@types";
 import { createError } from "../utils/helpers/create-error";
 import NoteRepository from "../repositories/note";
+import MeetingRepository from "../repositories/meeting";
 
-const getMine = () => {};
+const getMine: RequestHandler<
+  {},
+  NoteSearchResponseBody,
+  {},
+  NoteSearchRequestQuery,
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { page, subject } = request.query;
+  const { _id: owner } = response.locals;
+
+  const notes = await NoteRepository.findAll(
+    owner.toString(),
+    parseInt(page, 10),
+    subject
+  );
+
+  if (!notes) {
+    next(createError(ErrorStatus.SERVER));
+    return;
+  }
+
+  response.send(notes);
+};
 
 const create: RequestHandler<
   {},
@@ -21,7 +47,9 @@ const create: RequestHandler<
   const { _id: owner, uploadedIds: files } = response.locals;
   const { text, meetingId } = request.body;
 
-  if (!text || !meetingId) {
+  const meeting = await MeetingRepository.findOne(meetingId);
+
+  if (!text || !meeting) {
     next(
       createError(
         ErrorStatus.BAD_REQUEST,
@@ -36,6 +64,7 @@ const create: RequestHandler<
     image: files && files[0],
     text,
     meeting: meetingId,
+    subjects: meeting.subjects,
   });
 
   if (!note) {

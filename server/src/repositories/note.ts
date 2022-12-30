@@ -8,7 +8,7 @@ const populator: Parameters<typeof Model.populate>[0] = [
     select: UserSelector.STANDARD,
   },
   {
-    path: "file",
+    path: "image",
   },
 ];
 
@@ -17,6 +17,7 @@ type Query = {
   image?: ModelId;
   text: string;
   meeting: ModelId;
+  subjects: Array<string>;
 };
 
 const create = (query: Query) => {
@@ -27,5 +28,29 @@ const getByMeeting = (userId: string, meetingId: string) => {
   return Model.find({ owner: userId, meeting: meetingId }).populate(populator);
 };
 
-const NoteRepository = { create, getByMeeting };
+const findAll = (userId: string, page = 1, subject?: string) => {
+  const subjectArray = [subject];
+  return Model.paginate(
+    Object.assign({
+      owner: userId,
+      subjects: { $in: subject ? subjectArray : /.*/ },
+    }),
+    {
+      populate: populator,
+      lean: true,
+      limit: 10,
+      sort: { createdAt: -1 },
+      page,
+    }
+  ).then(({ docs, hasNextPage, hasPrevPage, totalDocs, totalPages }) => ({
+    notes: docs.map(({ id, ...rest }) => rest),
+    hasNextPage,
+    hasPrevPage,
+    totalDocs,
+    totalPages,
+    page,
+  }));
+};
+
+const NoteRepository = { create, getByMeeting, findAll };
 export default NoteRepository;
