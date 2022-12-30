@@ -10,7 +10,8 @@ export type ValidatedBodyField =
   | "subjects"
   | "levels"
   | "invited"
-  | "startsAt";
+  | "startsAt"
+  | "text";
 
 export type BodyConstraints = {
   required: Array<ValidatedBodyField>;
@@ -47,6 +48,10 @@ export const bodyFieldRegex: Partial<
     pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{20,500}$/,
     message:
       "Description can have 20-500 alphanumerical or some special characters",
+  },
+  text: {
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{1,200}$/,
+    message: "Note can have 1-200 alphanumerical or some special characters",
   },
 };
 

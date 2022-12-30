@@ -7,6 +7,7 @@ import leafletRoutes from "./leaflet";
 import fileRoutes from "./file";
 import meetingRoutes from "./meeting";
 import whiteboardRoutes from "./whiteboard";
+import noteRoutes from "./note";
 
 const apiRoutes = express.Router();
 apiRoutes.use("/user", userRoutes);
@@ -17,8 +18,8 @@ apiRoutes.use("/leaflet", leafletRoutes);
 apiRoutes.use("/file", fileRoutes);
 apiRoutes.use("/meeting", meetingRoutes);
 apiRoutes.use("/whiteboard", whiteboardRoutes);
+apiRoutes.use("/note", noteRoutes);
 
-// for now - TODO
 const staticRoutes = express.Router();
 staticRoutes.use(express.static("static"));
 

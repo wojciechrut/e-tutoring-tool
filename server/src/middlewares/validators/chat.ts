@@ -29,7 +29,6 @@ const get: RequestHandler<{}, {}, UserResponseBody, ChatFetchQuery> = async (
   }
 
   if (chatId) {
-    console.log({ chatId });
     if (!(await ChatRepository.exists({ _id: chatId }))) {
       next(createError(ErrorStatus.BAD_REQUEST, "Chat does not exist."));
       return;

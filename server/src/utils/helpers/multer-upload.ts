@@ -43,10 +43,10 @@ const uploadInfo: Record<UploadType, UploadOptions> = {
   },
   note: {
     fileSize: 4000000,
-    maxCount: 3,
+    maxCount: 1,
     path: FILES_DIR,
     fileType: fileTypes.image,
-    multipleFiles: true,
+    multipleFiles: false,
   },
 };
 

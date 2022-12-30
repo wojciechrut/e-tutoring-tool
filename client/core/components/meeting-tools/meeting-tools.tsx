@@ -55,17 +55,17 @@ export const MeetingTools: FC<MeetingToolsProps> = ({
         <i className="fa-solid fa-arrow-left-long"></i>
       </button>
       <button
+        className={styles.button}
+        onClick={() => setChatOpen((prev) => !prev)}
+      >
+        <i className="fa-regular fa-comments"></i>
+      </button>
+      <button
         className={clsx(styles.button, styles.buttonText)}
         onClick={finishHandler}
         disabled={!isOrganiser || finished}
       >
         End
-      </button>
-      <button
-        className={styles.button}
-        onClick={() => setChatOpen((prev) => !prev)}
-      >
-        <i className="fa-regular fa-comments"></i>
       </button>
       <div
         className={clsx(

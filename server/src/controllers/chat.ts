@@ -31,11 +31,9 @@ const get: RequestHandler<
   }
 
   if (chatId) {
-    console.log("fired");
     chat = await ChatRepository.findOrCreate({
       _id: chatId,
     });
-    console.log("tutaj");
   }
 
   if (!chat) {

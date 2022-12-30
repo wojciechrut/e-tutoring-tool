@@ -22,8 +22,9 @@ const saveFiles: RequestHandler<
         uploads.map((upload) => ({ ...upload, uploader: _id, chat }))
       );
       response.locals.uploadedIds = savedFiles.map((file) => file._id);
-      next();
     }
+
+    next();
   } catch (error) {
     next(createError(ErrorStatus.SERVER, "Error occurred while saving files."));
   }
