@@ -137,7 +137,9 @@ export const Chats: FC = () => {
               />
             </div>
           ) : (
-            <>Select chat</>
+            <div className={styles.selectChat}>
+              Select chat from the list beside
+            </div>
           )}
         </div>
       </div>

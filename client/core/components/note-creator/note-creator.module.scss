@@ -53,3 +53,11 @@
   font-size: var(--font-size-200);
   padding: 3px 6px;
 }
+
+.error-message {
+  color: var(--col-error);
+  font-size: var(--font-size-100);
+  background-color: var(--col-main-100);
+  padding: 2px 5px;
+  border-radius: 2px;
+}

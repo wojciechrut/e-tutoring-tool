@@ -1,6 +1,6 @@
 import { MeetingSearchResponseBody } from "@types";
 import styles from "./meeting-search.module.scss";
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import MeetingService from "services/meeting";
@@ -8,6 +8,7 @@ import { haveCommonElement } from "helpers/array";
 
 type MeetingSearchProps = {
   setMeetings: (meetings: MeetingSearchResponseBody) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type FieldValues = {
@@ -15,7 +16,10 @@ type FieldValues = {
   subject: string;
 };
 
-export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
+export const MeetingSearch: FC<MeetingSearchProps> = ({
+  setMeetings,
+  setLoading,
+}) => {
   const {
     register,
     formState: { errors },
@@ -32,6 +36,7 @@ export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
   const subject = watch("subject");
 
   useEffect(() => {
+    setLoading(true);
     MeetingService.getMine({ date: date || "ongoing" }).then((meetings) => {
       setFoundMeetings(meetings);
       const subjects = new Set(
@@ -41,8 +46,9 @@ export const MeetingSearch: FC<MeetingSearchProps> = ({ setMeetings }) => {
         )
       );
       setSubjectOptions(Array.from(subjects));
+      setLoading(false);
     });
-  }, [date]);
+  }, [date, setLoading]);
 
   useEffect(() => {
     setFilteredMeetings(

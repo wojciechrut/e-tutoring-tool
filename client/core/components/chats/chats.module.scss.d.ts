@@ -9,4 +9,5 @@ export const currentChatContainer: string;
 export const currentChatShow: string;
 export const currentChatTop: string;
 export const currentChatUser: string;
+export const selectChat: string;
 export const wrapper: string;

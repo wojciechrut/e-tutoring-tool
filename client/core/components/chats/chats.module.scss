@@ -90,3 +90,13 @@
 .chat-box {
   flex: 1;
 }
+
+.select-chat {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-500);
+  color: var(--col-text-navy);
+  font-weight: 500;
+}

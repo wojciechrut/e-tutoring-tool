@@ -6,6 +6,7 @@ import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { Button } from "components/common/button";
 import NoteService from "services/note";
 import { dataURItoFile } from "hooks/useWhiteboard/fabric-helpers";
+import { parseError } from "helpers/parse-error";
 
 type NoteCreatorProps = {
   getCanvasAsImage: () => string | null;
@@ -15,6 +16,7 @@ type NoteCreatorProps = {
 
 type FieldValues = { text: string };
 
+let notificationTimeout: NodeJS.Timeout;
 export const NoteCreator: FC<NoteCreatorProps> = ({
   getCanvasAsImage,
   meetingId,
@@ -22,6 +24,7 @@ export const NoteCreator: FC<NoteCreatorProps> = ({
 }) => {
   const [currentImageURI, setCurrentImageURI] = useState("");
   const [includeImage, setIncludeImage] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const {
     register,
     handleSubmit,
@@ -33,6 +36,17 @@ export const NoteCreator: FC<NoteCreatorProps> = ({
     setCurrentImageURI(includeImage ? getCanvasAsImage() || "" : "");
   }, [includeImage]);
 
+  useEffect(() => {
+    clearTimeout(notificationTimeout);
+    if (error) {
+      notificationTimeout = setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
+
+    return () => clearTimeout(notificationTimeout);
+  }, [error]);
+
   const onSubmit = async (values: FieldValues, event?: BaseSyntheticEvent) => {
     event?.preventDefault();
     const { text } = values;
@@ -42,9 +56,14 @@ export const NoteCreator: FC<NoteCreatorProps> = ({
       subjects,
       file: currentImageURI ? dataURItoFile(currentImageURI) : undefined,
     };
-    const response = await NoteService.create(inputs);
-    reset({ text: "" });
-    console.log(response);
+    NoteService.create(inputs)
+      .then(() => {
+        setError("Note created!");
+        reset({ text: "" });
+      })
+      .catch((error) => {
+        setError(parseError(error)?.messages[0]);
+      });
   };
 
   const inputs: FormInputs<FieldValues> = [
@@ -71,9 +90,7 @@ export const NoteCreator: FC<NoteCreatorProps> = ({
         />
       )}
       <div className={styles.includeImage}>
-        <label className={styles.includeImageLabel} htmlFor="includeImage">
-          Include whiteboard:
-        </label>
+        <label htmlFor="includeImage">Include whiteboard:</label>
         <input
           className={styles.includeImageCheckbox}
           id="includeImage"
@@ -94,6 +111,7 @@ export const NoteCreator: FC<NoteCreatorProps> = ({
           create note
         </Button>
       </form>
+      {error && <div className={styles.errorMessage}>{error}</div>}
     </div>
   );
 };

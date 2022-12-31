@@ -14,5 +14,6 @@
   z-index: 1000;
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.13);
+  background-color: var(--col-black);
+  opacity: 0.14;
 }

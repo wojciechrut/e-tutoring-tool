@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { MeetingSearch } from "components/meeting-search";
 import { MeetingSearchResponseBody } from "@types";
 import { MeetingCard } from "components/meeting-card";
+import Spinner from "assets/spinner.svg";
 
 type MeetingsProps = {};
 
@@ -13,6 +14,7 @@ export const Meetings: FC<MeetingsProps> = () => {
   const [isCreatorOpen, setIsCreatorOpen] = useState<boolean>(false);
   const [searchedMeetings, setSearchedMeetings] =
     useState<null | MeetingSearchResponseBody>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   return (
     <div className={styles.wrapper}>
@@ -41,12 +43,20 @@ export const Meetings: FC<MeetingsProps> = () => {
         </div>
       ) : (
         <>
-          <MeetingSearch setMeetings={setSearchedMeetings} />
+          <MeetingSearch
+            setLoading={setLoading}
+            setMeetings={setSearchedMeetings}
+          />
           <div className={styles.searchResult}>
-            {searchedMeetings &&
+            {loading ? (
+              <Spinner />
+            ) : searchedMeetings && searchedMeetings.length > 0 ? (
               searchedMeetings.map((meeting) => (
                 <MeetingCard meeting={meeting} key={meeting._id} />
-              ))}
+              ))
+            ) : (
+              <div className={styles.noMeetings}>No meetings found</div>
+            )}
           </div>
         </>
       )}
