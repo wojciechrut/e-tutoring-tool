@@ -241,3 +241,24 @@ export const createText = (options: ITextOptions) => {
   const { text, ...rest } = setOptions(options, "text") as ITextOptions;
   return new fabric.IText(text || "", rest);
 };
+
+export const getCanvasAsImage = (canvas: fabric.Canvas) => {
+  return canvas.toDataURL({
+    format: "png",
+    quality: 1,
+  });
+};
+
+export const dataURItoFile = (dataURI: string) => {
+  let binary = atob(dataURI.split(",")[1]);
+  let array = [];
+  for (let i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i));
+  }
+  const blob = new Blob([new Uint8Array(array)], { type: "image/png" });
+  //@ts-ignore
+  blob.lastModified = new Date();
+  return new File([blob], "whiteboard.png", {
+    type: "image/png",
+  });
+};

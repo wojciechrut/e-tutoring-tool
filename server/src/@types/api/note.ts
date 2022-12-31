@@ -3,8 +3,10 @@ import { Note } from "../../models/note";
 export type NoteCreateRequestBody = {
   text: string;
   meetingId: string;
-  file?: FileList;
+  file?: File;
 };
+
+export type NoteCreateResponseBody = Omit<Note, "_id"> & { _id: string };
 
 export type NoteSearchRequestQuery = {
   subject?: string;

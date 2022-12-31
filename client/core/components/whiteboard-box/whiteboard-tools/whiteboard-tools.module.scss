@@ -58,3 +58,16 @@
     width: 120px;
   }
 }
+
+.notes {
+  position: absolute;
+  bottom: 50%;
+  transform: translate(100%, 50%);
+  right: -8px;
+  background-color: var(--col-main-700);
+  @include card-layout(8px, 8px);
+  gap: 5px;
+  color: var(--col-white);
+  width: 260px;
+  font-size: var(--font-size-200);
+}

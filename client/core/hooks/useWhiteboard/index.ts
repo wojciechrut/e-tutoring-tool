@@ -7,6 +7,7 @@ import {
   createText,
   createTriangle,
   enlivenObjects,
+  getCanvasAsImage,
   handlePathAdded,
   initCanvas,
   onObjectModified,
@@ -165,6 +166,8 @@ export const useWhiteboard = ({
     });
   };
 
+  const getCanvasImage = () => canvas && getCanvasAsImage(canvas);
+
   return {
     canvas,
     toggleDrawing,
@@ -179,5 +182,6 @@ export const useWhiteboard = ({
     addTriangle,
     addText,
     setFontSize,
+    getCanvasImage,
   };
 };

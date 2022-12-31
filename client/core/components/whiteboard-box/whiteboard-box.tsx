@@ -24,6 +24,8 @@ export const WhiteboardBox: FC<WhiteboardBoxProps> = ({
       <div className={clsx(styles.toolBox)}>
         <WhiteboardTools
           whiteboard={whiteboard}
+          meetingId={meeting._id.toString()}
+          subjects={meeting.subjects}
           disabled={isMeetingFinished(meeting)}
         />
       </div>

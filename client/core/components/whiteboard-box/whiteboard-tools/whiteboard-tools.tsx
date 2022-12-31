@@ -10,15 +10,20 @@ import clsx from "clsx";
 import { Modal } from "components/common/modal";
 import { CompactPicker } from "react-color";
 import { defaultOptions } from "hooks/useWhiteboard/fabric-helpers";
+import { NoteCreator } from "components/note-creator";
 
 type WhiteboardToolsProps = {
   whiteboard: WhiteboardResponse;
   disabled?: boolean;
+  subjects: Array<string>;
+  meetingId: string;
 };
 
 export const WhiteboardTools: FC<WhiteboardToolsProps> = ({
   whiteboard,
   disabled,
+  meetingId,
+  subjects,
 }) => {
   const {
     toggleDrawing,
@@ -32,8 +37,10 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({
     addTriangle,
     addText,
     setFontSize,
+    getCanvasImage,
   } = useWhiteboard({ ...whiteboard, disabled });
   const [areSettingsOpen, setSettingsOpen] = useState(false);
+  const [areNotesOpen, setNotesOpen] = useState(false);
   const [isFill, setIsFill] = useState(false);
 
   useEffect(() => {
@@ -87,6 +94,24 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({
       >
         <i className="fa-solid fa-gear"></i>
       </button>
+      <button
+        className={clsx(styles.button)}
+        disabled={disabled}
+        onClick={() => setNotesOpen((prev) => !prev)}
+      >
+        <i className="fa-regular fa-note-sticky"></i>
+      </button>
+      <Modal
+        open={areNotesOpen}
+        setOpen={setNotesOpen}
+        className={styles.notes}
+      >
+        <NoteCreator
+          meetingId={meetingId}
+          subjects={subjects}
+          getCanvasAsImage={getCanvasImage}
+        />
+      </Modal>
       <Modal
         open={areSettingsOpen}
         setOpen={setSettingsOpen}
