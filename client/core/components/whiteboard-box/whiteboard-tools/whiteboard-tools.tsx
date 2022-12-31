@@ -54,7 +54,7 @@ export const WhiteboardTools: FC<WhiteboardToolsProps> = ({
         onClick={toggleDrawing}
         disabled={disabled}
       >
-        {drawing ? (
+        {!drawing ? (
           <i className="fa-solid fa-pencil"></i>
         ) : (
           <i className="fa-solid fa-arrow-pointer"></i>

@@ -55,7 +55,7 @@ export const Meetings: FC<MeetingsProps> = () => {
                 <MeetingCard meeting={meeting} key={meeting._id} />
               ))
             ) : (
-              <div className={styles.noMeetings}>No meetings found</div>
+              <div>No meetings found</div>
             )}
           </div>
         </>

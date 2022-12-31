@@ -20,7 +20,7 @@ export const MeetingCard: FC<MeetingCardProps> = ({ meeting }) => {
   return (
     <div className={clsx(styles.container, ongoing && styles.containerOngoing)}>
       <div className={styles.top}>
-        <p className={styles.date}>{stringifyDate(startsAt)}</p>
+        <p className={styles.date}>{stringifyDate(startsAt, true)}</p>
         {(finished || ongoing) && (
           <Link href={`/meetings/${_id}`}>
             <a className={clsx(styles.link, ongoing && styles.linkOngoing)}>

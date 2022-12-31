@@ -1,0 +1,41 @@
+.wrapper {
+  width: 90%;
+  max-width: 450px;
+
+  @include sm {
+    width: 450px;
+    max-width: unset;
+  }
+
+  @include md {
+    width: 500px;
+  }
+
+  @include lg {
+    width: 700px;
+  }
+}
+
+.container {
+  @include card-layout;
+  box-shadow: var(--bs-card);
+  background-color: var(--col-white);
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.heading {
+  font-size: var(--font-size-700);
+  text-align: center;
+
+  @include sm {
+    font-size: var(--font-size-900);
+  }
+}
+
+.form {
+  display: grid;
+  width: 100%;
+  row-gap: 15px;
+  padding: 15px 0;
+}

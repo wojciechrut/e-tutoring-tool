@@ -31,12 +31,22 @@
 
 .heading {
   font-size: var(--font-size-700);
-  margin-bottom: 15px;
   text-align: center;
 
   @include sm {
     font-size: var(--font-size-900);
   }
+
+  &--small {
+    font-size: var(--font-size-500);
+    margin-bottom: 12px;
+  }
+}
+
+.link {
+  font-size: var(--font-size-500);
+  text-transform: unset;
+  color: var(--col-main-400);
 }
 
 .page-info {

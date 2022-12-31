@@ -10,6 +10,7 @@ import LeafletService from "services/leaflet";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { parseError } from "helpers/parse-error";
 import { LeafletList } from "components/leaflet-list";
+import { StyledLink } from "components/common/styled-link";
 
 type FieldValues = {
   levels: Array<string>;
@@ -111,10 +112,20 @@ export const LeafletSearch: FC = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h1 className={styles.heading}>Find someone to study with</h1>
+        <h2 className={styles.headingSmall}>
+          or{" "}
+          <StyledLink
+            path={"leaflets/create"}
+            styleType={"secondary"}
+            className={styles.link}
+          >
+            create a leaflet
+          </StyledLink>
+        </h2>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           {renderFormInputs(inputs, register, errors, control)}
           <Button type={"submit"} loading={loading}>
-            Submit
+            Search
           </Button>
         </form>
         {result && (
