@@ -5,6 +5,7 @@ import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import LeafletService from "services/leaflet";
 import { LeafletCategoriesResponseBody } from "@types";
 import { Button } from "components/common/button";
+import { parseError } from "helpers/parse-error";
 
 type FieldValues = {
   levels: Array<string>;
@@ -14,15 +15,25 @@ type FieldValues = {
   description: string;
 };
 
+const defaultValues: FieldValues = {
+  levels: [],
+  subjects: [],
+  lookingFor: "",
+  title: "",
+  description: "",
+};
+
 export const LeafletCreate: FC = () => {
   const {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>();
   const [categories, setCategories] =
     useState<LeafletCategoriesResponseBody | null>();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     LeafletService.getCategories().then((categories) =>
@@ -31,7 +42,14 @@ export const LeafletCreate: FC = () => {
   }, []);
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
+    LeafletService.create(data)
+      .then(() => {
+        setMessage("Leaflet created!");
+        reset(defaultValues);
+      })
+      .catch((error) => {
+        setMessage(parseError(error)?.messages[0] || "Something went wrong");
+      });
   };
 
   const inputs: FormInputs<FieldValues> = [
@@ -83,6 +101,7 @@ export const LeafletCreate: FC = () => {
       name: "levels",
       options: categories?.levels || [],
       label: "at level",
+      isMulti: true,
     },
   ];
 
@@ -96,6 +115,7 @@ export const LeafletCreate: FC = () => {
             Submit
           </Button>
         </form>
+        {message && <div className={styles.message}>{message}</div>}
       </div>
     </div>
   );

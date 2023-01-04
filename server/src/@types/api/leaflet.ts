@@ -2,7 +2,10 @@ import { Leaflet } from "../../models/leaflet";
 import { leafletCategories } from "../../utils/constants/leaflet-categories";
 import { UserResponseBody } from "./user";
 
-export type LeafletPostRequestBody = Omit<Leaflet, "_id" | "user">;
+export type LeafletPostRequestBody = Omit<
+  Leaflet,
+  "_id" | "user" | "parsedTitle" | "createdAt"
+>;
 export type LeafletSearchQuery = Partial<
   Omit<Leaflet, "_id" | "user" | "description"> & {
     user: string;

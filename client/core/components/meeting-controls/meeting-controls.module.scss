@@ -19,6 +19,7 @@
   display: flex;
   padding: 2px;
   visibility: hidden;
+  opacity: 0.4;
 
   &:first-of-type {
     margin-left: auto;
@@ -26,6 +27,10 @@
 
   &--show {
     visibility: visible;
+  }
+
+  &--active {
+    opacity: 1;
   }
 
   &__control {

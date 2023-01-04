@@ -18,7 +18,10 @@ export const MeetingControls: FC<MeetingControlsProps> = ({
 }) => {
   const { user } = useAuth();
   const otherUsers = getOtherUsersFromMeeting(user!!._id.toString(), meeting);
-  const { audioRefs } = useVoicecall(meeting._id, getUsersIds(otherUsers));
+  const { audioRefs, connected } = useVoicecall(
+    meeting._id,
+    getUsersIds(otherUsers)
+  );
   const [muted, setMuted] = useState<Array<boolean>>(
     otherUsers.map(() => false)
   );
@@ -54,7 +57,8 @@ export const MeetingControls: FC<MeetingControlsProps> = ({
           <div
             className={clsx(
               styles.userAudio,
-              showMobile && styles.userAudioShow
+              showMobile && styles.userAudioShow,
+              connected[i] && styles.userAudioActive
             )}
             key={user._id.toString()}
           >

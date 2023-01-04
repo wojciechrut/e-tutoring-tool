@@ -15,6 +15,7 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
   const { user } = useAuth();
   const audioRefs = useRef<Array<HTMLAudioElement | null>>([]);
   const [myPeer, setMyPeer] = useState<Peer>();
+  const [connected, setConnected] = useState<Array<boolean>>([]);
 
   const userId = useMemo(() => user!!._id.toString(), [user]);
 
@@ -27,6 +28,16 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
         noiseSuppression: true,
       })
       .then((stream) => stream);
+  };
+
+  const setUserConnected = (userId: string, value: boolean) => {
+    const callerIndex = userIds.indexOf(userId);
+    setConnected((prev) => {
+      const newConnected = [...prev];
+      newConnected[callerIndex] = value;
+      return newConnected;
+    });
+    console.log("connected: ", value);
   };
 
   useEffect(() => {
@@ -71,6 +82,7 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
       if (!callerAudio) return;
       callerAudio.srcObject = callerStream;
       applySoundProcessing(callerAudio);
+      setUserConnected(callerId, true);
       callerAudio.addEventListener("loadedmetadata", () => {
         callerAudio.play().then(() => {});
       });
@@ -94,7 +106,6 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
         myPeer.on("open", () => {
           myPeer.on("call", (call) => {
             const callerId: string = call.metadata;
-            console.log("on call");
             call.on("stream", (stream) => {
               console.log("got called with stream - " + stream.id);
               setupAudioStream(callerId, stream);
@@ -104,9 +115,11 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
           socket.emit("joinVoicecall", meetingId, userId);
 
           socket.on("voicecallNewUser", (callerId) => {
-            console.log("new user = " + callerId);
-            console.log("calling with stream - " + myStream.id);
             call(callerId, myStream);
+          });
+
+          socket.on("voicecallUserLeft", (userId) => {
+            setUserConnected(userId, false);
           });
         });
       })
@@ -119,8 +132,9 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
     return () => {
       socket.emit("leaveVoicecall", meetingId, userId);
       socket.off("voicecallNewUser");
+      socket.off("voicecallUserLeft");
     };
-  }, [myPeer, meetingId, userId, userIds]);
+  }, [myPeer]);
 
-  return { audioRefs };
+  return { audioRefs, connected };
 };

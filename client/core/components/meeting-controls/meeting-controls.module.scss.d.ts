@@ -2,6 +2,7 @@ export const container: string;
 export const containerWithBackground: string;
 export const toggleButton: string;
 export const userAudio: string;
+export const userAudioActive: string;
 export const userAudioAvatar: string;
 export const userAudioButton: string;
 export const userAudioControl: string;

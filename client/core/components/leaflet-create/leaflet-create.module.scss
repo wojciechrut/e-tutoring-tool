@@ -39,3 +39,9 @@
   row-gap: 15px;
   padding: 15px 0;
 }
+
+.message {
+  padding: 5px 15px;
+  font-size: var(--font-size-100);
+  color: var(--col-error);
+}

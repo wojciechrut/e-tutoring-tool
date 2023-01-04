@@ -41,7 +41,6 @@ export const useWhiteboard = ({
   //initialization
   useEffect(() => {
     canvas = initCanvas(initialObjects, disabled);
-    console.log(canvas?.interactive);
     return () => {
       if (canvas) {
         canvas.dispose();
