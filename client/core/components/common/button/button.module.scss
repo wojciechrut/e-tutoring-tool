@@ -3,6 +3,7 @@
   border: none;
   padding: 0.4em 1em;
   border-radius: 4px;
+  position: relative;
 
   &:disabled {
     cursor: default;
@@ -42,4 +43,21 @@
 
 .spinner {
   height: 24px;
+}
+
+.confirm-button {
+  position: absolute;
+  right: -16px;
+  border-radius: 0 4px 4px 0;
+  width: 20px;
+  top: 0;
+  height: 100%;
+  border: none;
+  background-color: inherit;
+  font-size: inherit;
+  color: inherit;
+
+  &:hover {
+    filter: grayscale(0.5);
+  }
 }

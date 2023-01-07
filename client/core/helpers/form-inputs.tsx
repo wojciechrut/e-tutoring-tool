@@ -27,12 +27,14 @@ type FormInputText<T extends FieldValues> = {
   htmlType: "text" | "email" | "password";
   placeholder?: string;
   noMargin?: boolean;
+  defaultValue?: string;
 } & FormInputCommon<T>;
 
 type FormInputTextArea<T extends FieldValues> = {
   type: "textarea";
   placeholder?: string;
   rows: number;
+  defaultValue?: string;
 } & FormInputCommon<T>;
 
 type FormInputSelect<T extends FieldValues> = {

@@ -36,9 +36,9 @@ export const LeafletCreate: FC = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    LeafletService.getCategories().then((categories) =>
-      setCategories(categories)
-    );
+    LeafletService.getCategories()
+      .then((categories) => setCategories(categories))
+      .catch(console.log);
   }, []);
 
   const onSubmit = async (data: FieldValues) => {

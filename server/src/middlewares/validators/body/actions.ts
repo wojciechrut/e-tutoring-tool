@@ -6,6 +6,7 @@ export enum Action {
   POST_LEAFLET = "post-leaflet",
   POST_MEETING = "post-meeting",
   POST_NOTE = "post-note",
+  UPDATE_LEAFLET = "update-leaflet",
 }
 
 export const actionConstraints: Record<Action, BodyConstraints> = {
@@ -32,6 +33,11 @@ export const actionConstraints: Record<Action, BodyConstraints> = {
   "post-note": {
     required: ["text"],
     regexValidated: ["text"],
+    enumValidated: [],
+  },
+  "update-leaflet": {
+    required: ["title", "description"],
+    regexValidated: ["title", "description"],
     enumValidated: [],
   },
 };

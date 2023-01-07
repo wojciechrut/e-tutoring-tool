@@ -14,7 +14,7 @@ export const leafletCategories = {
   levels: ["Elementary school", "Middle school", "High school", "University"],
 };
 
-export const getSymetricLookingFor = (
+export const getSymmetricLookingFor = (
   lookingFor: typeof leafletCategories.lookingFor[number]
 ) => {
   return lookingFor === "teacher"

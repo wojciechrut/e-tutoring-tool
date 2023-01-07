@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import styles from "./button.module.scss";
 import clsx from "clsx";
 import Spinner from "assets/spinner.svg";
@@ -11,6 +11,7 @@ export type ButtonProps = {
   type?: "submit" | "button" | "reset";
   loading?: boolean;
   disabled?: boolean;
+  confirm?: boolean;
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -21,10 +22,23 @@ export const Button: FC<ButtonProps> = ({
   loading = false,
   disabled = false,
   type,
+  confirm,
 }) => {
+  const [isConfirm, setConfirm] = useState(false);
+
+  const finalOnClick =
+    !confirm || isConfirm
+      ? () => {
+          onClick && onClick();
+          setConfirm(false);
+        }
+      : () => {
+          setConfirm(true);
+        };
+
   return (
     <button
-      onClick={onClick}
+      onClick={finalOnClick}
       type={type}
       className={clsx(
         styles.button,
@@ -35,7 +49,21 @@ export const Button: FC<ButtonProps> = ({
       )}
       disabled={disabled || loading}
     >
-      {loading ? <Spinner className={styles.spinner} /> : children}
+      {loading ? (
+        <Spinner className={styles.spinner} />
+      ) : isConfirm ? (
+        <>
+          Confirm
+          <button
+            className={styles.confirmButton}
+            onClick={() => setConfirm(false)}
+          >
+            X
+          </button>
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 };

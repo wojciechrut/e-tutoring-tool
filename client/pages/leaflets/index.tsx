@@ -1,8 +1,13 @@
 import { NextPage } from "next";
 import { LeafletSearch } from "components/leaflet-search";
+import { AuthRedirect } from "../../core/components/auth-redirect";
 
 const Leaflets: NextPage = () => {
-  return <LeafletSearch />;
+  return (
+    <AuthRedirect>
+      <LeafletSearch />
+    </AuthRedirect>
+  );
 };
 
 export default Leaflets;

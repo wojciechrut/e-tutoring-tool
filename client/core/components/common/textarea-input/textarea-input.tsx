@@ -9,6 +9,7 @@ type TextAreaInputPros = {
   label?: string;
   className?: string;
   errorMessage?: string;
+  defaultValue?: string;
 };
 
 export const TextAreaInput: FC<TextAreaInputPros> = ({
@@ -17,6 +18,7 @@ export const TextAreaInput: FC<TextAreaInputPros> = ({
   label,
   placeholder,
   errorMessage,
+  defaultValue,
 }) => {
   return (
     <div className={styles.inputGroup}>
@@ -28,6 +30,7 @@ export const TextAreaInput: FC<TextAreaInputPros> = ({
         id={register.name}
         {...register}
         rows={rows}
+        defaultValue={defaultValue}
         placeholder={placeholder}
       />
       {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}

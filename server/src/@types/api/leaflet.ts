@@ -22,4 +22,14 @@ export type LeafletSearchResponseBody = {
   totalPages: number;
 };
 
+export type SingleLeafletResponseBody = Omit<Leaflet, "user"> & {
+  user: UserResponseBody;
+} & { expired?: boolean };
+
 export type LeafletCategoriesResponseBody = typeof leafletCategories;
+
+export type LeafletEditRequestBody = {
+  id: string;
+  title: string;
+  description: string;
+};

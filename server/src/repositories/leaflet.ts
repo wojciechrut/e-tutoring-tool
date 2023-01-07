@@ -14,7 +14,7 @@ export enum LeafletSelector {
 
 const populator = { path: "user", select: UserSelector.STANDARD };
 
-const findOne = async (_id: ModelId) => {
+const findOne = async (_id: ModelId): Promise<Leaflet | null> => {
   return Model.findOne({
     _id,
   })
@@ -24,6 +24,8 @@ const findOne = async (_id: ModelId) => {
 
 const findAll = async (query: Query, page = 1) => {
   const { levels, subjects, title, lookingFor, user } = query;
+  const monthAgo = new Date();
+  monthAgo.setMonth(monthAgo.getMonth() - 1);
   return Model.paginate(
     Object.assign(
       {
@@ -31,6 +33,7 @@ const findAll = async (query: Query, page = 1) => {
         levels: { $in: levels || /.*/ },
         lookingFor: lookingFor || /.*/,
         parsedTitle: { $regex: new RegExp(parseForSearch(title)) },
+        createdAt: { $gte: monthAgo },
       },
       user ? { user } : {}
     ),
@@ -64,4 +67,20 @@ const create = async (query: Query) => {
   return findOne(result._id);
 };
 
-export default { findAll, findOne, create, getCategories };
+const deleteOne = async (id: string) => {
+  return Model.deleteOne({ _id: id });
+};
+
+const updateOne = async (id: string, update: Query) => {
+  return Model.findOneAndUpdate({ _id: id }, update, { new: true });
+};
+
+const LeafletRepository = {
+  findAll,
+  findOne,
+  create,
+  getCategories,
+  deleteOne,
+  updateOne,
+};
+export default LeafletRepository;

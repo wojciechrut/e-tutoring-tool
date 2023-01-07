@@ -11,6 +11,7 @@ export type TextInputProps = {
   label: string;
   noMargin?: boolean;
   className?: string;
+  defaultValue?: string;
 };
 
 export const TextInput: FC<TextInputProps> = ({
@@ -21,6 +22,7 @@ export const TextInput: FC<TextInputProps> = ({
   errorMessage,
   noMargin = false,
   className,
+  defaultValue,
 }) => {
   return (
     <div
@@ -38,6 +40,7 @@ export const TextInput: FC<TextInputProps> = ({
         className={clsx(styles.input, errorMessage && styles.inputWithError)}
         type={htmlType}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         {...register}
       />
       {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
