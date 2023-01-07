@@ -2,6 +2,7 @@ import { UserSelector as UserSelector } from "./user";
 import Model from "../models/chat";
 import { ModelId } from "../models/types/_id";
 import { FileSelector } from "./file";
+import { isMoreThanDayAgo } from "../utils/helpers/date";
 
 type SingleChatQuery = {
   users?: Array<string>;
@@ -122,6 +123,28 @@ const addMessage = async ({ chat, message }: AddMessageQuery) => {
   );
 };
 
+const shouldNotifyNewMessage = async (id: ModelId) => {
+  const chat = await Model.findOne({ _id: id }).populate([
+    {
+      path: "messages",
+      options: {
+        sort: { createdAt: -1 },
+        limit: 1,
+      },
+    },
+    { path: "users", select: UserSelector.STANDARD },
+  ]);
+
+  if (
+    chat &&
+    !chat.isMeetingChat &&
+    (!chat.messages[0] || isMoreThanDayAgo(chat.messages[0].createdAt))
+  ) {
+    return chat.users;
+  }
+  return null;
+};
+
 const ChatRepository = {
   findOrCreate,
   create,
@@ -130,6 +153,7 @@ const ChatRepository = {
   findAll,
   userHasAccess,
   addMessage,
+  shouldNotifyNewMessage,
 };
 
 export default ChatRepository;

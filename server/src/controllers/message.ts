@@ -9,6 +9,7 @@ import {
 import { createError } from "../utils/helpers/create-error";
 import MessageRepository from "../repositories/message";
 import ChatRepository from "../repositories/chat";
+import { sendNewMessageEmail } from "../utils/mailer";
 
 const send: RequestHandler<
   {},
@@ -17,7 +18,7 @@ const send: RequestHandler<
   ChatAccessQuery,
   FileUploadResponseLocals & UploadedIdsResponseLocals
 > = async (request, response, next) => {
-  const { _id: sender, uploadedIds: files } = response.locals;
+  const { _id: sender, uploadedIds: files, nickname } = response.locals;
   const { chat } = request.query;
   const { text } = request.body;
 
@@ -33,7 +34,14 @@ const send: RequestHandler<
     return;
   }
 
+  const userToNotify = (
+    await ChatRepository.shouldNotifyNewMessage(chat)
+  )?.filter(({ _id }) => _id.toString() !== sender.toString())[0];
   await ChatRepository.addMessage({ chat, message: message._id });
+
+  if (userToNotify) {
+    sendNewMessageEmail(nickname, userToNotify.email, sender.toString());
+  }
 
   response.send(message);
 };
