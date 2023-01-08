@@ -18,5 +18,6 @@ noteRoutes
     Controller.create
   );
 noteRoutes.route("/").get(auth, Controller.getMine);
+noteRoutes.route("/").delete(auth, Controller.remove);
 
 export default noteRoutes;

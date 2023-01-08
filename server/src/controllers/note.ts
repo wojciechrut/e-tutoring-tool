@@ -77,5 +77,17 @@ const create: RequestHandler<
   response.send(note);
 };
 
-const NoteController = { getMine, create };
+const remove: RequestHandler<
+  {},
+  string,
+  { id: string },
+  {},
+  MeResponseLocals
+> = async (request, response, _next) => {
+  const { id } = request.body;
+  await NoteRepository.remove(id);
+  response.send("Note deleted");
+};
+
+const NoteController = { getMine, create, remove };
 export default NoteController;

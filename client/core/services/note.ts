@@ -34,5 +34,13 @@ export const getMine = async (query: NoteSearchRequestQuery) => {
   return data;
 };
 
-const NoteService = { create, getMine };
+export const remove = async (id: string) => {
+  UserService.setAuthFromStorage();
+  const { data }: AxiosResponse<string> = await api.delete(Paths.MINE, {
+    data: { id },
+  });
+  return data;
+};
+
+const NoteService = { create, getMine, remove };
 export default NoteService;

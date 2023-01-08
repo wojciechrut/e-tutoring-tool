@@ -9,6 +9,7 @@ import { Button } from "components/common/button";
 import Image from "next/image";
 import { staticSource } from "helpers/static-path";
 import { formatUserInputString } from "helpers/string";
+import { stringifyDate } from "helpers/date";
 
 type FieldValues = {
   subject: string;
@@ -80,6 +81,16 @@ export const NotesBrowse: FC = () => {
       }
     : undefined;
 
+  const removeNote = (id: string) => {
+    NoteService.remove(id).then(() => {
+      NoteService.getMine({ page: `${result?.page}` || "1", subject }).then(
+        (response) => {
+          setResult(response);
+        }
+      );
+    });
+  };
+
   const notes = result?.notes || [];
 
   return (
@@ -119,26 +130,40 @@ export const NotesBrowse: FC = () => {
             <ul className={styles.notesList}>
               {notes.map(({ image, _id, text, createdAt }) => (
                 <li key={_id.toString()} className={styles.notesListItem}>
-                  {image ? (
-                    <a
-                      href={staticSource(image.path)}
-                      download
-                      target={"_blank"}
+                  <div className={styles.notesListItemTop}>
+                    {image ? (
+                      <a
+                        href={staticSource(image.path)}
+                        download
+                        target={"_blank"}
+                      >
+                        <div className={styles.image}>
+                          <Image
+                            src={staticSource(image.path)}
+                            width={160}
+                            height={90}
+                            alt={"Note whiteboard image"}
+                          />
+                        </div>
+                      </a>
+                    ) : (
+                      <div className={styles.noWhiteboard}>no image note</div>
+                    )}
+                    <div className={styles.text}>
+                      {formatUserInputString(text)}
+                    </div>
+                  </div>
+                  <div className={styles.notesListItemBottom}>
+                    <span className={styles.date}>
+                      {createdAt && stringifyDate(createdAt)}
+                    </span>
+                    <Button
+                      confirm={true}
+                      onClick={() => removeNote(_id.toString())}
+                      className={styles.deleteButton}
                     >
-                      <div className={styles.image}>
-                        <Image
-                          src={staticSource(image.path)}
-                          width={160}
-                          height={90}
-                          alt={"Note whiteboard image"}
-                        />
-                      </div>
-                    </a>
-                  ) : (
-                    <div className={styles.noWhiteboard}>no image note</div>
-                  )}
-                  <div className={styles.text}>
-                    {formatUserInputString(text)}
+                      Delete
+                    </Button>
                   </div>
                 </li>
               ))}

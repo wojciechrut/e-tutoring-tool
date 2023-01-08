@@ -32,7 +32,7 @@ export const LeafletSearch: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [resultMessage, setResultMessage] = useState<string | null>();
   const [result, setResult] = useState<LeafletSearchResponseBody>();
-  const [query, setQuery] = useState<FieldValues | null>();
+  const [query, setQuery] = useState<Partial<FieldValues> | null>();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const LeafletSearch: FC = () => {
     ...query
   }: Partial<FieldValues & { page: number; user?: string }>) => {
     setLoading(true);
-    LeafletService.search({ page: page.toString(10), ...query })
+    LeafletService.search({ page: page?.toString(10), ...query })
       .then((response) => {
         setLoading(false);
         setResult(response);

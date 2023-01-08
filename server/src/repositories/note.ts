@@ -52,5 +52,9 @@ const findAll = (userId: string, page = 1, subject?: string) => {
   }));
 };
 
-const NoteRepository = { create, getByMeeting, findAll };
+const remove = async (id: string) => {
+  return Model.deleteOne({ _id: id });
+};
+
+const NoteRepository = { create, getByMeeting, findAll, remove };
 export default NoteRepository;
