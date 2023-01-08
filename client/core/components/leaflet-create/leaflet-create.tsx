@@ -77,7 +77,7 @@ export const LeafletCreate: FC = () => {
       label: "Description (20-500) characters",
       registerOptions: {
         pattern: {
-          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n]{20,500}$/,
+          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{20,500}$/,
           message:
             "Description can have 20-500 alphanumerical or some special characters",
         },

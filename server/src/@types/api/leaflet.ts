@@ -8,7 +8,7 @@ export type LeafletPostRequestBody = Omit<
 >;
 export type LeafletSearchQuery = Partial<
   Omit<Leaflet, "_id" | "user" | "description"> & {
-    user: string;
+    user?: string;
     page: string;
   }
 >;

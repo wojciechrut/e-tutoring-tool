@@ -11,6 +11,7 @@ import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { parseError } from "helpers/parse-error";
 import { LeafletList } from "components/leaflet-list";
 import { StyledLink } from "components/common/styled-link";
+import { useAuth } from "contexts/auth";
 
 type FieldValues = {
   levels: Array<string>;
@@ -32,6 +33,7 @@ export const LeafletSearch: FC = () => {
   const [resultMessage, setResultMessage] = useState<string | null>();
   const [result, setResult] = useState<LeafletSearchResponseBody>();
   const [query, setQuery] = useState<FieldValues | null>();
+  const { user } = useAuth();
 
   useEffect(() => {
     LeafletService.getCategories().then((categories) =>
@@ -42,7 +44,7 @@ export const LeafletSearch: FC = () => {
   const fetchLeaflets = async ({
     page,
     ...query
-  }: FieldValues & { page: number }) => {
+  }: Partial<FieldValues & { page: number; user?: string }>) => {
     setLoading(true);
     LeafletService.search({ page: page.toString(10), ...query })
       .then((response) => {
@@ -126,6 +128,18 @@ export const LeafletSearch: FC = () => {
           {renderFormInputs(inputs, register, errors, control)}
           <Button type={"submit"} loading={loading}>
             Search
+          </Button>
+          <Button
+            type={"button"}
+            loading={loading}
+            onClick={() => {
+              fetchLeaflets({
+                page: result?.page || 1,
+                user: user?._id.toString(),
+              });
+            }}
+          >
+            Show mine
           </Button>
         </form>
         {result && (
