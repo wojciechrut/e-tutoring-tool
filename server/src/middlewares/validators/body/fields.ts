@@ -45,12 +45,12 @@ export const bodyFieldRegex: Partial<
     message: "Title can have 3-30 alphanumerical or some special characters",
   },
   description: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n]{20,500}$/,
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{20,500}$/,
     message:
       "Description can have 20-500 alphanumerical or some special characters",
   },
   text: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{1,200}$/,
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{1,200}$/,
     message: "Note can have 1-200 alphanumerical or some special characters",
   },
 };

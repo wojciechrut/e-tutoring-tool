@@ -18,10 +18,18 @@ const navItems: Array<NavItem> = [
   {
     for: "auth",
     type: "link",
+    path: "/profile",
+    children: "profile",
+    key: "profile",
+  },
+  {
+    for: "auth",
+    type: "link",
     path: "/meetings",
     children: "meetings",
     key: "meetings",
   },
+
   {
     for: "auth",
     type: "link",
@@ -39,9 +47,16 @@ const navItems: Array<NavItem> = [
   {
     for: "auth",
     type: "link",
-    path: "/profile",
-    children: "profile",
-    key: "profile",
+    path: "/notes",
+    children: "Notes",
+    key: "notes",
+  },
+  {
+    for: "auth",
+    type: "link",
+    path: "/files",
+    children: "Files",
+    key: "files",
   },
   {
     for: "auth",
