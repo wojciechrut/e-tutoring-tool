@@ -22,6 +22,8 @@ userRoutes
     saveFiles
   );
 
+userRoutes.route("/friends").patch(auth, UserController.disfriend);
+
 userRoutes
   .route("/login")
   .post(bodyValidator(Action.LOGIN_USER), UserController.login);

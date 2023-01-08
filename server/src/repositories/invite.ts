@@ -29,6 +29,12 @@ const findUsersActive = async (userId: string) => {
   );
 };
 
+const findUsersReceived = async (userId: string) => {
+  return Model.find({ receiver: userId, active: true })
+    .populate("receiver", UserSelector.STANDARD)
+    .populate("sender", UserSelector.STANDARD);
+};
+
 const exists = async (query: Parameters<typeof Model.exists>[0]) => {
   return Model.exists(query);
 };
@@ -45,5 +51,6 @@ const InviteRepository = {
   exists,
   findAll,
   findUsersActive,
+  findUsersReceived,
 };
 export default InviteRepository;

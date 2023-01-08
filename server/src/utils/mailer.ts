@@ -22,6 +22,23 @@ export const sendNewMessageEmail = (
 <p><a href="http://localhost:3000/chats?user=${senderId}">Click here</a> to see chat.</p>
 `,
   };
-  console.log(mailData);
   transport.sendMail(mailData);
+};
+
+export const sendNewMeetingEmail = (
+  organiserNickname: string,
+  invitedEmails: Array<string>
+) => {
+  const mailData = {
+    from: "etutoringtool@gmail.com",
+    to: invitedEmails,
+    subject: "eTutoringTool - new meeting!",
+    html: `Hey! ${organiserNickname} has invited you to a meeting.<br>
+<p><a href="http://localhost:3000/meetings">Click here</a> to see your meetings.</p>
+`,
+  };
+  console.log(invitedEmails);
+  if (invitedEmails) {
+    transport.sendMail(mailData);
+  }
 };

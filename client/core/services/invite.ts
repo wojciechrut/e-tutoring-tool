@@ -1,12 +1,13 @@
 import api from "./api";
 import { AxiosResponse } from "axios";
-import { InviteStatusResponseBody } from "@types";
+import { InviteStatusResponseBody, MultipleInvitesResponseBody } from "@types";
 import UserService from "services/user";
 
 enum Paths {
   STATUS = "invite/status",
   SEND = "invite",
   SET_ACCEPTED = "invite/",
+  RECEIVED = "invite/received",
 }
 
 export type InviteStatus = InviteStatusResponseBody["status"];
@@ -37,5 +38,13 @@ const setAccepted = async (inviteId: string, accept: boolean) => {
   return api.post(Paths.SET_ACCEPTED + inviteId, {}, { params: { accept } });
 };
 
-const InviteService = { getStatus, send, setAccepted };
+const getReceived = async () => {
+  UserService.setAuthFromStorage();
+  const { data }: AxiosResponse<MultipleInvitesResponseBody> = await api.get(
+    Paths.RECEIVED
+  );
+  return data;
+};
+
+const InviteService = { getStatus, send, setAccepted, getReceived };
 export default InviteService;

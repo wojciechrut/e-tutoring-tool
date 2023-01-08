@@ -15,6 +15,10 @@ const findAll = async () => {
   return Model.find();
 };
 
+const findManyById = async (ids: string[]) => {
+  return Model.find({ _id: { $in: ids } });
+};
+
 const findOne = async (query: Partial<User>, withFriends = false) => {
   const result = await Model.findOne(query).select(UserSelector.STANDARD);
   return withFriends && result
@@ -46,6 +50,13 @@ const makeFriends = async (userId1: string, userId2: string) => {
   ]);
 };
 
+const disfriend = async (userId1: string, userId2: string) => {
+  return Promise.all([
+    Model.updateOne({ _id: userId1 }, { $pull: { friends: userId2 } }),
+    Model.updateOne({ _id: userId2 }, { $pull: { friends: userId1 } }),
+  ]);
+};
+
 const UserRepository = {
   findAll,
   findOne,
@@ -53,5 +64,7 @@ const UserRepository = {
   create,
   exists,
   makeFriends,
+  findManyById,
+  disfriend,
 };
 export default UserRepository;

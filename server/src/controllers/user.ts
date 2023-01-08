@@ -71,4 +71,19 @@ const me: RequestHandler<{}, {}, {}, {}, MeResponseLocals> = async (
   response.send(response.locals);
 };
 
-export default { register, getAll, login, me };
+const disfriend: RequestHandler<
+  {},
+  string,
+  { id: string },
+  {},
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { id } = request.body;
+  const { _id: userId } = response.locals;
+  console.log(id, userId);
+  await UserRepository.disfriend(userId.toString(), id);
+
+  response.send("Friend removed");
+};
+
+export default { register, getAll, login, me, disfriend };

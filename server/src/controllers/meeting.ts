@@ -12,6 +12,8 @@ import { createError } from "../utils/helpers/create-error";
 import ChatRepository from "../repositories/chat";
 import WhiteboardRepository from "../repositories/whiteboard";
 import { getMeetingDateTag } from "../utils/helpers/date";
+import UserRepository from "../repositories/user";
+import { sendNewMeetingEmail } from "../utils/mailer";
 
 const getAll: RequestHandler<
   {},
@@ -66,7 +68,7 @@ const create: RequestHandler<
   MeResponseLocals
 > = async (request, response, next) => {
   const { startsAt, invited, description, subjects } = request.body;
-  const { _id: organiser } = response.locals;
+  const { _id: organiser, nickname } = response.locals;
 
   const chat = await ChatRepository.create({
     users: [organiser.toString(), ...invited],
@@ -95,6 +97,14 @@ const create: RequestHandler<
       createError(ErrorStatus.SERVER, "Error occurred while creating meeting")
     );
     return;
+  }
+
+  const invitedUsers = await UserRepository.findManyById(invited);
+  if (invitedUsers) {
+    sendNewMeetingEmail(
+      nickname,
+      invitedUsers.map(({ email }) => email)
+    );
   }
 
   response.send(meeting);

@@ -143,4 +143,25 @@ const getMine: RequestHandler<
   response.send(invites);
 };
 
-export default { send, getAll, setAccepted, getInviteStatus, getMine };
+const getMineReceived: RequestHandler<
+  {},
+  MultipleInvitesResponseBody,
+  {},
+  {},
+  MeResponseLocals
+> = async (_request, response, _next) => {
+  const invites = await InviteRepository.findUsersReceived(
+    response.locals._id.toString()
+  );
+
+  response.send(invites);
+};
+
+export default {
+  send,
+  getAll,
+  setAccepted,
+  getInviteStatus,
+  getMine,
+  getMineReceived,
+};

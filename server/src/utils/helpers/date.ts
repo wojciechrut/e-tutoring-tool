@@ -24,6 +24,5 @@ export const getMeetingDateTag = (date: Date | string) => {
 export const isMoreThanDayAgo = (date: Date | string) => {
   const parsedDate = typeof date === "string" ? new Date(date) : date;
   const dayAgo = Date.now() - 1000 * 60 * 60 * 24;
-  return true;
-  // return parsedDate.getTime() - dayAgo > 1000 * 60 * 60 * 24;
+  return parsedDate.getTime() - dayAgo > 1000 * 60 * 60 * 24;
 };

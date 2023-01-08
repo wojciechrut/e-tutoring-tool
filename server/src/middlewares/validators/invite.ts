@@ -50,6 +50,7 @@ const send: RequestHandler<
   const isInviteSentAlready = await InviteRepository.exists({
     sender: id(sender._id),
     receiver: receiverId,
+    active: true,
   });
 
   if (isInviteSentAlready) {

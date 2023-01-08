@@ -1,15 +1,23 @@
 .wrapper {
   max-width: 800px;
+  width: 90%;
 }
 
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas: ". pic ." "info info info";
+  background-color: var(--col-grey-100);
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .avatar {
   grid-area: pic;
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: auto;
 }
 
 .user-info {

@@ -1,0 +1,82 @@
+.wrapper {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.container {
+  @include card-layout();
+  width: 100%;
+  text-align: center;
+  background-color: var(--col-grey-100);
+}
+
+.columns {
+  display: flex;
+  width: 100%;
+  max-width: 700px;
+  gap: 10px;
+  flex-direction: column;
+
+  @include sm {
+    flex-direction: row;
+  }
+}
+
+.column {
+  width: 100%;
+}
+
+.heading {
+  font-size: var(--font-size-600);
+}
+
+.list {
+  max-height: 300px;
+
+  overflow: scroll;
+  padding: 10px;
+  @include sm {
+    max-height: 700px;
+  }
+
+  &__item {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: var(--col-main-100);
+    padding: 4px 8px;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+}
+
+.invite-buttons {
+  @include flex-center;
+  gap: 5px;
+}
+
+.button {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  min-width: 20px;
+  @include flex-center;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  background-color: var(--col-main-700);
+  color: var(--col-white);
+  border: none;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &--accept {
+    background-color: var(--col-green-600);
+  }
+
+  &--decline {
+    background-color: var(--col-accent-600);
+  }
+}

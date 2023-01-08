@@ -2,6 +2,7 @@ import { FC } from "react";
 import styles from "./profile-info.module.scss";
 import { useAuth } from "contexts/auth";
 import { UserAvatar } from "components/common/user-avatar";
+import { ProfileFriends } from "components/profile-friends";
 
 export const ProfileInfo: FC = () => {
   const { user, logout } = useAuth();
@@ -21,6 +22,7 @@ export const ProfileInfo: FC = () => {
           <p>{email}</p>
         </div>
       </div>
+      <ProfileFriends />
     </div>
   );
 };
