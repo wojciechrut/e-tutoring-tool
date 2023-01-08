@@ -24,6 +24,7 @@
 
 .column {
   width: 100%;
+  margin-top: 15px;
 }
 
 .heading {
@@ -32,15 +33,18 @@
 
 .list {
   max-height: 300px;
-
   overflow: scroll;
   padding: 10px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   @include sm {
     max-height: 700px;
   }
 
   &__item {
-    margin: auto;
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -48,6 +52,7 @@
     padding: 4px 8px;
     justify-content: space-between;
     margin-bottom: 4px;
+    height: 38px;
   }
 }
 
@@ -79,4 +84,24 @@
   &--decline {
     background-color: var(--col-accent-600);
   }
+}
+
+.invite-form {
+  @include flex-center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.form-button {
+  background-color: var(--col-main-500);
+  color: var(--col-white);
+  font-weight: 500;
+  border-radius: 5px;
+  border: none;
+  padding: 4px 8px;
+  font-size: var(--font-size-300);
+}
+
+.invite-message {
+  font-size: var(--font-size-200);
 }

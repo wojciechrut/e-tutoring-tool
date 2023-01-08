@@ -16,7 +16,7 @@ const send: RequestHandler<
   {},
   {},
   InviteSendQuery,
-  MeResponseLocals
+  MeResponseLocals & { parsedId?: string}
 > = async (request, response, next) => {
   const { userId: receiverId } = request.query;
   const sender = response.locals;
@@ -31,25 +31,29 @@ const send: RequestHandler<
     return;
   }
 
-  const receiver = (
-    await UserRepository.findOne({ _id: _id(receiverId) })
-  )?.toObject();
+  const userByNickname = await UserRepository.findOne({ nickname: receiverId });
+    if(userByNickname) {
+      response.locals.parsedId = userByNickname._id.toString();
+    }
+  console.log(userByNickname)
 
-  if (!receiver) {
-    next(
-      createError(ErrorStatus.BAD_REQUEST, "Couldn't find user with this id.")
-    );
-    return;
+  const userById = !userByNickname && receiverId.length === 12 ? (
+    await UserRepository.findOne({ _id: receiverId })
+  )?.toObject() : undefined;
+
+  if (!userById && !userByNickname) {
+      next(createError(ErrorStatus.BAD_REQUEST, "Couldn't find this user"));
+      return;
   }
 
-  if (receiver._id === sender._id) {
+  if (userById?._id === sender._id) {
     next(createError(ErrorStatus.BAD_REQUEST, "Can't invite yourself."));
     return;
   }
 
   const isInviteSentAlready = await InviteRepository.exists({
     sender: id(sender._id),
-    receiver: receiverId,
+    receiver: userByNickname ? userByNickname._id.toString() : receiverId,
     active: true,
   });
 

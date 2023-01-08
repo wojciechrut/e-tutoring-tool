@@ -19,13 +19,13 @@ const send: RequestHandler<
   {},
   {},
   InviteSendQuery,
-  MeResponseLocals
+  MeResponseLocals & { parsedId?: string }
 > = async (request, response, next) => {
   const { userId: receiverId } = request.query;
   const { _id: senderId } = response.locals;
 
   const invite = await InviteRepository.create({
-    receiver: receiverId,
+    receiver: response.locals.parsedId || receiverId,
     sender: id(senderId),
   });
 

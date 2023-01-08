@@ -6,11 +6,42 @@ import InviteService from "services/invite";
 import clsx from "clsx";
 import { StyledLink } from "components/common/styled-link";
 import UserService from "services/user";
+import { useForm } from "react-hook-form";
+import { FormInputs, renderFormInputs } from "helpers/form-inputs";
+import { parseError } from "helpers/parse-error";
+
+type FieldValues = {
+  nickname: string;
+};
 
 export const ProfileFriends: FC = () => {
   const { user } = useAuth();
   const [friends, setFriends] = useState(user?.friends);
   const [invites, setInvites] = useState<MultipleInvitesResponseBody>();
+  const [inviteMessage, setInviteMessage] = useState("");
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FieldValues>();
+
+  const inputs: FormInputs<FieldValues> = [
+    {
+      type: "text",
+      noMargin: true,
+      htmlType: "text",
+      name: "nickname",
+      label: "",
+      placeholder: "Nickname",
+      registerOptions: {
+        required: {
+          value: true,
+          message: "Please specify user nickname.",
+        },
+      },
+    },
+  ];
 
   useEffect(() => {
     InviteService.getReceived().then((invites) => setInvites(invites));
@@ -28,6 +59,15 @@ export const ProfileFriends: FC = () => {
     );
   };
 
+  const onSubmit = (data: FieldValues) => {
+    InviteService.send(data.nickname)
+      .then((message) => setInviteMessage(message))
+      .catch((err) => {
+        setInviteMessage(parseError(err)?.messages[0] || "");
+      });
+    reset({ nickname: "" });
+  };
+
   if (!user) {
     return <></>;
   }
@@ -35,6 +75,15 @@ export const ProfileFriends: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.inviteForm}>
+          {renderFormInputs(inputs, register, errors)}
+          <button type={"submit"} className={styles.formButton}>
+            Invite friend
+          </button>
+        </form>
+        {inviteMessage && (
+          <div className={styles.inviteMessage}>{inviteMessage}</div>
+        )}
         <div className={styles.columns}>
           <div className={styles.column}>
             <h3 className={styles.heading}>My friends</h3>
@@ -68,10 +117,10 @@ export const ProfileFriends: FC = () => {
           </div>
           <div className={styles.column}>
             <h3 className={styles.heading}>Invites</h3>
+            {!(invites && invites?.length > 0) && (
+              <div className={styles.info}>No active invites</div>
+            )}
             <ul className={clsx(styles.invites, styles.list)}>
-              {!(invites && invites?.length > 0) && (
-                <div className={styles.info}>No active invites</div>
-              )}
               {invites?.map(({ sender, _id }) => (
                 <li
                   key={_id.toString()}

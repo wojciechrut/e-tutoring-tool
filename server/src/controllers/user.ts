@@ -77,7 +77,7 @@ const disfriend: RequestHandler<
   { id: string },
   {},
   MeResponseLocals
-> = async (request, response, next) => {
+> = async (request, response) => {
   const { id } = request.body;
   const { _id: userId } = response.locals;
   console.log(id, userId);
