@@ -6,6 +6,7 @@ import { model, Schema, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import { leafletCategories } from "../utils/constants/leaflet-categories";
 import { commonSchemaOptions } from "./config/common-config";
+import { File } from "./file";
 
 export interface Note {
   _id: ModelId;

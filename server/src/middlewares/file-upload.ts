@@ -10,6 +10,7 @@ const multerCodeMessages: Record<string, string> = {
 
 const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {
   const { filename, mimetype, originalname } = file;
+  console.log(originalname);
   const fileType: File["type"] = mimetype.startsWith("image")
     ? "image"
     : "document";
@@ -17,7 +18,7 @@ const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {
   return {
     path: `/static/${folder}/${filename}`,
     type: fileType,
-    originalName: originalname,
+    originalName: Buffer.from(originalname, "latin1").toString("utf8"),
   };
 };
 

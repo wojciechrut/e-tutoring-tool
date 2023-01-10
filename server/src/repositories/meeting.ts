@@ -10,6 +10,8 @@ const populator: Parameters<typeof Model.populate>[0] = [
   { path: "chat", select: ChatSelector.STANDARD },
 ];
 
+const chatPopulator = { path: "chat", select: "_id" };
+
 type Query = Partial<
   Omit<Meeting, "invited" | "organiser" | "whiteboard" | "chat"> & {
     organiser: ModelId;
@@ -40,9 +42,26 @@ const findAllUsers = async (userId: ModelId) => {
     .sort({ startsAt: -1 });
 };
 
+const getChatIdsBySubject = (userId: string, subject?: string) => {
+  const subjectArray = [subject];
+  return Model.find({
+    subjects: { $in: subject ? subjectArray : /.*/ },
+    $or: [{ organiser: userId }, { invited: userId }],
+  })
+    .populate(chatPopulator)
+    .select("chat");
+};
+
 const finish = async (meetingId: string) => {
   return Model.updateOne({ _id: meetingId }, { finished: true });
 };
 
-const MeetingRepository = { findOne, findAll, create, findAllUsers, finish };
+const MeetingRepository = {
+  findOne,
+  findAll,
+  create,
+  findAllUsers,
+  finish,
+  getChatIdsBySubject,
+};
 export default MeetingRepository;

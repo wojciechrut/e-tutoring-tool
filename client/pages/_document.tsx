@@ -5,6 +5,7 @@ export default function Document() {
     <Html>
       <Head>
         <title>eTutoring</title>
+        <meta charSet={"utf-8"} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

@@ -1,0 +1,37 @@
+.wrapper {
+  width: 96%;
+  max-width: 600px;
+}
+
+.container {
+  width: 100%;
+  margin-bottom: 15px;
+  @include card-layout();
+  background-color: var(--col-white);
+  box-shadow: var(--bs-card);
+}
+
+.files-container {
+  width: 100%;
+  margin-bottom: 15px;
+  @include card-layout();
+  background-color: var(--col-grey-100);
+  box-shadow: var(--bs-card);
+}
+
+.heading {
+  margin-bottom: 10px;
+}
+
+.form {
+  width: 100%;
+  max-width: 400px;
+  @include flex-center;
+  gap: 10px;
+  flex-direction: column;
+
+  &--blocked {
+    pointer-events: none;
+    cursor: wait;
+  }
+}

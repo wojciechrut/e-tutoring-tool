@@ -1,6 +1,7 @@
 import { MeResponseLocals } from "./user";
 import { File } from "../../models/file";
 import { ModelId } from "../../models/types/_id";
+import { User } from "../../models/user";
 
 export type FileData = File;
 
@@ -18,9 +19,17 @@ export type UploadedIdsResponseLocals = {
 };
 
 export type MultipleFilesResponseBody = Array<File>;
+export type DetailedMultipleFiles = Array<
+  Omit<File, "uploader"> & { uploader: User }
+>;
 
 export type FileDownloadRequestQuery = {
   file: ModelId;
+};
+
+export type FileSearchRequestQuery = {
+  isFromMeeting: "true" | "false";
+  subject?: string;
 };
 
 export type FileDownloadResponseLocals = {

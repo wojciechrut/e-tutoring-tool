@@ -1,0 +1,158 @@
+.wrapper {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+}
+
+.file-list {
+  overflow: scroll;
+  max-height: 600px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--col-grey-100);
+  margin-top: 10px;
+  background-color: var(--col-white);
+  box-shadow: var(--bs-card-inset);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include sm {
+    max-height: 800px;
+  }
+
+  &__item {
+    margin-bottom: 5px;
+    border: 2px solid var(--col-main-300);
+    border-radius: 3px;
+    display: flex;
+  }
+}
+
+.icon-wrapper {
+  min-height: 100%;
+  width: 34px;
+  min-width: 34px;
+  margin-right: 5px;
+  color: var(--col-white);
+  background-color: var(--col-main-300);
+  display: none;
+  @include sm {
+    @include flex-center;
+  }
+}
+
+.file-info {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__name {
+    @include max-lines-ellipsis(1);
+    font-weight: 500;
+    max-width: 300px;
+    color: var(--col-main-700);
+    text-decoration: underline;
+  }
+}
+
+.user {
+  @include flex-center;
+
+  &__nickname {
+    font-weight: 500;
+    margin: 0 5px;
+  }
+}
+
+.user-info {
+  margin-left: auto;
+  text-align: right;
+}
+
+.avatar {
+  border: 1px solid var(--col-grey-200);
+  margin: 0 2px;
+  min-width: 25px;
+}
+
+.download-icon {
+  margin-right: 5px;
+}
+
+.count {
+  margin-bottom: 5px;
+  display: block;
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+
+  &__heading {
+    font-size: var(--font-size-700);
+  }
+}
+
+.filter-column {
+  &:first-of-type {
+    width: 70%;
+  }
+
+  &:nth-of-type(2n) {
+    margin-left: auto;
+    margin-right: 5px;
+  }
+}
+
+.sort-buttons-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 5px;
+}
+
+.icon-button {
+  min-height: 32.5px;
+  border: 1px solid var(--col-main-600);
+  padding: 2px 5px;
+  font-weight: 500;
+  background-color: var(--col-white);
+  pointer-events: all;
+  border-radius: 2px;
+
+  &--active {
+    pointer-events: none;
+    background-color: var(--col-main-600);
+    color: var(--col-white);
+  }
+}
+
+.form-container {
+  display: flex;
+  gap: 5px;
+}
+
+.form {
+  flex: 1;
+  max-width: 275px;
+}
+
+.reset-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+.reset-button {
+  min-height: 30px;
+  height: 30px;
+  width: 30px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  background-color: var(--col-white);
+  border: 1px solid var(--col-grey-200);
+}

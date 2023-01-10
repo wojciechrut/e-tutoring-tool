@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   display: flex;
+  min-height: 34px;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--col-main-300);
@@ -31,8 +32,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 32px;
-  height: 33px;
+  width: 34px;
+  min-height: 34px;
+  height: 100%;
   outline: 1px solid var(--col-main-300);
   background-color: var(--col-main-300);
   color: var(--col-white);

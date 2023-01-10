@@ -80,7 +80,6 @@ const disfriend: RequestHandler<
 > = async (request, response) => {
   const { id } = request.body;
   const { _id: userId } = response.locals;
-  console.log(id, userId);
   await UserRepository.disfriend(userId.toString(), id);
 
   response.send("Friend removed");

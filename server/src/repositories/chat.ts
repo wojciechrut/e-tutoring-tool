@@ -109,6 +109,13 @@ const findAll = async (query: ManyChatsQuery) => {
     .populate(allPopulator);
 };
 
+const getIdsOfPrivateChats = async (user: string) => {
+  return Model.find({
+    users: { $elemMatch: { $eq: user } },
+    isMeetingChat: false,
+  }).select("_id");
+};
+
 const userHasAccess = async (user: string, chat: string) => {
   return Model.exists({
     users: user,
@@ -154,6 +161,7 @@ const ChatRepository = {
   userHasAccess,
   addMessage,
   shouldNotifyNewMessage,
+  getIdsOfPrivateChats,
 };
 
 export default ChatRepository;

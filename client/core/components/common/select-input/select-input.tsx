@@ -16,7 +16,7 @@ import { ComponentType } from "react";
 import styles from "./select-input.module.scss";
 
 export type Option = {
-  value: string;
+  value: string | boolean;
   label: string;
 };
 

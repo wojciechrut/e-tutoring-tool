@@ -9,6 +9,7 @@ export interface File {
   path: string;
   originalName: string;
   chat?: ObjectId;
+  createdAt: Date;
 }
 
 const fileSchema = new Schema<File>(
