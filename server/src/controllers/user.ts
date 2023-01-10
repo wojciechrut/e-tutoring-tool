@@ -1,4 +1,5 @@
 import {
+  ErrorStatus,
   MeResponseLocals,
   MultipleUsersResponseBody,
   UserCredentials,
@@ -85,4 +86,26 @@ const disfriend: RequestHandler<
   response.send("Friend removed");
 };
 
-export default { register, getAll, login, me, disfriend };
+const recommend: RequestHandler<
+  {},
+  string,
+  { id: string; recommend: boolean },
+  {},
+  MeResponseLocals
+> = async (request, response, next) => {
+  const { id, recommend } = request.body;
+  const { _id: userId } = response.locals;
+  console.log(id, recommend, userId);
+
+  if (userId.toString() === id) {
+    next(
+      createError(ErrorStatus.BAD_REQUEST, "You cannot recommend yourself.")
+    );
+    return;
+  }
+
+  await UserRepository.recommend(userId.toString(), id, recommend);
+  response.send();
+};
+
+export default { register, getAll, login, me, disfriend, recommend };

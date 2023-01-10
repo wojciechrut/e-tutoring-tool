@@ -23,6 +23,7 @@ userRoutes
   );
 
 userRoutes.route("/friends").patch(auth, UserController.disfriend);
+userRoutes.route("/recommend").patch(auth, UserController.recommend);
 
 userRoutes
   .route("/login")

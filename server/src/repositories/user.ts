@@ -57,6 +57,27 @@ const disfriend = async (userId1: string, userId2: string) => {
   ]);
 };
 
+const recommend = async (
+  user: string,
+  userToRecommend: string,
+  recommend: boolean
+) => {
+  return Model.updateOne(
+    { _id: userToRecommend },
+    recommend
+      ? {
+          $addToSet: {
+            recommendedBy: user,
+          },
+        }
+      : {
+          $pull: {
+            recommendedBy: user,
+          },
+        }
+  );
+};
+
 const UserRepository = {
   findAll,
   findOne,
@@ -66,5 +87,6 @@ const UserRepository = {
   makeFriends,
   findManyById,
   disfriend,
+  recommend,
 };
 export default UserRepository;

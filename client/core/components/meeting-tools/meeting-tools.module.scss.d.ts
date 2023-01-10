@@ -1,4 +1,5 @@
 export const button: string;
+export const buttonCrossed: string;
 export const buttonText: string;
 export const chat: string;
 export const chatContainer: string;

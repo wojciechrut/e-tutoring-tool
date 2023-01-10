@@ -1,4 +1,6 @@
 export const container: string;
+export const containerRecommended: string;
+export const containerRecommendedOften: string;
 export const leafletButtons: string;
 export const leafletDate: string;
 export const leafletLevels: string;

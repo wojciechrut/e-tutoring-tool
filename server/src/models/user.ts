@@ -9,6 +9,7 @@ export interface User {
   password: string;
   avatar: string;
   friends: Array<User>;
+  recommendedBy: Array<string>;
 }
 
 const userSchema = new Schema<User>(
@@ -21,6 +22,7 @@ const userSchema = new Schema<User>(
       default: "/static/avatars/default.jpg",
     },
     friends: [{ type: Types.ObjectId, default: [], ref: "User" }],
+    recommendedBy: [{ type: Types.ObjectId, default: [], ref: "User" }],
   },
   commonSchemaOptions
 );

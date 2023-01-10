@@ -19,6 +19,7 @@
   width: 56px;
   height: 56px;
   color: var(--col-white);
+  position: relative;
 
   &:disabled {
     cursor: not-allowed;
@@ -29,6 +30,23 @@
     font-size: var(--font-size-400);
     font-weight: 600;
     text-transform: uppercase;
+  }
+
+  &--crossed {
+    &::before {
+      content: "";
+      position: absolute;
+      display: inline-block;
+      width: 5px;
+      top: 1px;
+      left: 50%;
+      bottom: 0;
+      border-top: 1px solid var(--col-main-600);
+      border-bottom: 1px solid var(--col-main-600);
+      transform: rotate(22.5deg);
+      background-color: var(--col-main-300);
+      z-index: 1000;
+    }
   }
 }
 

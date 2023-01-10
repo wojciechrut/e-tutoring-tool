@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { staticSource } from "helpers/static-path";
 import { FormInputs, renderFormInputs } from "helpers/form-inputs";
 import { useForm } from "react-hook-form";
+import { searchMatch } from "../../helpers/string";
 
 type FileListProps = {
   files: DetailedMultipleFiles;
@@ -35,12 +36,12 @@ export const FileList: FC<FileListProps> = ({ files }) => {
     let filtered = files;
     if (nickname && nickname.length > 0) {
       filtered = filtered.filter((file) =>
-        file.uploader.nickname.includes(nickname)
+        searchMatch(nickname, file.uploader.nickname)
       );
     }
     if (filename && filename.length > 0) {
       filtered = filtered.filter((file) =>
-        file.originalName.includes(filename)
+        searchMatch(filename, file.originalName)
       );
     }
     setFilteredFiles(

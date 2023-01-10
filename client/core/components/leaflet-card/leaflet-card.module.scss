@@ -15,6 +15,14 @@
     "for for for for"
     "subjects subjects subjects subjects"
     "levels levels levels buttons";
+
+  &--recommended {
+    border: 1px solid var(--col-green-400);
+
+    &--often {
+      border-width: 2px;
+    }
+  }
 }
 
 .user-avatar {

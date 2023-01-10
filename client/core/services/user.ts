@@ -14,6 +14,7 @@ enum Paths {
   REGISTER = "user/",
   ME = "user/me",
   FRIENDS = "user/friends",
+  RECOMMEND = "user/recommend",
 }
 
 const setAuthFromStorage = () => {
@@ -75,6 +76,15 @@ const disfriend = async (userId: string) => {
   return data;
 };
 
+const recommend = async (userId: string, recommend: boolean) => {
+  setAuthFromStorage();
+  const { data }: AxiosResponse<string> = await api.patch(Paths.RECOMMEND, {
+    id: userId,
+    recommend,
+  });
+  return data;
+};
+
 const UserService = {
   me,
   login,
@@ -82,5 +92,6 @@ const UserService = {
   logout,
   register,
   disfriend,
+  recommend,
 };
 export default UserService;

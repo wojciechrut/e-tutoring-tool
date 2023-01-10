@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useLayoutEffect, useState } from "react";
 import styles from "./meeting-tools.module.scss";
 import { ChatResponseBody, SingleMeetingResponseBody } from "@types";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import ChatService from "services/chat";
 import Spinner from "assets/spinner.svg";
 import { ChatBox } from "components/chat-box";
 import { isMeetingFinished } from "helpers/meetings";
+import UserService from "services/user";
 
 type MeetingToolsProps = {
   meeting: SingleMeetingResponseBody;
@@ -22,6 +23,10 @@ export const MeetingTools: FC<MeetingToolsProps> = ({
   const router = useRouter();
   const [isChatOpen, setChatOpen] = useState(false);
   const [chat, setChat] = useState<ChatResponseBody | null>();
+  const [recommended, setRecommended] = useState(
+    user && meeting.organiser.recommendedBy?.includes(user._id.toString())
+  );
+  const isOrganiser = user?._id === meeting.organiser._id;
 
   useEffect(() => {
     if (user) {
@@ -34,8 +39,14 @@ export const MeetingTools: FC<MeetingToolsProps> = ({
     }
   }, [user, meeting]);
 
-  const isOrganiser = user?._id === meeting.organiser._id;
-  const finished = isMeetingFinished(meeting);
+  useLayoutEffect(() => {
+    if (!isOrganiser) {
+      UserService.recommend(
+        meeting.organiser._id.toString(),
+        recommended || false
+      );
+    }
+  }, [recommended]);
 
   const finishHandler = () => {
     if (isOrganiser) {
@@ -60,13 +71,22 @@ export const MeetingTools: FC<MeetingToolsProps> = ({
       >
         <i className="fa-regular fa-comments"></i>
       </button>
-      <button
-        className={clsx(styles.button, styles.buttonText)}
-        onClick={finishHandler}
-        disabled={!isOrganiser || finished}
-      >
-        End
-      </button>
+      {isOrganiser && (
+        <button
+          className={clsx(styles.button, styles.buttonText)}
+          onClick={finishHandler}
+        >
+          End
+        </button>
+      )}
+      {!isOrganiser && (
+        <button
+          className={clsx(styles.button, recommended && styles.buttonCrossed)}
+          onClick={() => setRecommended((prev) => !prev)}
+        >
+          <i className="fa-solid fa-star"></i>
+        </button>
+      )}
       <div
         className={clsx(
           styles.chatContainer,
