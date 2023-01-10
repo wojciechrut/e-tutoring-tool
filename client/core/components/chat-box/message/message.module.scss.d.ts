@@ -5,3 +5,4 @@ export const containerMine: string;
 export const fileDownloadMine: string;
 export const files: string;
 export const message: string;
+export const nickname: string;

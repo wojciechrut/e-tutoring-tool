@@ -56,6 +56,10 @@
   }
 }
 
+.info {
+  margin-top: 10px;
+}
+
 .invite-buttons {
   @include flex-center;
   gap: 5px;

@@ -18,42 +18,38 @@ const send: RequestHandler<
   InviteSendQuery,
   MeResponseLocals & { parsedId?: string}
 > = async (request, response, next) => {
-  const { userId: receiverId } = request.query;
+  let{ userId: receiverId } = request.query;
   const sender = response.locals;
+
+  const userByNickname = await UserRepository.findOne({ nickname: receiverId });
+  if(userByNickname) {
+    response.locals.parsedId = userByNickname._id.toString();
+    receiverId = userByNickname._id.toString();
+  }
 
   if (!receiverId) {
     next(createError(ErrorStatus.BAD_REQUEST, "Missing user id parameter."));
     return;
   }
+  console.log(receiverId);
 
-  if (id(sender._id) === receiverId) {
-    next(createError(ErrorStatus.BAD_REQUEST, "You are already friends."));
-    return;
-  }
-
-  const userByNickname = await UserRepository.findOne({ nickname: receiverId });
-    if(userByNickname) {
-      response.locals.parsedId = userByNickname._id.toString();
-    }
-  console.log(userByNickname)
-
-  const userById = !userByNickname && receiverId.length === 12 ? (
+  const userFound =  (
     await UserRepository.findOne({ _id: receiverId })
-  )?.toObject() : undefined;
+  )?.toObject();
 
-  if (!userById && !userByNickname) {
+  if (!userFound) {
       next(createError(ErrorStatus.BAD_REQUEST, "Couldn't find this user"));
       return;
   }
 
-  if (userById?._id === sender._id) {
+  if (receiverId.toString() === sender._id.toString()) {
     next(createError(ErrorStatus.BAD_REQUEST, "Can't invite yourself."));
     return;
   }
 
   const isInviteSentAlready = await InviteRepository.exists({
-    sender: id(sender._id),
-    receiver: userByNickname ? userByNickname._id.toString() : receiverId,
+    sender: sender._id.toString(),
+    receiver:  receiverId,
     active: true,
   });
 
@@ -61,6 +57,26 @@ const send: RequestHandler<
     next(createError(ErrorStatus.BAD_REQUEST, "You already invited this user"));
     return;
   }
+
+  const isInviteReceivedAlready = await InviteRepository.exists({
+    sender: receiverId,
+    receiver:  sender._id.toString(),
+    active: true,
+  });
+
+  if (isInviteReceivedAlready) {
+    next(createError(ErrorStatus.BAD_REQUEST, "This user already invited you!"));
+    return;
+  }
+
+
+  const areFriends = sender.friends.map(({_id}) => (_id.toString())).includes(receiverId.toString());
+  if(areFriends) {
+    next(createError(ErrorStatus.BAD_REQUEST, "You are already friends."));
+    return;
+  }
+
+
 
   next();
 };

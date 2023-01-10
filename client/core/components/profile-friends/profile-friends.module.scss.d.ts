@@ -6,6 +6,7 @@ export const columns: string;
 export const container: string;
 export const formButton: string;
 export const heading: string;
+export const info: string;
 export const inviteButtons: string;
 export const inviteForm: string;
 export const inviteMessage: string;
