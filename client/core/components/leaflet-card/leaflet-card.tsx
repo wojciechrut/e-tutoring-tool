@@ -6,12 +6,14 @@ import { stringifyDate } from "helpers/date";
 import { printArray } from "helpers/string";
 import { StyledLink } from "components/common/styled-link";
 import clsx from "clsx";
+import { useAuth } from "contexts/auth";
 
 type LeafletCardProps = {
   leaflet: LeafletSearchResponseBody["leaflets"][number];
 };
 
 export const LeafletCard: FC<LeafletCardProps> = ({ leaflet }) => {
+  const { user: me } = useAuth();
   const { user, createdAt, title, lookingFor, levels, subjects, _id } = leaflet;
   const { nickname, avatar, _id: userId, recommendedBy } = user;
   const recommends = recommendedBy.length;
@@ -37,9 +39,11 @@ export const LeafletCard: FC<LeafletCardProps> = ({ leaflet }) => {
         <StyledLink path={`/leaflets/${_id}`} styleType={"icon"}>
           <i className="fa-solid fa-circle-info" />
         </StyledLink>
-        <StyledLink path={`/chats?user=${userId}`} styleType={"icon"}>
-          <i className="fa-solid fa-message" />
-        </StyledLink>
+        {!(me?._id.toString() === userId) && (
+          <StyledLink path={`/chats?user=${userId}`} styleType={"icon"}>
+            <i className="fa-solid fa-message" />
+          </StyledLink>
+        )}
       </div>
     </div>
   );

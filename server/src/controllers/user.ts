@@ -95,7 +95,6 @@ const recommend: RequestHandler<
 > = async (request, response, next) => {
   const { id, recommend } = request.body;
   const { _id: userId } = response.locals;
-  console.log(id, recommend, userId);
 
   if (userId.toString() === id) {
     next(

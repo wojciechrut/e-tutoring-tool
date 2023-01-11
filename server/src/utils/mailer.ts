@@ -37,7 +37,6 @@ export const sendNewMeetingEmail = (
 <p><a href="http://localhost:3000/meetings">Click here</a> to see your meetings.</p>
 `,
   };
-  console.log(invitedEmails);
   if (invitedEmails) {
     transport.sendMail(mailData);
   }

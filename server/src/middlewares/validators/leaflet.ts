@@ -27,8 +27,6 @@ const leafletAccess: RequestHandler<
   }
 
   if (!(leaflet.user._id.toString() === userId.toString())) {
-    console.log(leaflet.user._id);
-    console.log(userId);
     next(createError(ErrorStatus.FORBIDDEN, "This leaflet is not yours."));
     return;
   }

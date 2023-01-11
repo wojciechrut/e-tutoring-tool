@@ -35,9 +35,9 @@ export const LeafletEdit: FC<LeafletEditProps> = ({ leaflet }) => {
       defaultValue: leaflet.title,
       registerOptions: {
         pattern: {
-          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{3,30}$/,
+          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. '"{}]{3,40}$/,
           message:
-            "Title can have 3-30 alphanumerical or some special characters.",
+            "Title can have 3-40 alphanumerical or some special characters.",
         },
       },
       noMargin: true,

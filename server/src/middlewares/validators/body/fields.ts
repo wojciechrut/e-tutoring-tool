@@ -41,16 +41,16 @@ export const bodyFieldRegex: Partial<
     message: "Invalid email address.",
   },
   title: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{3,30}$/,
-    message: "Title can have 3-30 alphanumerical or some special characters",
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. '"{},]{3,40}$/,
+    message: "Title can have 3-40 alphanumerical or some special characters",
   },
   description: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{20,500}$/,
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r'"{},]{20,500}$/,
     message:
       "Description can have 20-500 alphanumerical or some special characters",
   },
   text: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{1,200}$/,
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r'"{}],{1,200}$/,
     message: "Note can have 1-200 alphanumerical or some special characters",
   },
 };

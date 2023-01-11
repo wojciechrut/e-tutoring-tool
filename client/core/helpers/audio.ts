@@ -23,7 +23,5 @@ export const applySoundProcessing = (htmlAudio: HTMLAudioElement) => {
     compressor.connect(filter);
     source.connect(compressor);
     compressor.connect(audioCtx.destination);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };

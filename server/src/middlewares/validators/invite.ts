@@ -31,7 +31,6 @@ const send: RequestHandler<
     next(createError(ErrorStatus.BAD_REQUEST, "Missing user id parameter."));
     return;
   }
-  console.log(receiverId);
 
   const userFound =  (
     await UserRepository.findOne({ _id: receiverId })

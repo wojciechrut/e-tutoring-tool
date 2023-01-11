@@ -37,7 +37,6 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
       newConnected[callerIndex] = value;
       return newConnected;
     });
-    console.log("connected: ", value);
   };
 
   useEffect(() => {
@@ -95,9 +94,7 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
           setupAudioStream(callerId, callerStream);
         });
 
-        call.on("close", () => {
-          console.log("call on close");
-        });
+        call.on("close", () => {});
       }, 1000);
     };
 
@@ -107,7 +104,6 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
           myPeer.on("call", (call) => {
             const callerId: string = call.metadata;
             call.on("stream", (stream) => {
-              console.log("got called with stream - " + stream.id);
               setupAudioStream(callerId, stream);
             });
             call.answer(myStream);
@@ -123,7 +119,7 @@ export const useVoicecall = (meetingId: string, userIds: Array<string>) => {
           });
         });
       })
-      .catch(console.log);
+      .catch();
 
     myPeer.on("disconnected", () => {
       socket.off("voicecallNewUser");

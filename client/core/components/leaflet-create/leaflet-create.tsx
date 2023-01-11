@@ -61,9 +61,9 @@ export const LeafletCreate: FC = () => {
       placeholder: "e.g. Looking for math tutor for weekends",
       registerOptions: {
         pattern: {
-          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. ]{3,30}$/,
+          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. '"{},]{3,40}$/,
           message:
-            "Title can have 3-30 alphanumerical or some special characters.",
+            "Title can have 3-40 alphanumerical or some special characters.",
         },
       },
       noMargin: true,
@@ -77,7 +77,8 @@ export const LeafletCreate: FC = () => {
       label: "Description (20-500) characters",
       registerOptions: {
         pattern: {
-          value: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r]{20,500}$/,
+          value:
+            /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r'"{},]{20,500}$/,
           message:
             "Description can have 20-500 alphanumerical or some special characters",
         },

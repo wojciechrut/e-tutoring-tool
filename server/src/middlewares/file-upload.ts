@@ -10,7 +10,6 @@ const multerCodeMessages: Record<string, string> = {
 
 const extractFileMetadata = (type: UploadType, file: Express.Multer.File) => {
   const { filename, mimetype, originalname } = file;
-  console.log(originalname);
   const fileType: File["type"] = mimetype.startsWith("image")
     ? "image"
     : "document";

@@ -134,7 +134,6 @@ const get: RequestHandler<
   );
 
   if (!participantsIds.includes(userId.toString())) {
-    console.log(participantsIds, userId);
     next(
       createError(
         ErrorStatus.FORBIDDEN,
