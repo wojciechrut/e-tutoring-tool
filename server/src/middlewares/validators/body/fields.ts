@@ -50,8 +50,8 @@ export const bodyFieldRegex: Partial<
       "Description can have 20-500 alphanumerical or some special characters",
   },
   text: {
-    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r'"{}],{1,200}$/,
-    message: "Note can have 1-200 alphanumerical or some special characters",
+    pattern: /^[A-Za-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\-\[\]\/()+!?. \n\r'"{},]{1,200}$/,
+    message: "Note can have 1-200 alphanumerical or some special characters.",
   },
 };
 
