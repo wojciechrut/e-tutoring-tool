@@ -3,7 +3,6 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import { AuthRedirect } from "components/auth-redirect";
 import { useRouter } from "next/router";
 import { Leaflet } from "components/leaflet";
 
@@ -34,11 +33,7 @@ const LeafletPage: NextPage = ({
     return <></>;
   }
 
-  return (
-    <AuthRedirect>
-      <Leaflet id={leafletId} />
-    </AuthRedirect>
-  );
+  return <Leaflet id={leafletId} />;
 };
 
 export default LeafletPage;

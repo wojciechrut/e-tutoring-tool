@@ -22,7 +22,11 @@ type Query = Partial<
 >;
 
 const findOne = async (_id: ModelId) => {
-  return Model.findOne({ _id }).populate(populator).lean();
+  try {
+    return Model.findOne({ _id }).populate(populator).lean();
+  } catch {
+    return null;
+  }
 };
 
 const findAll = async (query: Query) => {

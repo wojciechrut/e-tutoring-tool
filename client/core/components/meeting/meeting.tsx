@@ -2,11 +2,11 @@ import { SingleMeetingResponseBody } from "@types";
 import { FC, useEffect, useState } from "react";
 import { WhiteboardBox } from "components/whiteboard-box";
 import MeetingService from "services/meeting";
-import { parseError } from "helpers/parse-error";
 import styles from "./meeting.module.scss";
 import { MeetingControls } from "components/meeting-controls";
 import { isMeetingFinished } from "helpers/meetings";
 import { useMeetingStatusRefresh } from "hooks/useMeetingStatus";
+import { useRouter } from "next/router";
 
 type MeetingProps = {
   meetingId: string;
@@ -14,25 +14,32 @@ type MeetingProps = {
 
 export const Meeting: FC<MeetingProps> = ({ meetingId }) => {
   const [meeting, setMeeting] = useState<SingleMeetingResponseBody | null>();
-  const [fetchError, setFetchError] = useState<string | null>();
   const [finished, setFinished] = useState<boolean>(false);
   const { finishMeeting } = useMeetingStatusRefresh(meetingId);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
+    setLoading(true);
     MeetingService.access(meetingId)
       .then((meeting) => {
         setMeeting(meeting);
         setFinished(isMeetingFinished(meeting));
+        setLoading(false);
       })
-      .catch((error) => setFetchError(parseError(error)?.messages[0]));
+      .catch((error) => {
+        setLoading(false);
+        router.push("/meetings");
+      });
   }, [meetingId]);
 
-  if (fetchError) {
-    return <>{"Meeting not found."}</>;
+  if (loading) {
+    return <>Loading...</>;
   }
 
   if (!meeting) {
-    return <>Loading...</>;
+    router.push("/meetings");
+    return <></>;
   }
 
   const { whiteboard } = meeting;

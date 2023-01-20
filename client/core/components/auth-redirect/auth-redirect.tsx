@@ -19,17 +19,17 @@ export const AuthRedirect: React.FC<AuthRedirectProps> = ({
     requestState === RequestState.PENDING ||
     requestState === RequestState.IDLE
   ) {
-    return <>Loading TODO...</>;
+    return <>Loading ...</>;
   }
 
   if (redirect === "unauthorized" && !user) {
     push("/login");
-    return <>Redirecting TODO...</>;
+    return <>Redirecting ...</>;
   }
 
   if (redirect === "authorized" && !!user) {
     push("/profile");
-    return <>Redirecting TODO...</>;
+    return <>Redirecting ...</>;
   }
 
   return <>{children}</>;

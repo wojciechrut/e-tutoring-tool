@@ -8,7 +8,7 @@ export const ProfileInfo: FC = () => {
   const { user, logout } = useAuth();
 
   if (!user) {
-    return <>todo...</>;
+    return <></>;
   }
 
   const { avatar, nickname, email, friends } = user;

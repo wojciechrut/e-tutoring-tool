@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 
 const PageNotFound: NextPage = () => {
-  return <>404 todo</>;
+  return <>Page you are looking for was not found.</>;
 };
 
 export default PageNotFound;

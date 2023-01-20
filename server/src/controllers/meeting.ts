@@ -120,7 +120,10 @@ const get: RequestHandler<
   const { id } = request.params;
   const { _id: userId } = response.locals;
 
-  const meeting = await MeetingRepository.findOne(id);
+  const meeting = await MeetingRepository.findOne(id).catch(() => {
+    next(createError(ErrorStatus.BAD_REQUEST));
+    return;
+  });
 
   if (!meeting) {
     next(

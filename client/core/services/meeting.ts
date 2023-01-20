@@ -6,6 +6,7 @@ import {
 } from "@types";
 import { AxiosResponse } from "axios";
 import api from "services/api";
+import UserService from "services/user";
 
 enum Paths {
   CREATE = "meeting",
@@ -27,6 +28,7 @@ const getMine = async ({ date }: MeetingSearchRequestQuery) => {
 };
 
 const access = async (id: string) => {
+  UserService.setAuthFromStorage();
   const { data: meeting }: AxiosResponse<SingleMeetingResponseBody> =
     await api.get(`${Paths.ACCESS_ONE}/${id}`);
   return meeting;

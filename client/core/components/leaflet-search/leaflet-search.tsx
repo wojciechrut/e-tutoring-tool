@@ -129,18 +129,20 @@ export const LeafletSearch: FC = () => {
           <Button type={"submit"} loading={loading}>
             Search
           </Button>
-          <Button
-            type={"button"}
-            loading={loading}
-            onClick={() => {
-              fetchLeaflets({
-                page: result?.page || 1,
-                user: user?._id.toString(),
-              });
-            }}
-          >
-            Show mine
-          </Button>
+          {!!user && (
+            <Button
+              type={"button"}
+              loading={loading}
+              onClick={() => {
+                fetchLeaflets({
+                  page: result?.page || 1,
+                  user: user?._id.toString(),
+                });
+              }}
+            >
+              Show mine
+            </Button>
+          )}
         </form>
         {result && (
           <div className={styles.pageInfo}>

@@ -69,7 +69,10 @@ const create = async (request, response, next) => {
 const get = async (request, response, next) => {
     const { id } = request.params;
     const { _id: userId } = response.locals;
-    const meeting = await meeting_1.default.findOne(id);
+    const meeting = await meeting_1.default.findOne(id).catch(() => {
+        next((0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST));
+        return;
+    });
     if (!meeting) {
         next((0, create_error_1.createError)(_types_1.ErrorStatus.BAD_REQUEST, "Meeting with this id doesn't exist"));
         return;

@@ -14,7 +14,12 @@ const populator = [
 ];
 const chatPopulator = { path: "chat", select: "_id" };
 const findOne = async (_id) => {
-    return meeting_1.default.findOne({ _id }).populate(populator).lean();
+    try {
+        return meeting_1.default.findOne({ _id }).populate(populator).lean();
+    }
+    catch (_a) {
+        return null;
+    }
 };
 const findAll = async (query) => {
     return meeting_1.default.find(query).populate(populator);
