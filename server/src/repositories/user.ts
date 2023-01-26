@@ -28,7 +28,10 @@ const findOne = async (query: Partial<User>, withFriends = false) => {
 
 const findByCredentials = async (query: UserCredentials) => {
   const { email, password } = query;
-  const user = await Model.findOne({ email });
+  const user = await Model.findOne({ email }).populate(
+    "friends",
+    UserSelector.STANDARD
+  );
   if (user && (await comparePassword(password, user.password))) {
     return user;
   }
@@ -40,7 +43,9 @@ const create = async (query: UserRegisterRequestBody) => {
   const hashedPassword = await hashPassword(password);
 
   await Model.create({ ...query, password: hashedPassword });
-  return Model.findOne({ email }).select(UserSelector.STANDARD);
+  return Model.findOne({ email })
+    .select(UserSelector.STANDARD)
+    .populate("friends", UserSelector.STANDARD);
 };
 
 const makeFriends = async (userId1: string, userId2: string) => {

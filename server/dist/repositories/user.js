@@ -28,7 +28,7 @@ const findOne = async (query, withFriends = false) => {
 };
 const findByCredentials = async (query) => {
     const { email, password } = query;
-    const user = await user_1.default.findOne({ email });
+    const user = await user_1.default.findOne({ email }).populate("friends", UserSelector.STANDARD);
     if (user && (await (0, password_1.comparePassword)(password, user.password))) {
         return user;
     }
@@ -38,7 +38,9 @@ const create = async (query) => {
     const { email, password } = query;
     const hashedPassword = await (0, password_1.hashPassword)(password);
     await user_1.default.create(Object.assign(Object.assign({}, query), { password: hashedPassword }));
-    return user_1.default.findOne({ email }).select(UserSelector.STANDARD);
+    return user_1.default.findOne({ email })
+        .select(UserSelector.STANDARD)
+        .populate("friends", UserSelector.STANDARD);
 };
 const makeFriends = async (userId1, userId2) => {
     return Promise.all([
